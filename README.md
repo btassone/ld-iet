@@ -3,13 +3,13 @@ An import / export plugin for Learn Dash
 
 ## Important Information
 
-MySQL Port: 3372
+**MySQL Port:** 3372
 
-Apache2 Port: 4567 - From your machine localhost:4567 when the vagrant is up.
+**Apache2 Port:** 4567 - From your machine localhost:4567 when the vagrant is up.
 
-SSH Port: 2222 - User: vagrant, password: vagrant
+**SSH Port:** 2222 | User: vagrant, password: vagrant
 
-Required Tech: Should be nothing, everything is on the vagrant.
+**Required Tech:** Should be nothing, everything is on the vagrant.
 
 The files that allow for Wordpress Unit Testing are located at /var/www/html/wordpress-core on the vagrant vm. The bootstrap file in the plugin
  directory under plugin-development pulls in the wordpress-core unit testing classes.
