@@ -1,0 +1,19 @@
+{
+    "name": "corduroybeach/ld-iet",
+    "description": "LearnDash Import / Export Tool",
+    "type": "wordpress-plugin",
+    "authors": [
+        {
+            "name": "Brandon Tassone",
+            "email": "brandontassone@gmail.com"
+        }
+    ],
+    "require": {
+        "phpunit/phpunit": "4.8.26"
+    },
+    "autoload": {
+        "psr-0": {
+            "CorduroyBeach": "src/"
+        }
+    }
+}
