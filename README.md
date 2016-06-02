@@ -4,7 +4,9 @@ An import / export plugin for Learn Dash
 ## Important Information
 
 MySQL Port: 3372
+
 Apache2 Port: 4567 - From your machine localhost:4567 when the vagrant is up.
+
 SSH Port: 2222 - User: vagrant, password: vagrant
 
 Required Tech: Should be nothing, everything is on the vagrant.
