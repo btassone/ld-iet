@@ -24,6 +24,7 @@ Thumbs.db
 *.sbr
 
 .idea/*
+.git/*
 
 vendor/*
 composer.lock
