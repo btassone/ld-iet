@@ -1,0 +1,23 @@
+{
+  "name": "ld-iet",
+  "version": "0.0.1",
+  "description": "A Learn Dash Export / Import Tool",
+  "main": "resources/js/main.js",
+  "scripts": {
+    "dev": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/btassone/ld-iet.git"
+  },
+  "author": "Brandon Tassone",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/btassone/ld-iet/issues"
+  },
+  "homepage": "https://github.com/btassone/ld-iet#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^2.3.1"
+  }
+}
