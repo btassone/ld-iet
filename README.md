@@ -25,15 +25,6 @@ For running the watcher use
 Windows: npm run dev-win
 Linux/OSX: npm run dev-unx
 
-The files that allow for Wordpress Unit Testing are located at /var/www/html/wordpress-core on the vagrant vm. The bootstrap file in the plugin
- directory under plugin-development pulls in the wordpress-core unit testing classes.
- 
-All PHP code for the plugin with be under the CorduroyBeach namespace.
+**Testing**
 
-I am using everything on the vagrant vm. What I mean by that is I am running the PHP5.9 version from the vagrant as my php version. I am also
-using the phpunit.phar located in the composer vendor folder (its in bin). Using these 2 things should be all that you need in order to start
-testing right away. No need for php/mysql/apache on your local machine.
-
-I have all these things working using PHPStorm. If you need any help setting it up with a different IDE let me know.
-
-I might put a video walk through tutorial at some point later.
+Currently I have testing working through the use of PHPStorm. I am using the composer autoloader in cunjunction with PHPUnit. There is a local phpunit file on the vagrant box. I am currently using that for my testing (via the remote options in phpstorm). You could run PHP locally on the vagrant box from the command line. Not sure how to hook it up with other IDE's. This option however will allow us to keep testing contained to the local vagrant rather than on each of our computers (less setup). If you need help running the tests please let me know. This might be the most confusing part at the moment.
