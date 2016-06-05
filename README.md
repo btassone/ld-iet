@@ -12,8 +12,11 @@ An import / export plugin for Learn Dash
 **Required Tech:** Should be nothing, everything is on the vagrant.
 
 **Setup After Download**
+
 In the plugin directory run these commands from the command line
+
 npm install
+
 bower install
 
 Those 2 commands should take care of all the package installation. Currently you must have both npm and bower installed. Looking into using a local copy of bower and making this a 1 command install if I can. For right now this should work fine however.
