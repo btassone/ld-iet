@@ -12,7 +12,6 @@
 require_once("vendor/autoload.php");
 
 define('LD_IET_VIEW_BASE', plugin_dir_path(__FILE__) . 'views/');
-define('LD_IET_VIEW_ID_BASE', 'ld-iet/views/');
 define('LD_IET_RESOURCE_URL_BASE', plugin_dir_url(__FILE__) . 'resources/');
 
 function menu_pages_init() {
