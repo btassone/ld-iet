@@ -1,0 +1,22 @@
+{
+  "name": "ld-iet",
+  "description": "A Learn Dash Export / Import Tool",
+  "main": "resources/js/main.js",
+  "authors": [
+    "Brandon Tassone"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/btassone/ld-iet",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bourbon": "~4.2.7"
+  }
+}
