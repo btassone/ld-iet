@@ -15,10 +15,6 @@ define('LD_IET_VIEW_BASE', plugin_dir_path(__FILE__) . 'views/');
 define('LD_IET_VIEW_ID_BASE', 'ld-iet/views/');
 define('LD_IET_RESOURCE_URL_BASE', plugin_dir_url(__FILE__) . 'resources/');
 
-// TODO: Make a class for all of this stuff that needs to be passed from page to page. Global is temporary
-global $ld_admin_pages;
-$ld_admin_pages = array();
-
 function menu_pages_init() {
 	add_menu_page(
 		'Learn Dash Import / Export Tool',
