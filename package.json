@@ -4,7 +4,8 @@
   "description": "A Learn Dash Export / Import Tool",
   "main": "resources/js/main.js",
   "scripts": {
-    "dev": "gulp"
+    "dev-win": "./node_modules/.bin/gulp.cmd",
+    "dev-unx": "./node_modules/.bin/gulp"
   },
   "repository": {
     "type": "git",
