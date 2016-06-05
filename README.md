@@ -30,4 +30,5 @@ Linux/OSX: npm run dev-unx
 Currently I have testing working through the use of PHPStorm. I am using the composer auto-loader in conjunction with PHPUnit. There is a local phpunit file on the vagrant box. I am currently using that for my testing (via the remote options in phpstorm). You could run PHP locally on the vagrant box from the command line. Not sure how to hook it up with other IDE's. This option however will allow us to keep testing contained to the local vagrant rather than on each of our computers (less setup). If you need help running the tests please let me know. This might be the most confusing part at the moment.
 
 **PHPStorm Notes**
+
 If you use PHPStorm, do not forget to mark the src folder as the sources root, the tests folder as the tests sources root, and the resources folder as the resources root.
