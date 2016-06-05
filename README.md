@@ -11,6 +11,10 @@ An import / export plugin for Learn Dash
 
 **Required Tech:** Should be nothing, everything is on the vagrant.
 
+**Requires**
+
+node, bower, sass. Please have all 3 of these installed globally.
+
 **Setup After Download**
 
 In the plugin directory run these commands from the command line
