@@ -11,8 +11,16 @@ An import / export plugin for Learn Dash
 
 **Required Tech:** Should be nothing, everything is on the vagrant.
 
-**Initiate Dev Environment:** npm run dev | Right now all this does is fire up the sass watcher. A little bit less messy of a solution just in case your IDE does not have a built in
-sass watcher
+**Setup After Download**
+In the plugin directory run these commands from the command line
+npm install
+bower install
+
+Those 2 commands should take care of all the package installation. Currently you must have both npm and bower installed. Looking into using a local copy of bower and making this a 1 command install if I can. For right now this should work fine however.
+
+For running the watcher use
+Windows: npm run dev-win
+Linux/OSX: npm run dev-unx
 
 The files that allow for Wordpress Unit Testing are located at /var/www/html/wordpress-core on the vagrant vm. The bootstrap file in the plugin
  directory under plugin-development pulls in the wordpress-core unit testing classes.
