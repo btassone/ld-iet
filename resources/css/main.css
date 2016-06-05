@@ -1,0 +1,20 @@
+.ld-iet-settings-wrap {
+  padding: 20px;
+  box-sizing: border-box; }
+
+.ld-iet-header-wrap {
+  background: #046380;
+  padding: 20px;
+  box-sizing: border-box; }
+  .ld-iet-header-wrap > *:first-child {
+    margin-top: 0; }
+  .ld-iet-header-wrap > *:last-child {
+    margin-bottom: 0; }
+
+.ld-iet-page-title {
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: #fff; }
+
+.ld-iet-sub-title {
+  color: #f1f1f1; }

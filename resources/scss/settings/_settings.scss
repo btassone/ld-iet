@@ -1,0 +1,25 @@
+@import "_variables";
+
+.ld-iet-settings-wrap {
+  padding: $general-padding-size;
+  box-sizing: border-box;
+}
+
+.ld-iet-header-wrap {
+  background: $header-wrap-bg;
+  padding: $general-padding-size;
+  box-sizing: border-box;
+
+  & > *:first-child { margin-top: 0; }
+  & > *:last-child { margin-bottom: 0; }
+}
+
+.ld-iet-page-title {
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: $header-title-color;
+}
+
+.ld-iet-sub-title {
+  color: $header-sub-title-color;
+}

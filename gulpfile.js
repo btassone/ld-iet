@@ -9,5 +9,7 @@ gulp.task('styles', function(){
 });
 
 gulp.task('default',function() {
-    gulp.watch('./resources/scss/**/*.scss',['styles']);
+    gulp.watch('./resources/scss/**/*.scss',function(){
+        gulp.start('styles');
+    });
 });
