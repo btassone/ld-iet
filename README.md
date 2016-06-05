@@ -19,11 +19,13 @@ node, bower, sass. Please have all 3 of these installed globally.
 
 In the plugin directory run these commands from the command line
 
+php composer.phar install (if you don't have composer installed globally)
+
 npm install
 
 bower install
 
-Those 2 commands should take care of all the package installation. Currently you must have both npm and bower installed. Looking into using a local copy of bower and making this a 1 command install if I can. For right now this should work fine however.
+Those 3 commands should take care of all the package installation. Currently you must have both npm and bower installed. Looking into using a local copy of bower and making this a 1 command install if I can. For right now this should work fine however.
 
 For running the watcher use
 Windows: npm run dev-win
