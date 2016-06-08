@@ -23,3 +23,37 @@
 .ld-iet-sub-title {
   color: $header-sub-title-color;
 }
+
+.uploaded-csv-information {
+  margin-top: 10px;
+  background: #dedede;
+  padding: 10px;
+  box-sizing: border-box;
+  float: left;
+  display: none;
+}
+
+.import-response-status {
+  margin-top: 10px;
+  display: inline-block;
+  color: #fff;
+  padding: 10px;
+  box-sizing: border-box;
+  background: #bbb;
+
+  &[data-status="Pending"] {
+    background: darkslateblue;
+  }
+
+  &[data-status="Processing"] {
+    background: orange;
+  }
+
+  &[data-status="Finished"] {
+    background: green;
+  }
+
+  &[data-status="Error"] {
+    background: red;
+  }
+}

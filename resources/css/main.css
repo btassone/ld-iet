@@ -18,3 +18,30 @@
 
 .ld-iet-sub-title {
   color: #f1f1f1; }
+
+.uploaded-csv-information {
+  margin-top: 10px;
+  background: #dedede;
+  padding: 10px;
+  box-sizing: border-box;
+  float: left;
+  display: none; }
+
+.import-response-status {
+  margin-top: 10px;
+  display: inline-block;
+  color: #fff;
+  padding: 10px;
+  box-sizing: border-box;
+  background: #bbb; }
+  .import-response-status[data-status="Pending"] {
+    background: darkslateblue; }
+  .import-response-status[data-status="Processing"] {
+    background: orange; }
+  .import-response-status[data-status="Finished"] {
+    background: green; }
+  .import-response-status[data-status="Error"] {
+    background: red; }
+
+.block {
+  display: block; }

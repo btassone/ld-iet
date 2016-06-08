@@ -29,4 +29,5 @@ Thumbs.db
 vendor/*
 node_modules/*
 resources/components/*
+resources/typings/*
 composer.lock
