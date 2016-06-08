@@ -25,7 +25,9 @@ npm install
 
 bower install
 
-Those 3 commands should take care of all the package installation. Currently you must have both npm and bower installed. Looking into using a local copy of bower and making this a 1 command install if I can. For right now this should work fine however.
+tsd install (located under node_modules/.bin for local copy)
+
+Those 4 commands should take care of all the package installation. Currently you must have both npm and bower installed. Looking into using a local copy of bower and making this a 1 command install if I can. For right now this should work fine however.
 
 For running the watcher use
 Windows: npm run dev-win
