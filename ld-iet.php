@@ -36,9 +36,9 @@ function ld_settings_page_cb() {
 		<div>
 			<form action="options.php" method="post">
 				<?php
-				settings_fields('ld_options');
-				do_settings_sections('ld-settings-page');
-				submit_button();
+					settings_fields('ld_options');
+					do_settings_sections('ld-settings-page');
+					submit_button();
 				?>
 			</form>
 		</div>

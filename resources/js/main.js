@@ -7,8 +7,6 @@ var CorduroyBeach;
             this.target_cb = target_cb;
             // Register click handler
             jQuery(this.target).on('click', this.target_cb);
-            // Add instance to class array property for access later.
-            (ClickHandler.click_handlers).push(this);
         }
         Object.defineProperty(ClickHandler.prototype, "target", {
             get: function () {
@@ -30,27 +28,6 @@ var CorduroyBeach;
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(ClickHandler, "click_handlers", {
-            get: function () {
-                return this._click_handlers;
-            },
-            set: function (value) {
-                this._click_handlers = value;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        ClickHandler.remove_click_handler = function (handler) {
-            for (var _i = 0, _a = ClickHandler.click_handlers; _i < _a.length; _i++) {
-                var click_handler = _a[_i];
-                if (handler == click_handler) {
-                    var handler_index = ClickHandler.click_handlers.indexOf(handler);
-                    console.log("INDEX: ", handler_index);
-                    delete ClickHandler.click_handlers[handler_index];
-                }
-            }
-        };
-        ClickHandler._click_handlers = [];
         return ClickHandler;
     }());
     CorduroyBeach.ClickHandler = ClickHandler;
@@ -121,65 +98,94 @@ var attachment;
 var ld_iet_ajax_obj;
 var CorduroyBeach;
 (function (CorduroyBeach) {
-    CorduroyBeach.ImportResponseHandler.change_response_status(CorduroyBeach.ImportResponseStatuses.NoFile);
-    // CSV Upload Click Handler
-    new CorduroyBeach.ClickHandler(jQuery('#ld_setting_course_csv_upload_btn'), function (event) {
-        var calling_btn = jQuery('#ld_setting_course_csv_upload_btn');
-        event.preventDefault();
-        // If the media frame already exists, reopen it.
-        if (file_frame) {
-            file_frame.open();
-            return;
+    var Main = (function () {
+        function Main() {
         }
-        // Create the media frame.
-        file_frame = wp.media.frames.file_frame = wp.media({
-            frame: 'select',
-            button: {
-                text: "Add Course CSV File"
-            },
-            multiple: false,
-            library: {
-                type: ['text/csv']
-            }
-        });
-        // When an image is selected, run a callback.
-        file_frame.on('select', function () {
-            var uploaded_info_box = jQuery(".uploaded-csv-information");
-            var run_import_btn = jQuery("#ld_settings_course_csv_import");
-            // We set multiple to false so only get one image from the uploader
-            attachment = file_frame.state().get('selection').first().toJSON();
-            jQuery("#" + calling_btn.attr('data-txt-field')).val(JSON.stringify(attachment));
-            uploaded_info_box.html("<strong>ID:</strong> " + attachment.id + "\n" +
-                "<strong>Title:</strong> " + attachment.title + "\n" +
-                "<strong>Filename:</strong> " + attachment.filename + "\n" +
-                "<strong>URL:</strong> " + attachment.url + "\n" +
-                "<strong>Link:</strong> <a href='" + attachment.link + "' target='_blank'>" + attachment.link + "</a>" + "\n" +
-                "<strong>Type:</strong> " + attachment.type + "\n" +
-                "<strong>Subtype:</strong> " + attachment.subtype + "\n" +
-                "<strong>File Size:</strong> " + attachment.filesizeHumanReadable);
-            if (!uploaded_info_box.hasClass("block")) {
-                uploaded_info_box.addClass("block");
-            }
-            // Remove the disabled attribute
-            run_import_btn.removeAttr('disabled');
-            CorduroyBeach.ImportResponseHandler.change_response_status(CorduroyBeach.ImportResponseStatuses.Pending);
-        });
-        // Finally, open the modal
-        file_frame.open();
-    });
-    new CorduroyBeach.ClickHandler(jQuery('#ld_settings_course_csv_import'), function (event) {
-        var csv_hidden_field = jQuery('#ld_setting_course_csv');
-        var data = {
-            'action': 'ld_csv_import',
-            'csv_json_obj': JSON.parse(csv_hidden_field.val())
+        Main.Run = function () {
+            // On document load items
+            Main.Initialization();
+            // Register the click handlers for the plugin
+            Main.RegisterClickHandlers();
         };
-        CorduroyBeach.ImportResponseHandler.change_response_status(CorduroyBeach.ImportResponseStatuses.Processing);
-        jQuery.post(ld_iet_ajax_obj.ajax_url, data, function (response) {
-            var json_parse = JSON.parse(response);
-            console.log("Run Import Response: ", json_parse);
-            if (json_parse.status == "Finished") {
-                CorduroyBeach.ImportResponseHandler.change_response_status(CorduroyBeach.ImportResponseStatuses.Finished);
-            }
+        Main.Initialization = function () {
+            CorduroyBeach.ImportResponseHandler.change_response_status(CorduroyBeach.ImportResponseStatuses.NoFile);
+        };
+        Main.RegisterClickHandlers = function () {
+            // CSV Upload Click Handler
+            Main.clickHandlers.push(new CorduroyBeach.ClickHandler(jQuery('#ld_setting_course_csv_upload_btn'), function (event) {
+                var calling_btn = jQuery('#ld_setting_course_csv_upload_btn');
+                event.preventDefault();
+                // If the media frame already exists, reopen it.
+                if (file_frame) {
+                    file_frame.open();
+                    return;
+                }
+                // Create the media frame.
+                file_frame = wp.media.frames.file_frame = wp.media({
+                    frame: 'select',
+                    button: {
+                        text: "Add Course CSV File"
+                    },
+                    multiple: false,
+                    library: {
+                        type: ['text/csv']
+                    }
+                });
+                // When an image is selected, run a callback.
+                file_frame.on('select', function () {
+                    var uploaded_info_box = jQuery(".uploaded-csv-information");
+                    var run_import_btn = jQuery("#ld_settings_course_csv_import");
+                    // We set multiple to false so only get one image from the uploader
+                    attachment = file_frame.state().get('selection').first().toJSON();
+                    jQuery("#" + calling_btn.attr('data-txt-field')).val(JSON.stringify(attachment));
+                    uploaded_info_box.html("<strong>ID:</strong> " + attachment.id + "\n" +
+                        "<strong>Title:</strong> " + attachment.title + "\n" +
+                        "<strong>Filename:</strong> " + attachment.filename + "\n" +
+                        "<strong>URL:</strong> " + attachment.url + "\n" +
+                        "<strong>Link:</strong> <a href='" + attachment.link + "' target='_blank'>" + attachment.link + "</a>" + "\n" +
+                        "<strong>Type:</strong> " + attachment.type + "\n" +
+                        "<strong>Subtype:</strong> " + attachment.subtype + "\n" +
+                        "<strong>File Size:</strong> " + attachment.filesizeHumanReadable);
+                    if (!uploaded_info_box.hasClass("block")) {
+                        uploaded_info_box.addClass("block");
+                    }
+                    // Remove the disabled attribute
+                    run_import_btn.removeAttr('disabled');
+                    CorduroyBeach.ImportResponseHandler.change_response_status(CorduroyBeach.ImportResponseStatuses.Pending);
+                });
+                // Finally, open the modal
+                file_frame.open();
+            }));
+            // Run Import Click Handler
+            Main.clickHandlers.push(new CorduroyBeach.ClickHandler(jQuery('#ld_settings_course_csv_import'), function (event) {
+                var csv_hidden_field = jQuery('#ld_setting_course_csv');
+                var data = {
+                    'action': 'ld_csv_import',
+                    'csv_json_obj': JSON.parse(csv_hidden_field.val())
+                };
+                CorduroyBeach.ImportResponseHandler.change_response_status(CorduroyBeach.ImportResponseStatuses.Processing);
+                jQuery.post(ld_iet_ajax_obj.ajax_url, data, function (response) {
+                    var json_parse = JSON.parse(response);
+                    console.log("Run Import Response: ", json_parse);
+                    if (json_parse.status == "Finished") {
+                        CorduroyBeach.ImportResponseHandler.change_response_status(CorduroyBeach.ImportResponseStatuses.Finished);
+                    }
+                });
+            }));
+        };
+        Object.defineProperty(Main, "clickHandlers", {
+            get: function () {
+                return this._clickHandlers;
+            },
+            set: function (value) {
+                this._clickHandlers = value;
+            },
+            enumerable: true,
+            configurable: true
         });
-    });
+        Main._clickHandlers = [];
+        return Main;
+    }());
+    CorduroyBeach.Main = Main;
 })(CorduroyBeach || (CorduroyBeach = {}));
+CorduroyBeach.Main.Run();
