@@ -14,6 +14,7 @@ class JQueryClickHandler extends BaseHandler {
     }
 
     // This is so we can register all the handlers at once. Also this separation allows for testing
+    // Note: Can't be tested in jasmine (jQuery)
     static registerHandlers() {
         this.instances.forEach(function(value){
             var cValue: JQueryClickHandler = <JQueryClickHandler>value;

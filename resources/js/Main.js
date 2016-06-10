@@ -60,46 +60,46 @@ var ImportResponseStatuses;
 var ImportResponseHandler = (function () {
     function ImportResponseHandler() {
     }
-    Object.defineProperty(ImportResponseHandler, "response_status_text", {
+    Object.defineProperty(ImportResponseHandler, "responseStatusText", {
         get: function () {
-            switch (this.response_status) {
+            switch (this.responseStatus) {
                 case ImportResponseStatuses.NoFile:
-                    this._response_status_text = "No file chosen.";
+                    this._responseStatusText = "No file chosen.";
                     break;
                 case ImportResponseStatuses.Pending:
-                    this._response_status_text = "File chosen, ready to run import.";
+                    this._responseStatusText = "File chosen, ready to run import.";
                     break;
                 case ImportResponseStatuses.Processing:
-                    this._response_status_text = "File is processing...";
+                    this._responseStatusText = "File is processing...";
                     break;
                 case ImportResponseStatuses.Finished:
-                    this._response_status_text = "File import has completed.";
+                    this._responseStatusText = "File import has completed.";
                     break;
                 case ImportResponseStatuses.Error:
-                    this._response_status_text = "There was an error with the import. Check the error status below.";
+                    this._responseStatusText = "There was an error with the import. Check the error status below.";
                     break;
             }
-            return this._response_status_text;
+            return this._responseStatusText;
         },
         set: function (value) {
-            this._response_status_text = value;
+            this._responseStatusText = value;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ImportResponseHandler, "response_status", {
+    Object.defineProperty(ImportResponseHandler, "responseStatus", {
         get: function () {
-            return this._response_status;
+            return this._responseStatus;
         },
         set: function (value) {
-            this._response_status = value;
+            this._responseStatus = value;
         },
         enumerable: true,
         configurable: true
     });
-    ImportResponseHandler.change_response_status = function (response_status) {
-        ImportResponseHandler.response_status = response_status;
-        jQuery(".import-response-status .status").text(ImportResponseHandler.response_status_text);
+    ImportResponseHandler.changeResponseStatus = function (response_status) {
+        ImportResponseHandler.responseStatus = response_status;
+        jQuery(".import-response-status .status").text(ImportResponseHandler.responseStatusText);
         jQuery(".import-response-status").attr("data-status", ImportResponseStatuses[response_status]);
     };
     return ImportResponseHandler;
@@ -157,16 +157,18 @@ var ld_iet_ajax_obj;
 var Main = (function () {
     function Main() {
     }
+    // Note: Can't be tested in jasmine (jQuery)
     Main.Run = function () {
         // On document load items
         Main.Initialization();
         // Register the click handlers for the plugin
         Main.RegisterClickHandlers();
     };
+    // Note: Can't be tested in jasmine (jQuery)
     Main.Initialization = function () {
-        ImportResponseHandler.change_response_status(ImportResponseStatuses.NoFile);
+        ImportResponseHandler.changeResponseStatus(ImportResponseStatuses.NoFile);
     };
-    // Note: Can't be tested (jQuery)
+    // Note: Can't be tested in jasmine (jQuery)
     Main.RegisterClickHandlers = function () {
         // CSV Upload Click Handler
         new JQueryClickHandler('CSVUploadHandler', jQuery('#ld_setting_course_csv_upload_btn'), function (event) {
@@ -208,7 +210,7 @@ var Main = (function () {
                 }
                 // Remove the disabled attribute
                 run_import_btn.removeAttr('disabled');
-                ImportResponseHandler.change_response_status(ImportResponseStatuses.Pending);
+                ImportResponseHandler.changeResponseStatus(ImportResponseStatuses.Pending);
             });
             // Finally, open the modal
             file_frame.open();
@@ -220,15 +222,16 @@ var Main = (function () {
                 'action': 'ld_csv_import',
                 'csv_json_obj': JSON.parse(csv_hidden_field.val())
             };
-            ImportResponseHandler.change_response_status(ImportResponseStatuses.Processing);
+            ImportResponseHandler.changeResponseStatus(ImportResponseStatuses.Processing);
             jQuery.post(ld_iet_ajax_obj.ajax_url, data, function (response) {
                 var json_parse = JSON.parse(response);
                 console.log("Run Import Response: ", json_parse);
                 if (json_parse.status == "Finished") {
-                    ImportResponseHandler.change_response_status(ImportResponseStatuses.Finished);
+                    ImportResponseHandler.changeResponseStatus(ImportResponseStatuses.Finished);
                 }
             });
         });
+        // Registers all the click handlers to click events using jQuery
         JQueryClickHandler.registerHandlers();
     };
     return Main;
