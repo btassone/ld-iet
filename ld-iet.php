@@ -102,7 +102,21 @@ function load_ld_iet_admin_styles() {
 }
 
 function load_ld_iet_javascript() {
-	wp_register_script( 'ld-iet-main', LD_IET_RESOURCE_URL_BASE . 'js/Main.js', array(), '', true);
+	wp_register_script( 'ld-iet-base-handler',
+		LD_IET_RESOURCE_URL_BASE . 'js/Handlers/BaseHandler.js', array(), '', true);
+	wp_register_script( 'ld-iet-eimport-response-statuses',
+		LD_IET_RESOURCE_URL_BASE . 'js/Enums/EImportResponseStatuses.js', array(), '', true);
+	wp_register_script( 'ld-iet-import-response-handler',
+		LD_IET_RESOURCE_URL_BASE . 'js/Utilities/ImportResponseUtility.js', array(), '', true);
+	wp_register_script( 'ld-iet-jquery-click-handler',
+		LD_IET_RESOURCE_URL_BASE . 'js/Handlers/JQueryClickHandler.js', array(), '', true);
+	wp_register_script( 'ld-iet-main',
+		LD_IET_RESOURCE_URL_BASE . 'js/Main.js', array(), '', true);
+
+	wp_enqueue_script( 'ld-iet-base-handler' );
+	wp_enqueue_script( 'ld-iet-eimport-response-statuses' );
+	wp_enqueue_script( 'ld-iet-import-response-handler' );
+	wp_enqueue_script( 'ld-iet-jquery-click-handler' );
 	wp_enqueue_script( 'ld-iet-main' );
 
 	wp_localize_script( 'ld-iet-main', 'ld_iet_ajax_obj', array('ajax_url' => admin_url( 'admin-ajax.php' )) );

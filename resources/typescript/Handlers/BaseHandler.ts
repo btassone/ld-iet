@@ -1,19 +1,19 @@
 class BaseHandler {
-    private _id: string;
+    private _id:string;
 
-    private static _instances: Array<BaseHandler> = [];
+    private static _instances:Array<BaseHandler> = [];
 
-    constructor(id: string) {
+    constructor(id:string) {
         this.id = id;
 
         BaseHandler.instances.push(this);
     }
 
-    static get(id: string): BaseHandler {
-        let gInstance: BaseHandler;
+    static get(id:string):BaseHandler {
+        let gInstance:BaseHandler;
 
-        for(let instance of BaseHandler.instances) {
-            if(instance.id == id) {
+        for (let instance of BaseHandler.instances) {
+            if (instance.id == id) {
                 gInstance = instance;
             }
         }
@@ -21,14 +21,14 @@ class BaseHandler {
         return gInstance;
     }
 
-    static remove(id: string): boolean {
-        let removed: boolean = false;
+    static remove(id:string):boolean {
+        let removed:boolean = false;
 
-        for(let instance of BaseHandler.instances) {
-            if(instance.id == id) {
+        for (let instance of BaseHandler.instances) {
+            if (instance.id == id) {
                 delete BaseHandler.instances[BaseHandler.instances.indexOf(instance)];
 
-                if(BaseHandler.instances.indexOf(instance) == -1) {
+                if (BaseHandler.instances.indexOf(instance) == -1) {
                     removed = true;
                 }
             }
@@ -40,6 +40,7 @@ class BaseHandler {
     get id():string {
         return this._id;
     }
+
     set id(value:string) {
         this._id = value;
     }
@@ -47,6 +48,7 @@ class BaseHandler {
     static get instances():Array<BaseHandler> {
         return this._instances;
     }
+
     static set instances(value:Array<BaseHandler>) {
         this._instances = value;
     }

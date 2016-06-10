@@ -16,20 +16,11 @@ gulp.task('typescript', function(){
         .pipe(typescript({
             target: 'ES5'
         }))
-        .pipe(gulp.dest('./resources/js/dev'));
-});
-
-gulp.task('typescript-build', function(){
-    gulp.src('./resources/typescript/**/*.ts')
-        .pipe(typescript({
-            target: 'ES5',
-            out: 'Main.js'
-        }))
         .pipe(gulp.dest('./resources/js'));
 });
 
 gulp.task('jasmine', function(){
-    gulp.src('./resources/js/tests/**/*Test.js')
+    gulp.src('./resources/js/Tests/**/*Test.js')
         .pipe(jasmine());
 });
 
@@ -42,11 +33,6 @@ gulp.task('default',function() {
     gulp.watch('./resources/typescript/**/*.ts', function(){
         gulp.start('typescript');
     });
-});
-
-// Build for plugin (Import only this Main.js file
-gulp.task('build', function() {
-    runSequence('styles', 'typescript-build');
 });
 
 // Run Tests

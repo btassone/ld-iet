@@ -1,5 +1,5 @@
 var __require = require("__require");
-eval( __require("../dev/Handlers/BaseHandler.js") );
+eval( __require("../Handlers/BaseHandler.js") );
 
 describe("BaseHandler Inherited items function correctly", function(){
     it("BaseHandler gets specified id out of 4 separate registered handlers", function(){

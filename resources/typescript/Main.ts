@@ -5,7 +5,6 @@ let wp:any;
 let attachment:any;
 let ld_iet_ajax_obj:any;
 
-// Brain of the operation
 class Main {
 
     // Note: Can't be tested in jasmine (jQuery)
@@ -19,7 +18,7 @@ class Main {
 
     // Note: Can't be tested in jasmine (jQuery)
     static Initialization() {
-        ImportResponseHandler.changeResponseStatus(ImportResponseStatuses.NoFile);
+        ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.NoFile);
     }
 
     // Note: Can't be tested in jasmine (jQuery)
@@ -78,7 +77,7 @@ class Main {
                     // Remove the disabled attribute
                     run_import_btn.removeAttr('disabled');
 
-                    ImportResponseHandler.changeResponseStatus(ImportResponseStatuses.Pending);
+                    ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Pending);
                 });
 
                 // Finally, open the modal
@@ -97,19 +96,19 @@ class Main {
                     'csv_json_obj': JSON.parse(csv_hidden_field.val())
                 };
 
-                ImportResponseHandler.changeResponseStatus(ImportResponseStatuses.Processing);
+                ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Processing);
 
                 jQuery.post(ld_iet_ajax_obj.ajax_url, data, (response:any) => {
                     let json_parse = JSON.parse(response);
                     console.log("Run Import Response: ", json_parse);
 
                     if(json_parse.status == "Finished") {
-                        ImportResponseHandler.changeResponseStatus(ImportResponseStatuses.Finished);
+                        ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Finished);
                     }
                 });
             }
         );
-
+        
         // Registers all the click handlers to click events using jQuery
         JQueryClickHandler.registerHandlers();
     }
