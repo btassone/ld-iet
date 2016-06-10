@@ -114,12 +114,20 @@ class Main {
 
         new DraggableHandler('csv-column-pattern', jQuery('.column-pattern'), {
             selection: false,
-            sortableOptions: {}
+            sortableOptions: {
+                stop: function() {
+                    var newOrder = [];
+
+                    // Iterate over each item and add it to the new order array
+                    jQuery(".column-pattern .ui-state-default").each(function(index, value){
+                        newOrder.push(jQuery(value).attr('data-name'));
+                    });
+
+                    // Stringify the array and assign the value to the hidden field to be saved
+                    jQuery("#ld_settings_course_csv_pattern").val(JSON.stringify(newOrder));
+                }
+            }
         });
-
-        var testInstance: any = BaseHandler.get('csv-column-pattern');
-
-        console.log(BaseHandler.getInstances<ClickHandler>(ClickHandler));
 
         DraggableHandler.initializeDraggables();
     }
