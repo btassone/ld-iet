@@ -20,7 +20,7 @@ var Main = (function () {
     // Note: Can't be tested in jasmine (jQuery)
     Main.RegisterClickHandlers = function () {
         // CSV Upload Click Handler
-        new JQueryClickHandler('CSVUploadHandler', jQuery('#ld_setting_course_csv_upload_btn'), function (event) {
+        new ClickHandler('CSVUploadHandler', jQuery('#ld_setting_course_csv_upload_btn'), function (event) {
             var calling_btn = jQuery('#ld_setting_course_csv_upload_btn');
             event.preventDefault();
             // If the media frame already exists, reopen it.
@@ -65,7 +65,7 @@ var Main = (function () {
             file_frame.open();
         });
         // Run Import Click Handler
-        new JQueryClickHandler('CSVImportHandler', jQuery('#ld_settings_course_csv_import'), function (event) {
+        new ClickHandler('CSVImportHandler', jQuery('#ld_settings_course_csv_import'), function (event) {
             var csv_hidden_field = jQuery('#ld_setting_course_csv');
             var data = {
                 'action': 'ld_csv_import',
@@ -81,7 +81,14 @@ var Main = (function () {
             });
         });
         // Registers all the click handlers to click events using jQuery
-        JQueryClickHandler.registerHandlers();
+        ClickHandler.registerHandlers();
+        new DraggableHandler('csv-column-pattern', jQuery('.column-pattern'), {
+            selection: false,
+            sortableOptions: {}
+        });
+        var testInstance = BaseHandler.get('csv-column-pattern');
+        console.log(BaseHandler.getInstances(ClickHandler));
+        DraggableHandler.initializeDraggables();
     };
     return Main;
 })();

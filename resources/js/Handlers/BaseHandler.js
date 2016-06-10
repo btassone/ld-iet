@@ -13,6 +13,22 @@ var BaseHandler = (function () {
         }
         return gInstance;
     };
+    // Ugly hack, THANKS TYPESCRIPT
+    // TODO: Find out if there are better ways to do this
+    BaseHandler.isType = function (value, key) {
+        return value instanceof key;
+    };
+    // Ugly hack, THANKS TYPESCRIPT
+    // TODO: Find out if there are better ways to do this
+    BaseHandler.getInstances = function (key) {
+        var retInstances = [];
+        this.instances.forEach(function (value) {
+            if (BaseHandler.isType(value, key)) {
+                retInstances.push(value);
+            }
+        });
+        return retInstances;
+    };
     BaseHandler.remove = function (id) {
         var removed = false;
         for (var _i = 0, _a = BaseHandler.instances; _i < _a.length; _i++) {

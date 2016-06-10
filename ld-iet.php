@@ -73,6 +73,73 @@ function ld_settings_fun() {
 	);
 
 	add_settings_field(
+		'ld_settings_course_csv_pattern',
+		'Set CSV Import Column Pattern',
+		function () {
+			?>
+			<div class="column-pattern">
+				<div class="ui-state-default">
+					Course Title
+				</div>
+				<div class="ui-state-default">
+					Status
+				</div>
+				<div class="ui-state-default">
+					Visibility
+				</div>
+				<div class="ui-state-default">
+					Featured Image
+				</div>
+				<div class="ui-state-default">
+					Categories
+				</div>
+				<div class="ui-state-default">
+					Tags
+				</div>
+				<div class="ui-state-default">
+					Restrictions
+				</div>
+				<div class="ui-state-default">
+					Course Materials
+				</div>
+				<div class="ui-state-default">
+					Course Price Type
+				</div>
+				<div class="ui-state-default">
+					Course Price
+				</div>
+				<div class="ui-state-default">
+					Course Access List
+				</div>
+				<div class="ui-state-default">
+					Sort Lesson By
+				</div>
+				<div class="ui-state-default">
+					Sort Lesson Direction
+				</div>
+				<div class="ui-state-default">
+					Course Prerequisites
+				</div>
+				<div class="ui-state-default">
+					Disable Lesson Progression
+				</div>
+				<div class="ui-state-default">
+					Expire Access
+				</div>
+				<div class="ui-state-default">
+					Hide Course Content Table
+				</div>
+				<div class="ui-state-default">
+					Associated Certificate
+				</div>
+			</div>
+			<?php
+		},
+		'ld-settings-page',
+		'ld_settings_section'
+	);
+
+	add_settings_field(
 		'ld_settings_course_csv_run',
 		'Run the CSV Import',
 		function() {
@@ -102,21 +169,27 @@ function load_ld_iet_admin_styles() {
 }
 
 function load_ld_iet_javascript() {
-	wp_register_script( 'ld-iet-base-handler',
-		LD_IET_RESOURCE_URL_BASE . 'js/Handlers/BaseHandler.js', array(), '', true);
+	wp_register_script( 'ld-iet-jquery-ui',
+		plugin_dir_path(__FILE__) . "node_modules/jquery-ui/jquery-ui.js", array(), '', true);
 	wp_register_script( 'ld-iet-eimport-response-statuses',
 		LD_IET_RESOURCE_URL_BASE . 'js/Enums/EImportResponseStatuses.js', array(), '', true);
 	wp_register_script( 'ld-iet-import-response-handler',
 		LD_IET_RESOURCE_URL_BASE . 'js/Utilities/ImportResponseUtility.js', array(), '', true);
-	wp_register_script( 'ld-iet-jquery-click-handler',
-		LD_IET_RESOURCE_URL_BASE . 'js/Handlers/JQueryClickHandler.js', array(), '', true);
+	wp_register_script( 'ld-iet-base-handler',
+		LD_IET_RESOURCE_URL_BASE . 'js/Handlers/BaseHandler.js', array(), '', true);
+	wp_register_script( 'ld-iet-click-handler',
+		LD_IET_RESOURCE_URL_BASE . 'js/Handlers/ClickHandler.js', array(), '', true);
+	wp_register_script( 'ld-iet-draggable-handler',
+		LD_IET_RESOURCE_URL_BASE . 'js/Handlers/DraggableHandler.js', array(), '', true);
 	wp_register_script( 'ld-iet-main',
 		LD_IET_RESOURCE_URL_BASE . 'js/Main.js', array(), '', true);
 
-	wp_enqueue_script( 'ld-iet-base-handler' );
+//	wp_enqueue_script( 'ld-iet-jquery-ui' );
 	wp_enqueue_script( 'ld-iet-eimport-response-statuses' );
 	wp_enqueue_script( 'ld-iet-import-response-handler' );
-	wp_enqueue_script( 'ld-iet-jquery-click-handler' );
+	wp_enqueue_script( 'ld-iet-base-handler' );
+	wp_enqueue_script( 'ld-iet-click-handler' );
+	wp_enqueue_script( 'ld-iet-draggable-handler' );
 	wp_enqueue_script( 'ld-iet-main' );
 
 	wp_localize_script( 'ld-iet-main', 'ld_iet_ajax_obj', array('ajax_url' => admin_url( 'admin-ajax.php' )) );

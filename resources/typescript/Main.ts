@@ -24,7 +24,7 @@ class Main {
     // Note: Can't be tested in jasmine (jQuery)
     static RegisterClickHandlers() {
         // CSV Upload Click Handler
-        new JQueryClickHandler(
+        new ClickHandler(
             'CSVUploadHandler',
             jQuery('#ld_setting_course_csv_upload_btn'),
             (event:any) => {
@@ -86,7 +86,7 @@ class Main {
         );
 
         // Run Import Click Handler
-        new JQueryClickHandler(
+        new ClickHandler(
             'CSVImportHandler',
             jQuery('#ld_settings_course_csv_import'),
             (event:any) => {
@@ -110,7 +110,18 @@ class Main {
         );
         
         // Registers all the click handlers to click events using jQuery
-        JQueryClickHandler.registerHandlers();
+        ClickHandler.registerHandlers();
+
+        new DraggableHandler('csv-column-pattern', jQuery('.column-pattern'), {
+            selection: false,
+            sortableOptions: {}
+        });
+
+        var testInstance: any = BaseHandler.get('csv-column-pattern');
+
+        console.log(BaseHandler.getInstances<ClickHandler>(ClickHandler));
+
+        DraggableHandler.initializeDraggables();
     }
 }
 

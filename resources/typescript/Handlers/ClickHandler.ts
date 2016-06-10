@@ -1,4 +1,4 @@
-class JQueryClickHandler extends BaseHandler {
+class ClickHandler extends BaseHandler {
     private _target:JQuery;
     private _target_cb:(event:any) => void;
 
@@ -14,9 +14,9 @@ class JQueryClickHandler extends BaseHandler {
     // This is so we can register all the handlers at once. Also this separation allows for testing
     // Note: Can't be tested in jasmine (jQuery)
     static registerHandlers() {
-        this.instances.forEach(function (value) {
-            var cValue:JQueryClickHandler = <JQueryClickHandler>value;
-            jQuery(cValue.target).on('click', cValue.target_cb);
+        let jQueryClickHandlers: Array<ClickHandler> = ClickHandler.getInstances<ClickHandler>(ClickHandler) as Array<ClickHandler>;
+        jQueryClickHandlers.forEach(function(value){
+            value.target.on('click', value.target_cb);
         })
     }
 

@@ -21,6 +21,26 @@ class BaseHandler {
         return gInstance;
     }
 
+    // Ugly hack, THANKS TYPESCRIPT
+    // TODO: Find out if there are better ways to do this
+    static isType<T>(value: any, key: { new (...args: any[]): T }): boolean {
+        return value instanceof key;
+    }
+
+    // Ugly hack, THANKS TYPESCRIPT
+    // TODO: Find out if there are better ways to do this
+    static getInstances<T>(key: { new (...args: any[]): T }): Array<BaseHandler> {
+        var retInstances: Array<BaseHandler> = [];
+
+        this.instances.forEach(function(value){
+             if(BaseHandler.isType<T>(value, key)) {
+                 retInstances.push(value);
+             }
+        });
+
+        return retInstances;
+    }
+
     static remove(id:string):boolean {
         let removed:boolean = false;
 

@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "jquery": "^3.0.0",
+    "jquery-ui": "^1.10.5",
     "requirejs": "^2.2.0"
   }
 }

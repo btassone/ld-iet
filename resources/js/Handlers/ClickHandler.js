@@ -3,9 +3,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var JQueryClickHandler = (function (_super) {
-    __extends(JQueryClickHandler, _super);
-    function JQueryClickHandler(id, target, target_cb) {
+var ClickHandler = (function (_super) {
+    __extends(ClickHandler, _super);
+    function ClickHandler(id, target, target_cb) {
         // Call parent class
         _super.call(this, id);
         // Set properties
@@ -14,13 +14,13 @@ var JQueryClickHandler = (function (_super) {
     }
     // This is so we can register all the handlers at once. Also this separation allows for testing
     // Note: Can't be tested in jasmine (jQuery)
-    JQueryClickHandler.registerHandlers = function () {
-        this.instances.forEach(function (value) {
-            var cValue = value;
-            jQuery(cValue.target).on('click', cValue.target_cb);
+    ClickHandler.registerHandlers = function () {
+        var jQueryClickHandlers = ClickHandler.getInstances(ClickHandler);
+        jQueryClickHandlers.forEach(function (value) {
+            value.target.on('click', value.target_cb);
         });
     };
-    Object.defineProperty(JQueryClickHandler.prototype, "target", {
+    Object.defineProperty(ClickHandler.prototype, "target", {
         get: function () {
             return this._target;
         },
@@ -30,7 +30,7 @@ var JQueryClickHandler = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(JQueryClickHandler.prototype, "target_cb", {
+    Object.defineProperty(ClickHandler.prototype, "target_cb", {
         get: function () {
             return this._target_cb;
         },
@@ -40,5 +40,5 @@ var JQueryClickHandler = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    return JQueryClickHandler;
+    return ClickHandler;
 })(BaseHandler);
