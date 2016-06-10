@@ -3,10 +3,6 @@
   "version": "0.0.1",
   "description": "A Learn Dash Export / Import Tool",
   "main": "resources/js/main.js",
-  "scripts": {
-    "dev-win": "./node_modules/.bin/gulp.cmd",
-    "dev-unx": "./node_modules/.bin/gulp"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/btassone/ld-iet.git"
