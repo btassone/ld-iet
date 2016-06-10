@@ -23,7 +23,7 @@ gulp.task('typescript-build', function(){
     gulp.src('./resources/typescript/**/*.ts')
         .pipe(typescript({
             target: 'ES5',
-            out: 'Main1.js'
+            out: 'Main.js'
         }))
         .pipe(gulp.dest('./resources/js'));
 });
