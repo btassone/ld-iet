@@ -153,6 +153,7 @@ var file_frame;
 var wp;
 var attachment;
 var ld_iet_ajax_obj;
+// Brain of the operation
 var Main = (function () {
     function Main() {
     }
@@ -230,17 +231,6 @@ var Main = (function () {
         });
         JQueryClickHandler.registerHandlers();
     };
-    Object.defineProperty(Main, "clickHandlers", {
-        get: function () {
-            return this._clickHandlers;
-        },
-        set: function (value) {
-            this._clickHandlers = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Main._clickHandlers = [];
     return Main;
 })();
 Main.Run();
