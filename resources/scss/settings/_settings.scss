@@ -59,6 +59,8 @@
 }
 
 .column-pattern {
+  overflow: hidden;
+
   .ui-state-default {
     background: #0085ba;
     color: #fff;
@@ -69,5 +71,11 @@
     margin-right: 10px;
     margin-bottom: 10px;
     cursor: move;
+  }
+}
+
+@media(max-width: 800px) {
+  .uploaded-csv-information {
+    white-space: pre-wrap;
   }
 }

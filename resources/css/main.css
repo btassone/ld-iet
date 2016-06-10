@@ -43,16 +43,22 @@
   .import-response-status[data-status="Error"] {
     background: red; }
 
-.column-pattern .ui-state-default {
-  background: #0085ba;
-  color: #fff;
-  padding: 10px;
-  border-radius: 5px;
-  box-sizing: border-box;
-  float: left;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  cursor: move; }
+.column-pattern {
+  overflow: hidden; }
+  .column-pattern .ui-state-default {
+    background: #0085ba;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    cursor: move; }
+
+@media (max-width: 800px) {
+  .uploaded-csv-information {
+    white-space: pre-wrap; } }
 
 .block {
   display: block; }

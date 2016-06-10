@@ -85,7 +85,12 @@ var Main = (function () {
         new DraggableHandler('csv-column-pattern', jQuery('.column-pattern'), {
             selection: false,
             sortableOptions: {
-                stop: function () {
+                startEvent: {},
+                start: function (event) {
+                    jQuery(event.toElement).css("background", "green");
+                    this.startEvent = event;
+                },
+                stop: function (event) {
                     var newOrder = [];
                     // Iterate over each item and add it to the new order array
                     jQuery(".column-pattern .ui-state-default").each(function (index, value) {

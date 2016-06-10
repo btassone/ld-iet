@@ -76,6 +76,7 @@ function ld_settings_fun() {
 		'ld_settings_course_csv_pattern',
 		'Set CSV Import Column Pattern',
 		function () {
+			// TODO: Separate this out into it's own testable function
 			$options = get_option('ld_options');
 			$csv_ops = $options['ld_settings_course_csv_pattern'];
 
