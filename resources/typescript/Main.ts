@@ -5,9 +5,8 @@ let wp:any;
 let attachment:any;
 let ld_iet_ajax_obj:any;
 
+// Brain of the operation
 class Main {
-    private static _clickHandlers: Array<ClickHandler> = [];
-
     static Run() {
         // On document load items
         Main.Initialization();
@@ -15,17 +14,18 @@ class Main {
         // Register the click handlers for the plugin
         Main.RegisterClickHandlers();
     }
+
     static Initialization() {
         ImportResponseHandler.change_response_status(ImportResponseStatuses.NoFile);
     }
 
+    // Note: Can't be tested (jQuery)
     static RegisterClickHandlers() {
         // CSV Upload Click Handler
-        Main.clickHandlers.push(new ClickHandler(
+        new JQueryClickHandler(
             'CSVUploadHandler',
             jQuery('#ld_setting_course_csv_upload_btn'),
             (event:any) => {
-
                 let calling_btn = jQuery('#ld_setting_course_csv_upload_btn');
 
                 event.preventDefault();
@@ -81,10 +81,10 @@ class Main {
                 // Finally, open the modal
                 file_frame.open();
             }
-        ));
+        );
 
         // Run Import Click Handler
-        Main.clickHandlers.push(new ClickHandler(
+        new JQueryClickHandler(
             'CSVImportHandler',
             jQuery('#ld_settings_course_csv_import'),
             (event:any) => {
@@ -105,14 +105,9 @@ class Main {
                     }
                 });
             }
-        ));
-    }
+        );
 
-    static get clickHandlers():Array<ClickHandler> {
-        return this._clickHandlers;
-    }
-    static set clickHandlers(value:Array<ClickHandler>) {
-        this._clickHandlers = value;
+        JQueryClickHandler.registerHandlers();
     }
 }
 

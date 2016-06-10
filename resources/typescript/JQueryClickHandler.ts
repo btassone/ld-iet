@@ -1,6 +1,6 @@
 /// <reference path="BaseHandler.ts" />
 
-class ClickHandler extends BaseHandler {
+class JQueryClickHandler extends BaseHandler {
     private _target: JQuery;
     private _target_cb: ( event: any ) => void;
 
@@ -11,9 +11,14 @@ class ClickHandler extends BaseHandler {
         // Set properties
         this.target = target;
         this.target_cb = target_cb;
+    }
 
-        // Register click handler
-        jQuery(this.target).on('click', this.target_cb);
+    // This is so we can register all the handlers at once. Also this separation allows for testing
+    static registerHandlers() {
+        this.instances.forEach(function(value){
+            var cValue: JQueryClickHandler = <JQueryClickHandler>value;
+            jQuery(cValue.target).on('click', cValue.target_cb);
+        })
     }
 
     get target(): JQuery {

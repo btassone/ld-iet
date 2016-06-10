@@ -102,10 +102,8 @@ function load_ld_iet_admin_styles() {
 }
 
 function load_ld_iet_javascript() {
-	wp_register_script( 'ld-iet-main', LD_IET_RESOURCE_URL_BASE . 'js/main.js', array());
-	
-	wp_enqueue_script( 'ld-iet-basehandler' );
-	wp_enqueue_script( 'ld-iet-clickhandler' );
+	wp_register_script( 'ld-iet-main', LD_IET_RESOURCE_URL_BASE . 'js/Main.js', array(), '', true);
+
 	wp_enqueue_script( 'ld-iet-main' );
 
 	wp_localize_script( 'ld-iet-main', 'ld_iet_ajax_obj', array('ajax_url' => admin_url( 'admin-ajax.php' )) );

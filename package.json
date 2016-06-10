@@ -27,6 +27,7 @@
     "gulp-tsc": "^1.1.5"
   },
   "dependencies": {
+    "jquery": "^3.0.0",
     "requirejs": "^2.2.0"
   }
 }
