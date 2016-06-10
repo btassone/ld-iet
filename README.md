@@ -29,9 +29,11 @@ tsd install (located under node_modules/.bin for local copy)
 
 Those 4 commands should take care of all the package installation. Currently you must have both npm and bower installed. Looking into using a local copy of bower and making this a 1 command install if I can. For right now this should work fine however.
 
-For running the watcher use
-Windows: npm run dev-win
-Linux/OSX: npm run dev-unx
+Commands for running watchers / building:
+
+gulp - default watcher, watches for sass and typescript changes. outputs typescript changes to the dev folder.
+gulp build - for when you want to push your development changes after testing to the Main.js file (concatenates everything to that file). This will allow you to see javascript changes in the plugin
+gulp test - the jasmine test runner for your tests in resources/js/tests
 
 **Testing**
 
