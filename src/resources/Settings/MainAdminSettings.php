@@ -1,6 +1,11 @@
 <?php
 
+require_once(LD_IET_SETTINGS_BASE . "Controllers/Main/MainAdminController.php");
+
 return (object) array(
+	"test_fun" => function() {
+
+	},
 	"wrap" => array(
 		'page_title' => 'Learn Dash Import / Export Tool',
 		'menu_title' => 'LearnDash IET',
@@ -28,6 +33,8 @@ return (object) array(
 			'id' => 'ld_setting_course_csv',
 			'title' => 'Upload course CSV file',
 			'callback' => function() {
+				$returned_data = MainAdminController::uploaderFieldsView();
+				
 				require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewUploaderFields.php");
 			},
 			'page' => 'ld-settings-page',
@@ -37,6 +44,10 @@ return (object) array(
 			'id' => 'ld_settings_course_csv_pattern',
 			'title' => 'Set CSV Import Column Pattern',
 			'callback' => function() {
+				$returned_data = MainAdminController::columnPatternView();
+
+				$csv_pattern = $returned_data['csv_pattern'];
+
 				require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewColumnPattern.php");
 			},
 			'page' => 'ld-settings-page',
@@ -46,6 +57,8 @@ return (object) array(
 			'id' => 'ld_settings_course_csv_run',
 			'title' => 'Run the CSV Import',
 			'callback' => function() {
+				$returned_data = MainAdminController::runImportView();
+				
 				require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewRunImport.php");
 			},
 			'page' => 'ld-settings-page',
