@@ -2,6 +2,7 @@
 
 namespace CorduroyBeach;
 
+use CorduroyBeach\Ajax\AdminAjaxHandler;
 use CorduroyBeach\Factories\SettingsFactory;
 
 /**
@@ -17,39 +18,27 @@ class Main {
 	 * @var SettingsFactory Holds the settings factory class that does all the menu page handling.
 	 */
 	private static $settingsFactory;
-	
-	private static $csvPattern = array(
-		'course_title',
-		'status',
-		'visibility',
-		'featured_img',
-		'categories',
-		'tags',
-		'restrictions',
-		'course_materials',
-		'course_price_type',
-		'course_price',
-		'course_access_list',
-		'course_lesson_orderby',
-		'course_lesson_order',
-		'course_prerequisite',
-		'disable_lesson_progression',
-		'expire_access',
-		'expire_access_days',
-		'expire_access_delete_progress',
-		'course_disable_content_table',
-		'certificate',
-		'custom_button_url'
-	);
 
-	const LD_DB_PREFIX = "sfwd-courses_";
+	private static $ajaxAdminHandlers = [];
 
 	/**
 	 * The main action of the plugin. Fires up all the main processes for the plugin
 	 */
 	public static function Run() {
-		// Initialization actions
+		// Initialize Actions
 		Main::InitializeActions();
+
+		// Initialize Ajax Handlers
+		Main::InitializeAjaxHandlers();
+	}
+
+	/**
+	 * Setup the AdminAjaxHandlers to handle certain actions for the plugin
+	 */
+	public static function InitializeAjaxHandlers() {
+		$importAjaxCb = require_once(LD_IET_AJAX_HANDLERS . "ImportAjaxHandler.php");
+
+		self::$ajaxAdminHandlers[] = new AdminAjaxHandler('ImportAjaxHandler', $importAjaxCb);
 	}
 
 	/**
@@ -60,9 +49,6 @@ class Main {
 		// CSS and Javascript Helpers
 		add_action('admin_enqueue_scripts', array('CorduroyBeach\Main', 'LoadAdminStyles'));
 		add_action('admin_enqueue_scripts', array('CorduroyBeach\Main', 'LoadAdminJavascript'));
-
-		// Admin ajax handling for the importer
-		add_action('wp_ajax_ld_csv_import', array('CorduroyBeach\Main', 'AdminAjaxImportHandler'));
 
 		// Menu page initializer
 		add_action('admin_menu', array('CorduroyBeach\Main', 'MenuPagesInit'));
@@ -120,42 +106,6 @@ class Main {
 	}
 
 	/**
-	 * Ajax handler that is the main brain of the importer on the php side.
-	 *
-	 * TODO: Setup test for this function
-	 * TODO: Might be better to move this to an AdminAjax class or something of the like
-	 */
-	public static function AdminAjaxImportHandler() {
-		$csv_json_obj = $_POST['csv_json_obj'];
-		$csv_local_path = get_attached_file($csv_json_obj['id']);
-		$csv_data_arr = array_map('str_getcsv', file($csv_local_path));
-
-		$pre_response_obj = (object) array(
-			"status" => "Finished",
-			"csv_data" => $csv_data_arr
-		);
-
-		$response_obj = json_encode($pre_response_obj);
-
-		$serialized_data = self::CreateSerializedDataString(
-								self::LD_DB_PREFIX,
-								self::getCsvPattern(),
-								$csv_data_arr);
-
-		// Test the processing status
-		// TODO: Remove this line once actual import takes place.
-		sleep(5);
-
-		echo $response_obj;
-
-		wp_die();
-	}
-
-	public static function CreateSerializedDataString($prefix, $postfixes, $data) {
-		return array();
-	}
-
-	/**
 	 * @return mixed
 	 */
 	public static function getSettingsFactory() {
@@ -169,15 +119,17 @@ class Main {
 	}
 
 	/**
-	 * @return array
+	 * @return mixed
 	 */
-	public static function getCsvPattern() {
-		return self::$csvPattern;
+	public static function getAjaxAdminHandlers() {
+		return self::$ajaxAdminHandlers;
 	}
 	/**
-	 * @param array $csvPattern
+	 * @param mixed $ajaxAdminHandlers
 	 */
-	public static function setCsvPattern( $csvPattern ) {
-		self::$csvPattern = $csvPattern;
+	public static function setAjaxAdminHandlers( $ajaxAdminHandlers ) {
+		self::$ajaxAdminHandlers = $ajaxAdminHandlers;
 	}
+
+
 }
