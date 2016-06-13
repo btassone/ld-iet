@@ -4,7 +4,6 @@ namespace CorduroyBeach;
 
 use CorduroyBeach\Factories\SettingsFactory;
 
-
 /**
  * Class Main
  *
@@ -13,8 +12,7 @@ use CorduroyBeach\Factories\SettingsFactory;
  * @package CorduroyBeach
  */
 class Main {
-
-
+	
 	/**
 	 * @var SettingsFactory Holds the settings factory class that does all the menu page handling.
 	 */
