@@ -2,8 +2,6 @@
 
 namespace CorduroyBeach\Ajax;
 
-use CorduroyBeach\Main;
-
 /**
  * Class AdminAjaxHandler
  * @package CorduroyBeach\Ajax
@@ -14,7 +12,10 @@ class AdminAjaxHandler {
 	 * @var string
 	 */
 	private $name = "";
-	
+
+	/**
+	 * @var callable The main brain behind the Ajax handler
+	 */
 	private $cb;
 
 	/**

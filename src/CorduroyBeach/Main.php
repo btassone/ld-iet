@@ -19,7 +19,10 @@ class Main {
 	 */
 	private static $settingsFactory;
 
-	private static $ajaxAdminHandlers = [];
+	/**
+	 * @var array Holds the adminAjaxHandlers that get created just in case a reference is needed in the future
+	 */
+	private static $adminAjaxHandlers = [];
 
 	/**
 	 * The main action of the plugin. Fires up all the main processes for the plugin
@@ -38,7 +41,7 @@ class Main {
 	public static function InitializeAjaxHandlers() {
 		$importAjaxCb = require_once(LD_IET_AJAX_HANDLERS . "ImportAjaxHandler.php");
 
-		self::$ajaxAdminHandlers[] = new AdminAjaxHandler('ImportAjaxHandler', $importAjaxCb);
+		self::$adminAjaxHandlers[] = new AdminAjaxHandler('ImportAjaxHandler', $importAjaxCb);
 	}
 
 	/**
@@ -121,14 +124,14 @@ class Main {
 	/**
 	 * @return mixed
 	 */
-	public static function getAjaxAdminHandlers() {
-		return self::$ajaxAdminHandlers;
+	public static function getAdminAjaxHandlers() {
+		return self::$adminAjaxHandlers;
 	}
 	/**
-	 * @param mixed $ajaxAdminHandlers
+	 * @param mixed $adminAjaxHandlers
 	 */
-	public static function setAjaxAdminHandlers( $ajaxAdminHandlers ) {
-		self::$ajaxAdminHandlers = $ajaxAdminHandlers;
+	public static function setAdminAjaxHandlers( $adminAjaxHandlers ) {
+		self::$adminAjaxHandlers = $adminAjaxHandlers;
 	}
 
 

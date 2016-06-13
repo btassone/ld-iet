@@ -1,6 +1,5 @@
 <?php
 
-use CorduroyBeach\Main;
 use CorduroyBeach\Utilities\LDUtility;
 
 return function() {
