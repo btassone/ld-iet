@@ -22,7 +22,7 @@ return (object) array(
 			'id' => 'ld_settings_section',
 			'title' => 'Main settings page field section',
 			'callback' => function() {
-				echo "Temporary csv uploader section";
+				require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewSettingsSection.php");
 			},
 			'page' => 'ld-settings-page'
 		)

@@ -43,6 +43,107 @@
   .import-response-status[data-status="Error"] {
     background: red; }
 
+.csv-upload-information-accordion-wrap {
+  margin-top: 30px; }
+
+.csv-upload-information-accordion-title {
+  font-weight: 700;
+  color: #ffffff;
+  background: #046380;
+  padding: 10px;
+  box-sizing: border-box;
+  position: relative;
+  cursor: pointer;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  transition: all 0.3s ease; }
+  .csv-upload-information-accordion-title:hover {
+    background: #0085ba; }
+  .csv-upload-information-accordion-title.active {
+    background: #0085ba; }
+
+.arrow-wrap-position-right {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  width: 34px;
+  height: 34px;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%); }
+  .arrow-wrap-position-right svg {
+    width: 34px;
+    height: 34px; }
+    .arrow-wrap-position-right svg path {
+      fill: #fff; }
+      .arrow-wrap-position-right svg path:last-child {
+        fill: none; }
+
+.csv-upload-information-example {
+  font-style: italic;
+  font-size: 0.875em;
+  margin-bottom: 6px;
+  color: #f1f1f1; }
+
+.csv-upload-information-accordion-content {
+  display: none; }
+
+.csv-upload-information-container {
+  margin-top: 20px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -moz-box-orient: horizontal;
+  box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -moz-box-direction: normal;
+  box-direction: normal;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  flex-direction: row;
+  -ms-flex-direction: row;
+  -webkit-box-align: stretch;
+  -moz-box-align: stretch;
+  box-align: stretch;
+  -webkit-align-items: stretch;
+  -moz-align-items: stretch;
+  -ms-align-items: stretch;
+  -o-align-items: stretch;
+  align-items: stretch;
+  -ms-flex-align: stretch;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap; }
+
+.csv-upload-information-item {
+  margin-bottom: 20px;
+  margin-right: 10px;
+  background: #046380;
+  color: #fff;
+  padding: 10px;
+  box-sizing: border-box; }
+  .csv-upload-information-item:last-child {
+    margin-right: 0; }
+
+.csv-upload-information-value {
+  background: #f1f1f1;
+  padding: 8px;
+  box-sizing: border-box;
+  margin-top: 5px;
+  font-size: 0.875em;
+  color: #222; }
+
 .column-pattern {
   overflow: hidden; }
   .column-pattern .ui-state-default {
@@ -62,3 +163,6 @@
 
 .block {
   display: block; }
+
+.italicize {
+  font-style: italic; }

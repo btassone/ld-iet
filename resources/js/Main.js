@@ -80,6 +80,13 @@ var Main = (function () {
                 }
             });
         });
+        new ClickHandler('CSVColumnAccordion', jQuery('.csv-upload-information-accordion-title'), function (event) {
+            jQuery(event.toElement)
+                .toggleClass("active")
+                .parent(".csv-upload-information-accordion-wrap")
+                .children(".csv-upload-information-accordion-content")
+                .slideToggle(300);
+        });
         // Registers all the click handlers to click events using jQuery
         ClickHandler.registerHandlers();
         new DraggableHandler('csv-column-pattern', jQuery('.column-pattern'), {

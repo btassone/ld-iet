@@ -17,6 +17,32 @@ class Main {
 	 * @var SettingsFactory Holds the settings factory class that does all the menu page handling.
 	 */
 	private static $settingsFactory;
+	
+	private static $csvPattern = array(
+		'course_title',
+		'status',
+		'visibility',
+		'featured_img',
+		'categories',
+		'tags',
+		'restrictions',
+		'course_materials',
+		'course_price_type',
+		'course_price',
+		'course_access_list',
+		'course_lesson_orderby',
+		'course_lesson_order',
+		'course_prerequisite',
+		'disable_lesson_progression',
+		'expire_access',
+		'expire_access_days',
+		'expire_access_delete_progress',
+		'course_disable_content_table',
+		'certificate',
+		'custom_button_url'
+	);
+
+	const LD_DB_PREFIX = "sfwd-courses_";
 
 	/**
 	 * The main action of the plugin. Fires up all the main processes for the plugin
@@ -111,6 +137,11 @@ class Main {
 
 		$response_obj = json_encode($pre_response_obj);
 
+		$serialized_data = self::CreateSerializedDataString(
+								self::LD_DB_PREFIX,
+								self::getCsvPattern(),
+								$csv_data_arr);
+
 		// Test the processing status
 		// TODO: Remove this line once actual import takes place.
 		sleep(5);
@@ -118,6 +149,10 @@ class Main {
 		echo $response_obj;
 
 		wp_die();
+	}
+
+	public static function CreateSerializedDataString($prefix, $postfixes, $data) {
+		return array();
 	}
 
 	/**
@@ -131,5 +166,18 @@ class Main {
 	 */
 	public static function setSettingsFactory( $settingsFactory ) {
 		self::$settingsFactory = $settingsFactory;
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function getCsvPattern() {
+		return self::$csvPattern;
+	}
+	/**
+	 * @param array $csvPattern
+	 */
+	public static function setCsvPattern( $csvPattern ) {
+		self::$csvPattern = $csvPattern;
 	}
 }

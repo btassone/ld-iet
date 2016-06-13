@@ -109,6 +109,18 @@ class Main {
             }
         );
         
+        new ClickHandler(
+            'CSVColumnAccordion',
+            jQuery('.csv-upload-information-accordion-title'),
+            (event:any) => {
+                jQuery(event.toElement)
+                    .toggleClass("active")
+                    .parent(".csv-upload-information-accordion-wrap")
+                    .children(".csv-upload-information-accordion-content")
+                    .slideToggle(300);
+            }
+        );
+        
         // Registers all the click handlers to click events using jQuery
         ClickHandler.registerHandlers();
 
