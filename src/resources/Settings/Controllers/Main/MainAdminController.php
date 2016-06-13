@@ -8,6 +8,7 @@
  * TODO: Create base class that handles this dynamically
  */
 class MainAdminController {
+	
 	/**
 	 * Handles the pre processing of data for the column pattern settings section
 	 *

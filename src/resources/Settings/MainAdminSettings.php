@@ -1,11 +1,10 @@
 <?php
 
+// Pull in the MainAdminController for use here
 require_once(LD_IET_SETTINGS_BASE . "Controllers/Main/MainAdminController.php");
 
+// Returns the settings object for use in Admin Page creation.
 return (object) array(
-	"test_fun" => function() {
-
-	},
 	"wrap" => array(
 		'page_title' => 'Learn Dash Import / Export Tool',
 		'menu_title' => 'LearnDash IET',
