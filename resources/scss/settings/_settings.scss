@@ -163,6 +163,30 @@
   }
 }
 
+.saving-notification {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 9999;
+  color: #fff;
+  display: none;
+
+  .in-process, .saved {
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 5px;
+  }
+
+  .in-process {
+    background: orange;
+  }
+
+  .saved {
+    background: green;
+    display: none;
+  }
+}
+
 @media(max-width: 800px) {
   .uploaded-csv-information {
     white-space: pre-wrap;

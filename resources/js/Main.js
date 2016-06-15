@@ -108,8 +108,22 @@ var Main = (function () {
                     // Stringify the array and assign the value to the hidden field to be saved
                     jQuery("#ld_settings_course_csv_pattern").val(strNewOrder);
                     var b = jQuery("#MainViewWrap").serialize();
+                    jQuery('.saving-notification').css("display", "block");
                     jQuery.post('options.php', b).done(function () {
                         jQuery(event.toElement).css("background", "#0085ba");
+                        jQuery('.saving-notification').children().each(function (index, item) {
+                            if (jQuery(item).hasClass("in-process")) {
+                                jQuery(item).css("display", "none");
+                            }
+                            if (jQuery(item).hasClass("saved")) {
+                                jQuery(item).css("display", "block");
+                                setTimeout(function () {
+                                    jQuery(item).css("display", "none");
+                                    jQuery(item).parent().css("display", "none");
+                                    jQuery(item).parent().children(".in-process").css("display", "block");
+                                }, 3000);
+                            }
+                        });
                     }).fail(function () {
                         jQuery(event.toElement).css("background", "red");
                     });

@@ -157,6 +157,23 @@
     margin-bottom: 10px;
     cursor: move; }
 
+.saving-notification {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 9999;
+  color: #fff;
+  display: none; }
+  .saving-notification .in-process, .saving-notification .saved {
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 5px; }
+  .saving-notification .in-process {
+    background: orange; }
+  .saving-notification .saved {
+    background: green;
+    display: none; }
+
 @media (max-width: 800px) {
   .uploaded-csv-information {
     white-space: pre-wrap; } }

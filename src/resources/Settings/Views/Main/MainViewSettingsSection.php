@@ -19,8 +19,10 @@
 				<?php foreach($reorganized_column_data as $data_set): ?>
 					<div class="csv-upload-information-item">
 						<strong><?php echo $data_set->name; ?></strong>
+						
 						<div class="csv-upload-information-example"><strong>Example: </strong>
 							<?php echo $data_set->example; ?></div>
+						
 						<div class="csv-upload-information-value"><strong>Values: </strong>
 							<?php echo $data_set->values; ?></div>
 					</div>
