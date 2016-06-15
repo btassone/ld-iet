@@ -67,6 +67,4 @@ class AdminAjaxHandler {
 	public function setCb( $cb ) {
 		$this->cb = $cb;
 	}
-	
-	
 }

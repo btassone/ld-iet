@@ -41,7 +41,7 @@ class Main {
 	public static function InitializeAjaxHandlers() {
 		$importAjaxCb = require_once(LD_IET_AJAX_HANDLERS . "ImportAjaxHandler.php");
 
-		self::$adminAjaxHandlers[] = new AdminAjaxHandler('ImportAjaxHandler', $importAjaxCb);
+		self::getAdminAjaxHandlers()[] = new AdminAjaxHandler('ImportAjaxHandler', $importAjaxCb);
 	}
 
 	/**
@@ -81,6 +81,9 @@ class Main {
 			LD_IET_RESOURCE_URL_BASE . 'js/Handlers/DraggableHandler.js', array(), '', true);
 		wp_register_script( 'ld-iet-main',
 			LD_IET_RESOURCE_URL_BASE . 'js/Main.js', array(), '', true);
+
+		wp_enqueue_script( 'jquery' );
+		wp_enqueue_script( 'jquery-form' );
 
 		wp_enqueue_script( 'ld-iet-eimport-response-statuses' );
 		wp_enqueue_script( 'ld-iet-import-response-handler' );

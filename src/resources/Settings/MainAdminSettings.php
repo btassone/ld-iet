@@ -3,6 +3,8 @@
 // Pull in the MainAdminController for use here
 require_once(LD_IET_SETTINGS_BASE . "Controllers/Main/MainAdminController.php");
 
+use CorduroyBeach\Utilities\LDUtility;
+
 // Returns the settings object for use in Admin Page creation.
 return (object) array(
 	"wrap" => array(
@@ -23,6 +25,17 @@ return (object) array(
 			'title' => 'Main settings page field section',
 			'callback' => function() {
 				$returned_data = MainAdminController::settingsSectionView();
+
+				$csv_pattern = $returned_data['csv_pattern'];
+
+				$csv_column_data = LDUtility::getCsvPattern();
+
+				$reorganized_column_data = [];
+
+				foreach($csv_pattern as $item) {
+					if($csv_column_data[$item])
+						$reorganized_column_data[$item] = $csv_column_data[$item];
+				}
 				
 				require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewSettingsSection.php");
 			},

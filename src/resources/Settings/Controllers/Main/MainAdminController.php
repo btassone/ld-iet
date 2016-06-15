@@ -23,11 +23,9 @@ class MainAdminController {
 		$csv_pattern = [];
 
 		if(!$csv_ops || $csv_ops == "" || $csv_ops == "[]") {
-			$csv_pattern = json_encode( LDUtility::getCsvPattern() );
+			$csv_pattern = json_encode( array_keys(LDUtility::getCsvPattern()) );
 		} else {
 			$csv_pattern = $options['ld_settings_course_csv_pattern'];
-
-			LDUtility::setCsvPattern( json_decode( $csv_pattern ) );
 		}
 
 		return array('csv_pattern' => $csv_pattern);
@@ -57,6 +55,8 @@ class MainAdminController {
 	 * @return array
 	 */
 	public static function settingsSectionView() {
-		return array();
+		$csv_pattern = json_decode(get_option('ld_options')['ld_settings_course_csv_pattern']);
+		
+		return array('csv_pattern' => $csv_pattern);
 	}
 }

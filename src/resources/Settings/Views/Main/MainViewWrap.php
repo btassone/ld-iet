@@ -4,11 +4,11 @@
 		<h5 class="ld-iet-sub-title">Temporary page containing basic functionality relevant to the tool. Will be broken up into other sections later</h5>
 	</div>
 	<div>
-		<form action="options.php" method="post">
+		<form action="options.php" method="post" id="MainViewWrap">
 			<?php
-			settings_fields('ld_options');
-			do_settings_sections('ld-settings-page');
-			submit_button();
+				settings_fields('ld_options');
+				do_settings_sections('ld-settings-page');
+				submit_button();
 			?>
 		</form>
 	</div>

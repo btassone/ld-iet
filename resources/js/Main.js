@@ -99,12 +99,20 @@ var Main = (function () {
                 },
                 stop: function (event) {
                     var newOrder = [];
+                    var strNewOrder = "";
                     // Iterate over each item and add it to the new order array
                     jQuery(".column-pattern .ui-state-default").each(function (index, value) {
                         newOrder.push(jQuery(value).attr('data-name'));
                     });
+                    strNewOrder = JSON.stringify(newOrder);
                     // Stringify the array and assign the value to the hidden field to be saved
-                    jQuery("#ld_settings_course_csv_pattern").val(JSON.stringify(newOrder));
+                    jQuery("#ld_settings_course_csv_pattern").val(strNewOrder);
+                    var b = jQuery("#MainViewWrap").serialize();
+                    jQuery.post('options.php', b).done(function () {
+                        jQuery(event.toElement).css("background", "#0085ba");
+                    }).fail(function () {
+                        jQuery(event.toElement).css("background", "red");
+                    });
                 }
             }
         });

@@ -16,7 +16,7 @@ return function() {
 
 	$serialized_data = LDUtility::CreateSerializedDataString(
 		LDUtility::LD_DB_PREFIX,
-		LDUtility::getCsvPattern(),
+		get_option('ld_options'),
 		$csv_data_arr );
 
 	// Test the processing status
