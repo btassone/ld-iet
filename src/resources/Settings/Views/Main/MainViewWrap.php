@@ -11,7 +11,6 @@
 			<?php
 				settings_fields('ld_options');
 				do_settings_sections('ld-settings-page');
-				submit_button();
 			?>
 		</form>
 	</div>
