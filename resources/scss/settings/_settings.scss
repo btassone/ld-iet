@@ -147,7 +147,28 @@
   color: #222;
 }
 
-.column-pattern {
+.disabled-column-pattern {
+  margin-top: 30px;
+
+  .ui-state-default {
+    background: darkred !important;
+    cursor: pointer !important;
+
+    .csv-pat-close {
+      background: orangered !important;
+
+      &:hover {
+        background: lighten(orangered, 20%) !important;
+      }
+
+      svg {
+        @include transform(translate(-50%, -50%) rotate(45deg) !important);
+      }
+    }
+  }
+}
+
+.column-pattern, .disabled-column-pattern {
   overflow: hidden;
 
   .ui-state-default {
@@ -160,6 +181,46 @@
     margin-right: 10px;
     margin-bottom: 10px;
     cursor: move;
+    position: relative;
+
+    &.has-icon {
+      padding-right: 40px;
+    }
+
+    .csv-pat-close {
+      position: absolute;
+      top: 50%;
+      height: 100%;
+      width: 30px;
+      right: 0;
+      background: lightblue;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      cursor: pointer;
+
+      @include transform(translateY(-50%));
+      @include transition(all 0.3s ease);
+
+      &:hover {
+        background: orangered;
+      }
+
+      svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        background: none !important;
+
+        @include transform(translate(-50%, -50%));
+
+        width: 22px;
+        height: 22px;
+
+        path {
+          fill: #fff;
+        }
+      }
+    }
   }
 }
 

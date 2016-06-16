@@ -144,9 +144,25 @@
   font-size: 0.875em;
   color: #222; }
 
-.column-pattern {
+.disabled-column-pattern {
+  margin-top: 30px; }
+  .disabled-column-pattern .ui-state-default {
+    background: darkred !important;
+    cursor: pointer !important; }
+    .disabled-column-pattern .ui-state-default .csv-pat-close {
+      background: orangered !important; }
+      .disabled-column-pattern .ui-state-default .csv-pat-close:hover {
+        background: #ff8f66 !important; }
+      .disabled-column-pattern .ui-state-default .csv-pat-close svg {
+        -webkit-transform: translate(-50%, -50%) rotate(45deg) !important;
+        -moz-transform: translate(-50%, -50%) rotate(45deg) !important;
+        -ms-transform: translate(-50%, -50%) rotate(45deg) !important;
+        -o-transform: translate(-50%, -50%) rotate(45deg) !important;
+        transform: translate(-50%, -50%) rotate(45deg) !important; }
+
+.column-pattern, .disabled-column-pattern {
   overflow: hidden; }
-  .column-pattern .ui-state-default {
+  .column-pattern .ui-state-default, .disabled-column-pattern .ui-state-default {
     background: #0085ba;
     color: #fff;
     padding: 10px;
@@ -155,7 +171,44 @@
     float: left;
     margin-right: 10px;
     margin-bottom: 10px;
-    cursor: move; }
+    cursor: move;
+    position: relative; }
+    .column-pattern .ui-state-default.has-icon, .disabled-column-pattern .ui-state-default.has-icon {
+      padding-right: 40px; }
+    .column-pattern .ui-state-default .csv-pat-close, .disabled-column-pattern .ui-state-default .csv-pat-close {
+      position: absolute;
+      top: 50%;
+      height: 100%;
+      width: 30px;
+      right: 0;
+      background: lightblue;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      cursor: pointer;
+      -webkit-transform: translateY(-50%);
+      -moz-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      -o-transform: translateY(-50%);
+      transform: translateY(-50%);
+      -webkit-transition: all 0.3s ease;
+      -moz-transition: all 0.3s ease;
+      transition: all 0.3s ease; }
+      .column-pattern .ui-state-default .csv-pat-close:hover, .disabled-column-pattern .ui-state-default .csv-pat-close:hover {
+        background: orangered; }
+      .column-pattern .ui-state-default .csv-pat-close svg, .disabled-column-pattern .ui-state-default .csv-pat-close svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        background: none !important;
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        width: 22px;
+        height: 22px; }
+        .column-pattern .ui-state-default .csv-pat-close svg path, .disabled-column-pattern .ui-state-default .csv-pat-close svg path {
+          fill: #fff; }
 
 .saving-notification {
   position: fixed;

@@ -40,4 +40,22 @@ class LDUtility {
 		else
 			return include(LD_IET_SETTINGS_BASE . "CSVPattern.php");
 	}
+	
+	public static function OrderCsvPatternToSavedPattern($data, $saved) {
+		$reorganized_column_data = [];
+
+		foreach($saved as $item) {
+			if($data[$item])
+				$reorganized_column_data[$item] = $data[$item];
+		}
+		
+		return $reorganized_column_data;
+	}
+
+	public static function CreateBookCaseString($string, $delim) {
+		$sItem = str_replace($delim, " ", $string);
+		$uc = ucwords($sItem);
+
+		return $uc;
+	}
 }

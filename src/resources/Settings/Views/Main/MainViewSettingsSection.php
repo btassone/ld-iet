@@ -18,13 +18,13 @@
 			<div class="csv-upload-information-container">
 				<?php foreach($reorganized_column_data as $data_set): ?>
 					<div class="csv-upload-information-item">
-						<strong><?php echo $data_set->name; ?></strong>
+						<strong><?php echo $data_set->column_info->name; ?></strong>
 						
 						<div class="csv-upload-information-example"><strong>Example: </strong>
-							<?php echo $data_set->example; ?></div>
+							<?php echo $data_set->column_info->example; ?></div>
 						
 						<div class="csv-upload-information-value"><strong>Values: </strong>
-							<?php echo $data_set->values; ?></div>
+							<?php echo $data_set->column_info->values; ?></div>
 					</div>
 				<?php endforeach; ?>
 			</div>

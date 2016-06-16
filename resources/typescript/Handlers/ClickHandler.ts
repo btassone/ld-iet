@@ -15,9 +15,10 @@ class ClickHandler extends BaseHandler {
     // Note: Can't be tested in jasmine (jQuery)
     static registerHandlers() {
         let jQueryClickHandlers: Array<ClickHandler> = ClickHandler.getInstances<ClickHandler>(ClickHandler) as Array<ClickHandler>;
+
         jQueryClickHandlers.forEach(function(value){
             value.target.on('click', value.target_cb);
-        })
+        });
     }
 
     get target():JQuery {

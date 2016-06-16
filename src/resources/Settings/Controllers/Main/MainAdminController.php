@@ -22,13 +22,35 @@ class MainAdminController {
 
 		$csv_pattern = [];
 
-		if(!$csv_ops || $csv_ops == "" || $csv_ops == "[]") {
+		if(!$csv_ops || $csv_ops == "" || $csv_ops == "[]" || $csv_ops == "Array") {
 			$csv_pattern = json_encode( array_keys(LDUtility::getCsvPattern()) );
 		} else {
 			$csv_pattern = $options['ld_settings_course_csv_pattern'];
 		}
 
-		return array('csv_pattern' => $csv_pattern);
+		$data = LDUtility::getCsvPattern();
+		$ordered_data = LDUtility::OrderCsvPatternToSavedPattern($data, json_decode($csv_pattern));
+
+		return array(
+			'csv_pattern' => $csv_pattern,
+			'ordered_data' => $ordered_data,
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function disabledPatternView() {
+		$options = get_option('ld_options');
+		$disabled_ops = $options['ld_settings_course_csv_pattern_disabled'];
+
+		$data = LDUtility::getCsvPattern();
+		$ordered_data = LDUtility::OrderCsvPatternToSavedPattern($data, json_decode($disabled_ops));
+
+		return array(
+			'disabled_data' => $disabled_ops,
+			'ordered_data' => $ordered_data
+		);
 	}
 
 	/**

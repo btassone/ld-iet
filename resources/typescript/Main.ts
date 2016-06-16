@@ -23,6 +23,87 @@ class Main {
 
     // Note: Can't be tested in jasmine (jQuery)
     static RegisterClickHandlers() {
+
+        let CSVColumnItemCloseFn: any = (event:any) => {
+
+            function switchColumns(e: any, col: string): JQuery {
+                let column: JQuery = jQuery(e.currentTarget).parent();
+                let copy = column.first().clone();
+
+                jQuery(copy).appendTo(col);
+                column.remove();
+
+                return copy;
+            }
+
+            let copy: JQuery;
+
+            if(jQuery(event.currentTarget).parents(".column-pattern").length > 0) {
+                copy = switchColumns(event, ".disabled-column-pattern");
+            } else {
+                copy = switchColumns(event, ".column-pattern");
+            }
+
+            copy.children(".csv-pat-close").on('click', CSVColumnItemCloseFn);
+
+            event.toElement = copy;
+            CSVColumnPatternStopFn(copy);
+        };
+        let CSVColumnPatternStartFn: any = function(event) {
+            jQuery(event.toElement).css("background", "green");
+
+            this.startEvent = event;
+        };
+        let CSVColumnPatternStopFn: any = function(event) {
+            var newOrder = [];
+            var strNewOrder = "";
+
+            var disabledItems = [];
+            var strDisabledItems = "";
+
+            // Iterate over each item and add it to the new order array
+            jQuery(".column-pattern .ui-state-default").each(function(index, value){
+                newOrder.push(jQuery(value).attr('data-name'));
+            });
+
+            strNewOrder = JSON.stringify(newOrder);
+
+            jQuery(".disabled-column-pattern .ui-state-default").each(function(index, value){
+                disabledItems.push(jQuery(value).attr('data-name'));
+            });
+
+            strDisabledItems = JSON.stringify(disabledItems);
+
+            // Stringify the array and assign the value to the hidden field to be saved
+            jQuery("#ld_settings_course_csv_pattern").val(strNewOrder);
+            jQuery("#ld_settings_course_csv_pattern_disabled").val(strDisabledItems);
+
+            var b = jQuery("#MainViewWrap").serialize();
+
+            jQuery('.saving-notification').css("display", "block");
+
+            jQuery.post('options.php', b).done(function(){
+                jQuery(event.toElement).css("background", "#0085ba");
+                jQuery('.saving-notification').children().each(function(index, item){
+                    if(jQuery(item).hasClass("in-process")) {
+                        jQuery(item).css("display", "none");
+                    }
+
+                    if(jQuery(item).hasClass("saved")) {
+                        jQuery(item).css("display", "block");
+
+                        setTimeout(function(){
+                            jQuery(item).css("display", "none");
+                            jQuery(item).parent().css("display", "none");
+                            jQuery(item).parent().children(".in-process").css("display", "block");
+                        }, 3000);
+                    }
+                });
+            }).fail(function(){
+                jQuery(event.toElement).css("background", "red");
+            });
+        };
+
         // CSV Upload Click Handler
         new ClickHandler(
             'CSVUploadHandler',
@@ -120,60 +201,24 @@ class Main {
                     .slideToggle(300);
             }
         );
-        
-        // Registers all the click handlers to click events using jQuery
-        ClickHandler.registerHandlers();
+
+        new ClickHandler(
+            'CSVColumnItemClose',
+            jQuery('.csv-pat-close'),
+            CSVColumnItemCloseFn
+        );
 
         new DraggableHandler('csv-column-pattern', jQuery('.column-pattern'), {
             selection: false,
             sortableOptions: {
                 startEvent: {},
-                start: function(event) {
-                    jQuery(event.toElement).css("background", "green");
-
-                    this.startEvent = event;
-                },
-                stop: function(event) {
-                    var newOrder = [];
-                    var strNewOrder = "";
-
-                    // Iterate over each item and add it to the new order array
-                    jQuery(".column-pattern .ui-state-default").each(function(index, value){
-                        newOrder.push(jQuery(value).attr('data-name'));
-                    });
-
-                    strNewOrder = JSON.stringify(newOrder);
-
-                    // Stringify the array and assign the value to the hidden field to be saved
-                    jQuery("#ld_settings_course_csv_pattern").val(strNewOrder);
-
-                    var b = jQuery("#MainViewWrap").serialize();
-
-                    jQuery('.saving-notification').css("display", "block");
-
-                    jQuery.post('options.php', b).done(function(){
-                        jQuery(event.toElement).css("background", "#0085ba");
-                        jQuery('.saving-notification').children().each(function(index, item){
-                            if(jQuery(item).hasClass("in-process")) {
-                                jQuery(item).css("display", "none");
-                            }
-
-                            if(jQuery(item).hasClass("saved")) {
-                                jQuery(item).css("display", "block");
-
-                                setTimeout(function(){
-                                    jQuery(item).css("display", "none");
-                                    jQuery(item).parent().css("display", "none");
-                                    jQuery(item).parent().children(".in-process").css("display", "block");
-                                }, 3000);
-                            }
-                        });
-                    }).fail(function(){
-                        jQuery(event.toElement).css("background", "red");
-                    });
-                }
+                start: CSVColumnPatternStartFn,
+                stop: CSVColumnPatternStopFn
             }
         });
+
+        // Registers all the click handlers to click events using jQuery
+        ClickHandler.registerHandlers();
 
         DraggableHandler.initializeDraggables();
     }

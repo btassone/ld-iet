@@ -17,4 +17,6 @@ define('LD_IET_RESOURCE_URL_BASE', plugin_dir_url(__FILE__) . 'resources/');
 // Composer Autoload Files
 require_once("vendor/autoload.php");
 
-CorduroyBeach\Main::Run();
+if(is_admin()) {
+	CorduroyBeach\Main::Run();
+}

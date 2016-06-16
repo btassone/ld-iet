@@ -30,12 +30,7 @@ return (object) array(
 
 				$csv_column_data = LDUtility::getCsvPattern();
 
-				$reorganized_column_data = [];
-
-				foreach($csv_pattern as $item) {
-					if($csv_column_data[$item])
-						$reorganized_column_data[$item] = $csv_column_data[$item];
-				}
+				$reorganized_column_data = $csv_column_data;
 				
 				require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewSettingsSection.php");
 			},
@@ -61,8 +56,23 @@ return (object) array(
 				$returned_data = MainAdminController::columnPatternView();
 
 				$csv_pattern = $returned_data['csv_pattern'];
+				$ordered_data = $returned_data['ordered_data'];
 
 				require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewColumnPattern.php");
+			},
+			'page' => 'ld-settings-page',
+			'section' => 'ld_settings_section'
+		),
+		array(
+			'id' => 'ld_settings_course_csv_pattern_disabled',
+			'title' => '',
+			'callback' => function() {
+				$returned_data = MainAdminController::disabledPatternView();
+
+				$disabled_pattern = $returned_data['disabled_data'];
+				$ordered_data = $returned_data['ordered_data'];
+
+				require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewDisabledPattern.php");
 			},
 			'page' => 'ld-settings-page',
 			'section' => 'ld_settings_section'
