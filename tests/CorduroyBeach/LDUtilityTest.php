@@ -73,4 +73,53 @@ class LDUtilityTest extends \WP_UnitTestCase {
 			$this->assertObjectHasAttribute('values', $colInfo);
 		}
 	}
+
+	public function test_order_csv_pattern_to_saved_pattern_returns_correct_order() {
+		$random_order = '["course_title","course_materials","course_price_type","course_access_list",
+		"course_price","course_lesson_orderby","course_lesson_order","course_prerequisite","custom_button_url",
+		"certificate","expire_access_days"]';
+
+		$new_data_organized = LDUtility::OrderCsvPatternToSavedPattern(
+									LDUtility::getCsvPattern(),
+									json_decode($random_order));
+
+		$posTest = 1;
+		$posTest2 = 7;
+		$count = 0;
+
+		foreach($new_data_organized as $key => $set) {
+
+			if($count == $posTest) {
+				$this->assertEquals('course_materials', $key);
+			}
+
+			if($count == $posTest2) {
+				$this->assertEquals("course_prerequisite", $key);
+			}
+
+			$count++;
+		}
+	}
+
+	public function test_create_book_case_string_for_correct_pattern() {
+		$delim = "_";
+
+		$expected = array("course_title", "Course Title");
+		$expected2 = array("course_materials", "Course Materials");
+		$expected3 = array("course_prerequisite", "Course Prerequisite");
+		$expected4 = array("expire_access_days", "Expire Access Days");
+		$expected5 = array("something_i_should_replace_with_lots_of_words", "Something I Should Replace With Lots Of Words");
+
+		$result = LDUtility::CreateBookCaseString($expected[0], $delim);
+		$result2 = LDUtility::CreateBookCaseString($expected2[0], $delim);
+		$result3 = LDUtility::CreateBookCaseString($expected3[0], $delim);
+		$result4 = LDUtility::CreateBookCaseString($expected4[0], $delim);
+		$result5 = LDUtility::CreateBookCaseString($expected5[0], $delim);
+
+		$this->assertEquals($expected[1], $result);
+		$this->assertEquals($expected2[1], $result2);
+		$this->assertEquals($expected3[1], $result3);
+		$this->assertEquals($expected4[1], $result4);
+		$this->assertEquals($expected5[1], $result5);
+	}
 }
