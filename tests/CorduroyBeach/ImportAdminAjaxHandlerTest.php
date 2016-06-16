@@ -8,10 +8,6 @@ use CorduroyBeach\Utilities\LDUtility;
 use CorduroyBeach\Ajax\ImportAdminAjaxHandler;
 use CorduroyBeach\Database\ImportDatabaseActions;
 
-interface ITest {
-	public function importCsv();
-}
-
 class ImportAdminAjaxHandlerTest extends \WP_UnitTestCase {
 
 	private $csv_json_obj;

@@ -68,11 +68,8 @@ class LDUtility {
 	 * 
 	 * @return array
 	 */
-	public static function getCsvPattern($location = null) {
-		if($location)
-			return include($location);
-		else
-			return include(LD_IET_SETTINGS_BASE . "CSVPattern.php");
+	public static function getCsvPattern() {
+		return include(LD_IET_SETTINGS_BASE . "CSVPattern.php");
 	}
 	
 	public static function OrderCsvPatternToSavedPattern($data, $saved) {
