@@ -20,10 +20,6 @@ return function() {
 
 	$response_obj = json_encode($pre_response_obj);
 
-	// Test the processing status
-	// TODO: Remove this line once actual import takes place.
-	sleep(5);
-
 	echo $response_obj;
 
 	wp_die();
