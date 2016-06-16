@@ -2,11 +2,17 @@
 
 namespace CorduroyBeach\Database;
 
+/**
+ * Class ImportDatabaseActions
+ * @package CorduroyBeach\Database
+ */
 class ImportDatabaseActions {
-	
-	public function __construct() {
-	}
-	
+
+	/**
+	 * @param $csvData
+	 *
+	 * @return array
+	 */
 	public function importCsv($csvData) {
 		global $wpdb;
 

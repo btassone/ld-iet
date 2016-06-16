@@ -85,10 +85,12 @@ class ImportAdminAjaxHandler extends BaseAjaxHandler {
 		);
 
 		$response_obj = json_encode($pre_response_obj);
-
+		
 		echo $response_obj;
 
-		wp_die();
+		if(is_admin()) {
+			exit();
+		}
 	}
 
 	/**
