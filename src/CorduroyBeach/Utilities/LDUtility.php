@@ -29,6 +29,9 @@ class LDUtility {
 		$import_fields = json_decode($postfixes['ld_settings_course_csv_pattern']);
 		$orig_col_data = LDUtility::getCsvPattern();
 		$import_arr = [];
+		$change_columns = array(
+			"course_title" => "post_title"
+		);
 
 		foreach($data as $index => $row) {
 			$import_arr[] = array(
@@ -45,10 +48,15 @@ class LDUtility {
 				if($uses_prefix) {
 					$import_arr[$index]["serialized"][$prefix . $ordered_field] = $item;
 				} else {
-					$import_arr[$index]["un-serialized"][$ordered_field] = $item;
+					if($change_columns[$ordered_field]) {
+						$import_arr[$index]["un-serialized"][$change_columns[$ordered_field]] = $item;
+					} else {
+						$import_arr[$index]["un-serialized"][$ordered_field] = $item;
+					}
 				}
 			}
 
+			$import_arr[$index]["un-serialized"]["post_type"] = "sfwd-courses";
 			$import_arr[$index]["serialized"] = serialize($import_arr[$index]["serialized"]);
 		}
 
