@@ -3,8 +3,8 @@
 namespace CorduroyBeach;
 
 class CBTest extends \WP_UnitTestCase {
-	function test_false_is_false() {
-
-		$this->assertFalse( false );
+	
+	public function test_fun_is_false() {
+		$this->assertFalse(false);
 	}
 }
