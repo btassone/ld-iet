@@ -41,8 +41,8 @@ class ImportAdminAjaxHandler extends BaseAjaxHandler {
 	 * @param $csv_local_path
 	 */
 	public function __construct( $name, $action_name, $csv_json_obj, $options, $csv_local_path = "" ) {
-		$this->setName($name);
-		$this->setActionName($action_name);
+		parent::__construct($name, $action_name);
+
 		$this->setCsvJsonObj($csv_json_obj);
 		$this->setOptions($options);
 		$this->setCsvLocalPath($csv_local_path);

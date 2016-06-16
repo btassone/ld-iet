@@ -2,12 +2,42 @@
 
 namespace CorduroyBeach\Ajax;
 
+/**
+ * Class BaseAjaxHandler
+ * @package CorduroyBeach\Ajax
+ */
 abstract class BaseAjaxHandler {
+
+	/**
+	 * @var
+	 */
 	private $name;
+
+	/**
+	 * @var
+	 */
 	private $action_name;
-	
+
+	/**
+	 * @return mixed
+	 */
 	abstract public function init();
+
+	/**
+	 * @return mixed
+	 */
 	abstract public function ajaxHandler();
+
+	/**
+	 * BaseAjaxHandler constructor.
+	 *
+	 * @param $name
+	 * @param $action_name
+	 */
+	public function __construct($name, $action_name) {
+		$this->setName($name);
+		$this->setActionName($action_name);
+	}
 
 	/**
 	 * @return string
