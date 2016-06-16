@@ -27,7 +27,6 @@ return (object) array(
 				$returned_data = MainAdminController::settingsSectionView();
 
 				$csv_pattern = $returned_data['csv_pattern'];
-
 				$csv_column_data = LDUtility::getCsvPattern();
 
 				$reorganized_column_data = $csv_column_data;

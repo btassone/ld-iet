@@ -7,7 +7,8 @@ return array(
 			'example'   => 'Some Course Title',
 			'values'    => 'string | empty string'
 		),
-		'has_close' => false
+		'has_close' => false,
+		'uses_prefix' => false
 	),
 	'course_materials' => (object) array(
 		'column_info' => (object) array(
@@ -15,7 +16,8 @@ return array(
 			'example'   => 'These are test course materials',
 			'values'    => 'string | empty string'
 		),
-		'has_close' => false
+		'has_close' => false,
+		'uses_prefix' => true
 	),
 	'course_price_type' => (object) array(
 		'column_info' => (object) array(
@@ -23,7 +25,8 @@ return array(
 			'example'   => 'open',
 			'values'    => 'open | closed | free | paynow | subscribe'
 		),
-		'has_close' => false
+		'has_close' => false,
+		'uses_prefix' => true
 	),
 	'course_price' => (object) array(
 		'column_info' => (object) array(
@@ -31,7 +34,8 @@ return array(
 			'example'   => '500.00',
 			'values'    => 'string | empty string'
 		),
-		'has_close' => false
+		'has_close' => false,
+		'uses_prefix' => true
 	),
 	'course_access_list' => (object) array(
 		'column_info' => (object) array(
@@ -39,7 +43,8 @@ return array(
 			'example'   => '1, 2',
 			'values'    => 'string | empty string'
 		),
-		'has_close' => false
+		'has_close' => false,
+		'uses_prefix' => true
 	),
 	'course_lesson_orderby' => (object) array(
 		'column_info' => (object) array(
@@ -47,7 +52,8 @@ return array(
 			'example'   => 'date',
 			'values'    => 'title | date | menu_order | empty string'
 		),
-		'has_close' => false
+		'has_close' => false,
+		'uses_prefix' => true
 	),
 	'course_lesson_order' => (object) array(
 		'column_info' => (object) array(
@@ -55,7 +61,8 @@ return array(
 			'example'   => 'ASC',
 			'values'    => 'ASC | DESC | empty string'
 		),
-		'has_close' => false
+		'has_close' => false,
+		'uses_prefix' => true
 	),
 	'course_prerequisite' => (object) array(
 		'column_info' => (object) array(
@@ -63,7 +70,8 @@ return array(
 			'example'   => '42 (Post ID)',
 			'values'    => 'string | 0'
 		),
-		'has_close' => false
+		'has_close' => false,
+		'uses_prefix' => true
 	),
 	'disable_lesson_progression' => (object) array(
 		'column_info' => (object) array(
@@ -71,7 +79,8 @@ return array(
 			'example'   => 'on',
 			'values'    => 'on | don\'t include in csv'
 		),
-		'has_close' => true
+		'has_close' => true,
+		'uses_prefix' => true
 	),
 	'expire_access' => (object) array(
 		'column_info' => (object) array(
@@ -79,7 +88,8 @@ return array(
 			'example'   => 'on',
 			'values'    => 'on | don\'t include in csv'
 		),
-		'has_close' => true
+		'has_close' => true,
+		'uses_prefix' => true
 	),
 	'expire_access_days' => (object) array(
 		'column_info' => (object) array(
@@ -87,7 +97,8 @@ return array(
 			'example'   => '10',
 			'values'    => 'string | empty string'
 		),
-		'has_close' => false
+		'has_close' => false,
+		'uses_prefix' => true
 	),
 	'expire_access_delete_progress' => (object) array(
 		'column_info' => (object) array(
@@ -95,7 +106,8 @@ return array(
 			'example'   => 'on',
 			'values'    => 'on | don\'t include in csv'
 		),
-		'has_close' => true
+		'has_close' => true,
+		'uses_prefix' => true
 	),
 	'course_disable_content_table' => (object) array(
 		'column_info' => (object) array(
@@ -103,7 +115,8 @@ return array(
 			'example'   => 'on',
 			'values'    => 'on | don\'t include in csv'
 		),
-		'has_close' => true
+		'has_close' => true,
+		'uses_prefix' => true
 	),
 	'certificate' => (object) array(
 		'column_info' => (object) array(
@@ -111,7 +124,8 @@ return array(
 			'example'   => '46 (Post ID)',
 			'values'    => 'string | 0'
 		),
-		'has_close' => false
+		'has_close' => false,
+		'uses_prefix' => true
 	),
 	'custom_button_url' => (object) array(
 		'column_info' => (object) array(
@@ -119,6 +133,7 @@ return array(
 			'example'   => 'http://www.google.com',
 			'values'    => 'string | empty string'
 		),
-		'has_close' => false
+		'has_close' => false,
+		'uses_prefix' => true
 	)
 );

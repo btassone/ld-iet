@@ -145,7 +145,7 @@
   color: #222; }
 
 .disabled-column-pattern {
-  margin-top: 30px; }
+  margin-top: 20px; }
   .disabled-column-pattern .ui-state-default {
     background: darkred !important;
     cursor: pointer !important; }
