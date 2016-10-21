@@ -41,4 +41,4 @@ var ClickHandler = (function (_super) {
         configurable: true
     });
     return ClickHandler;
-})(BaseHandler);
+}(BaseHandler));

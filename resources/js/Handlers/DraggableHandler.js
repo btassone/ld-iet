@@ -42,4 +42,4 @@ var DraggableHandler = (function (_super) {
         configurable: true
     });
     return DraggableHandler;
-})(BaseHandler);
+}(BaseHandler));

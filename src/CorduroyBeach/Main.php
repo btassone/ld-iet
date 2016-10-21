@@ -26,6 +26,11 @@ class Main {
 	private static $adminAjaxHandlers = [];
 
 	/**
+	 * @var bool
+	 */
+	public static $debug = false;
+
+	/**
 	 * The main action of the plugin. Fires up all the main processes for the plugin
 	 */
 	public static function Run() {
@@ -34,6 +39,16 @@ class Main {
 
 		// Initialize Ajax Handlers
 		Main::InitializeAjaxHandlers();
+
+		Main::outputDebugJson();
+	}
+
+	public static function outputDebugJson() {
+		$debugInfo = array("debug" => Main::$debug);
+
+		echo "<script>";
+		echo "var ldOutput = " . json_encode($debugInfo, JSON_FORCE_OBJECT);
+		echo "</script>";
 	}
 
 	/**
@@ -85,8 +100,11 @@ class Main {
 		wp_register_script( 'ld-iet-main',
 			LD_IET_RESOURCE_URL_BASE . 'js/Main.js', array(), '', true);
 
-		wp_enqueue_script( 'jquery' );
+		wp_enqueue_media();
+
+		wp_enqueue_script( 'jquery', 'https://code.jquery.com/jquery-1.12.4.min.js', false, false, true );
 		wp_enqueue_script( 'jquery-form' );
+		wp_enqueue_script( 'jquery-ext-ui', '//code.jquery.com/ui/1.12.0/jquery-ui.min.js', 'jquery', false, true );
 
 		wp_enqueue_script( 'ld-iet-eimport-response-statuses' );
 		wp_enqueue_script( 'ld-iet-import-response-handler' );
@@ -139,6 +157,4 @@ class Main {
 	public static function setAdminAjaxHandlers( $adminAjaxHandlers ) {
 		self::$adminAjaxHandlers = $adminAjaxHandlers;
 	}
-
-
 }

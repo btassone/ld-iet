@@ -15,6 +15,7 @@ class DraggableHandler extends BaseHandler {
         let draggableHandlers: Array<DraggableHandler> = DraggableHandler.getInstances<DraggableHandler>(DraggableHandler) as Array<DraggableHandler>;
 
         draggableHandlers.forEach(function(value){
+
             value.target.sortable(value.options.sortableOptions);
 
             if (!value.options.selection) {

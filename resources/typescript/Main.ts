@@ -4,6 +4,7 @@ let file_frame:any;
 let wp:any;
 let attachment:any;
 let ld_iet_ajax_obj:any;
+let ldOutput:any;
 
 class Main {
 
@@ -14,6 +15,16 @@ class Main {
 
         // Register the click handlers for the plugin
         Main.RegisterClickHandlers();
+
+        try {
+            if(ldOutput.debug == true) {
+                console.log("Works");
+            }
+        } catch(e:any) {
+        }
+        // if(typeof(ldOutput.debug) != "undefined" && ldOutput.debug == true) {
+        //     console.log("Works");
+        // }
     }
 
     // Note: Can't be tested in jasmine (jQuery)
@@ -183,8 +194,50 @@ class Main {
                     let json_parse = JSON.parse(response);
                     console.log("Run Import Response: ", json_parse);
 
+                    let mainContainer: JQuery = jQuery(".ld-main-container");
+                    mainContainer.removeClass("no-panel");
+
+                    let importButton: JQuery = jQuery("#ld_settings_course_csv_import");
+                    importButton.attr("value", "Run Import");
+
+                    let importPreviewContainer: JQuery = jQuery(".ld-preview-output-container");
+                    let columnNames: Array<string> = [];
+                    let massagedData: any = [];
+
+                    jQuery(".column-pattern .ui-state-default").each(function(index, value){
+                        columnNames.push(jQuery(value).attr('data-name').split("_").join(" "));
+                    });
+
+                    // TODO: This is where I left off
+                    json_parse.csv_data.forEach(function(csvOutput) {
+                        let tempArr: any = [];
+                        let recordContainer: HTMLDivElement = document.createElement("div");
+                        recordContainer.classList.add("ld-preview-output-item-container");
+
+                        csvOutput.forEach(function(csvOutputField, index) {
+                            let columnItemLabel: HTMLLabelElement = document.createElement("label");
+                            let columnItemValue: HTMLSpanElement = document.createElement("span");
+                            let recordRowItem: HTMLDivElement = document.createElement("div");
+
+                            columnItemLabel.innerText = columnNames[index] + ": ";
+                            columnItemValue.innerText = csvOutputField;
+
+                            recordRowItem.classList.add("ld-preview-output-record-row-item");
+                            recordRowItem.appendChild(columnItemLabel);
+                            recordRowItem.appendChild(columnItemValue);
+
+                            recordContainer.appendChild(recordRowItem);
+
+                            tempArr.push([columnNames[index], csvOutputField]);
+                        });
+
+                        massagedData.push(tempArr);
+                        importPreviewContainer.append(recordContainer);
+                    });
+
+                    // TODO: Re-enable
                     if(json_parse.status == "Finished") {
-                        ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Finished);
+                        ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.InPreview);
                     }
                 });
             }

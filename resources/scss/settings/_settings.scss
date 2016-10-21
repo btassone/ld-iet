@@ -1,4 +1,5 @@
 @import "_variables";
+@import "_import-panel";
 
 .ld-iet-settings-wrap {
   padding: $general-padding-size;
@@ -47,6 +48,14 @@
 
   &[data-status="Processing"] {
     background: orange;
+  }
+
+  &[data-status="InPreview"] {
+    background: darkgreen;
+  }
+
+  &[data-status="Importing"] {
+    background: darkorange;
   }
 
   &[data-status="Finished"] {

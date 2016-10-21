@@ -1,8 +1,4 @@
 <div class="csv-upload-information">
-	<p class="description">
-		Here are the values used for each column in the csv. The column pattern is ordered below.
-	</p>
-
 	<div class="csv-upload-information-accordion-wrap">
 		<div class="csv-upload-information-accordion-title">
 			CSV Column Information

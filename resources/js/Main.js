@@ -3,6 +3,7 @@ var file_frame;
 var wp;
 var attachment;
 var ld_iet_ajax_obj;
+var ldOutput;
 var Main = (function () {
     function Main() {
     }
@@ -12,6 +13,17 @@ var Main = (function () {
         Main.Initialization();
         // Register the click handlers for the plugin
         Main.RegisterClickHandlers();
+        try {
+            if (ldOutput.debug == true) {
+                console.log("Works");
+            }
+        }
+        catch (e) {
+            console.log("Caught Error");
+        }
+        // if(typeof(ldOutput.debug) != "undefined" && ldOutput.debug == true) {
+        //     console.log("Works");
+        // }
     };
     // Note: Can't be tested in jasmine (jQuery)
     Main.Initialization = function () {
@@ -136,8 +148,39 @@ var Main = (function () {
             jQuery.post(ld_iet_ajax_obj.ajax_url, data, function (response) {
                 var json_parse = JSON.parse(response);
                 console.log("Run Import Response: ", json_parse);
+                var mainContainer = jQuery(".ld-main-container");
+                mainContainer.removeClass("no-panel");
+                var importButton = jQuery("#ld_settings_course_csv_import");
+                importButton.attr("value", "Run Import");
+                var importPreviewContainer = jQuery(".ld-preview-output-container");
+                var columnNames = [];
+                var massagedData = [];
+                jQuery(".column-pattern .ui-state-default").each(function (index, value) {
+                    columnNames.push(jQuery(value).attr('data-name').split("_").join(" "));
+                });
+                // TODO: This is where I left off
+                json_parse.csv_data.forEach(function (csvOutput) {
+                    var tempArr = [];
+                    var recordContainer = document.createElement("div");
+                    recordContainer.classList.add("ld-preview-output-item-container");
+                    csvOutput.forEach(function (csvOutputField, index) {
+                        var columnItemLabel = document.createElement("label");
+                        var columnItemValue = document.createElement("span");
+                        var recordRowItem = document.createElement("div");
+                        columnItemLabel.innerText = columnNames[index] + ": ";
+                        columnItemValue.innerText = csvOutputField;
+                        recordRowItem.classList.add("ld-preview-output-record-row-item");
+                        recordRowItem.appendChild(columnItemLabel);
+                        recordRowItem.appendChild(columnItemValue);
+                        recordContainer.appendChild(recordRowItem);
+                        tempArr.push([columnNames[index], csvOutputField]);
+                    });
+                    massagedData.push(tempArr);
+                    importPreviewContainer.append(recordContainer);
+                });
+                // TODO: Re-enable
                 if (json_parse.status == "Finished") {
-                    ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Finished);
+                    ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.InPreview);
                 }
             });
         });
@@ -162,5 +205,5 @@ var Main = (function () {
         DraggableHandler.initializeDraggables();
     };
     return Main;
-})();
+}());
 Main.Run();
