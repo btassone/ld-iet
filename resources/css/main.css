@@ -240,6 +240,9 @@
         -o-transform: translate(-50%, -50%) rotate(45deg) !important;
         transform: translate(-50%, -50%) rotate(45deg) !important; }
 
+.column-pattern.disabled .ui-sortable-handle {
+  background: grey; }
+
 .column-pattern, .disabled-column-pattern {
   overflow: hidden; }
   .column-pattern .ui-state-default, .disabled-column-pattern .ui-state-default {

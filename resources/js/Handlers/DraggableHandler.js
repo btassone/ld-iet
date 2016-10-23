@@ -21,6 +21,13 @@ var DraggableHandler = (function (_super) {
             }
         });
     };
+    DraggableHandler.disableDraggables = function () {
+        var draggableHandlers = DraggableHandler.getInstances(DraggableHandler);
+        draggableHandlers.forEach(function (value) {
+            value.target.sortable("disable");
+            value.target.addClass("disabled");
+        });
+    };
     Object.defineProperty(DraggableHandler.prototype, "target", {
         get: function () {
             return this._target;

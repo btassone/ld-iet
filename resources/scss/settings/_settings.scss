@@ -177,6 +177,12 @@
   }
 }
 
+.column-pattern.disabled {
+  .ui-sortable-handle {
+    background: grey;
+  }
+}
+
 .column-pattern, .disabled-column-pattern {
   overflow: hidden;
 

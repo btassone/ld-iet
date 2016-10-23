@@ -29,15 +29,17 @@ var Main = (function () {
                 return copy;
             }
             var copy;
-            if (jQuery(event.currentTarget).parents(".column-pattern").length > 0) {
-                copy = switchColumns(event, ".disabled-column-pattern");
+            if (!jQuery(".column-pattern").hasClass("disabled")) {
+                if (jQuery(event.currentTarget).parents(".column-pattern").length > 0) {
+                    copy = switchColumns(event, ".disabled-column-pattern");
+                }
+                else {
+                    copy = switchColumns(event, ".column-pattern");
+                }
+                copy.children(".csv-pat-close").on('click', CSVColumnItemCloseFn);
+                event.toElement = copy;
+                CSVColumnPatternStopFn(copy);
             }
-            else {
-                copy = switchColumns(event, ".column-pattern");
-            }
-            copy.children(".csv-pat-close").on('click', CSVColumnItemCloseFn);
-            event.toElement = copy;
-            CSVColumnPatternStopFn(copy);
         };
         var CSVColumnPatternStartFn = function (event) {
             jQuery(event.toElement).css("background", "green");
@@ -135,52 +137,59 @@ var Main = (function () {
             file_frame.open();
         });
         // Run Import Click Handler
-        new ClickHandler('CSVImportHandler', jQuery('#ld_settings_course_csv_import'), function (event) {
+        new ClickHandler('CSVPreviewHandler', jQuery('#ld_settings_course_csv_import'), function (event) {
             var csv_hidden_field = jQuery('#ld_setting_course_csv');
             var data = {
                 'action': 'ld_csv_preview',
                 'csv_json_obj': JSON.parse(csv_hidden_field.val())
             };
+            var importButton = jQuery("#ld_settings_course_csv_import");
             ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Processing);
-            jQuery.post(ld_iet_ajax_obj.ajax_url, data, function (response) {
-                var json_parse = JSON.parse(response);
-                console.log("Run Import Response: ", json_parse);
-                console.log("Unserialized Data:", json_parse.serialized_data);
-                var mainContainer = jQuery(".ld-main-container");
-                mainContainer.removeClass("no-panel");
-                var importButton = jQuery("#ld_settings_course_csv_import");
-                importButton.attr("value", "Run Import");
-                var importPreviewContainer = jQuery(".ld-preview-output-container");
-                var columnNames = [];
-                var massagedData = [];
-                jQuery(".column-pattern .ui-state-default").each(function (index, value) {
-                    columnNames.push(jQuery(value).attr('data-name').split("_").join(" "));
-                });
-                // TODO: This is where I left off
-                json_parse.csv_data.forEach(function (csvOutput) {
-                    var tempArr = [];
-                    var recordContainer = document.createElement("div");
-                    recordContainer.classList.add("ld-preview-output-item-container");
-                    csvOutput.forEach(function (csvOutputField, index) {
-                        var columnItemLabel = document.createElement("label");
-                        var columnItemValue = document.createElement("span");
-                        var recordRowItem = document.createElement("div");
-                        columnItemLabel.innerText = columnNames[index] + ": ";
-                        columnItemValue.innerText = csvOutputField;
-                        recordRowItem.classList.add("ld-preview-output-record-row-item");
-                        recordRowItem.appendChild(columnItemLabel);
-                        recordRowItem.appendChild(columnItemValue);
-                        recordContainer.appendChild(recordRowItem);
-                        tempArr.push([columnNames[index], csvOutputField]);
+            if (importButton.attr("value") == "Run Import Preview") {
+                // Disable the handlers
+                DraggableHandler.disableDraggables();
+                jQuery.post(ld_iet_ajax_obj.ajax_url, data, function (response) {
+                    var json_parse = JSON.parse(response);
+                    console.log("Run Import Response: ", json_parse);
+                    console.log("Unserialized Data:", json_parse.serialized_data);
+                    var mainContainer = jQuery(".ld-main-container");
+                    mainContainer.removeClass("no-panel");
+                    var importPreviewContainer = jQuery(".ld-preview-output-container");
+                    var columnNames = [];
+                    var massagedData = [];
+                    importButton.attr("value", "Run Import");
+                    jQuery(".column-pattern .ui-state-default").each(function (index, value) {
+                        columnNames.push(jQuery(value).attr('data-name').split("_").join(" "));
                     });
-                    massagedData.push(tempArr);
-                    importPreviewContainer.append(recordContainer);
+                    // TODO: This is where I left off
+                    json_parse.csv_data.forEach(function (csvOutput) {
+                        var tempArr = [];
+                        var recordContainer = document.createElement("div");
+                        recordContainer.classList.add("ld-preview-output-item-container");
+                        csvOutput.forEach(function (csvOutputField, index) {
+                            var columnItemLabel = document.createElement("label");
+                            var columnItemValue = document.createElement("span");
+                            var recordRowItem = document.createElement("div");
+                            columnItemLabel.innerText = columnNames[index] + ": ";
+                            columnItemValue.innerText = csvOutputField;
+                            recordRowItem.classList.add("ld-preview-output-record-row-item");
+                            recordRowItem.appendChild(columnItemLabel);
+                            recordRowItem.appendChild(columnItemValue);
+                            recordContainer.appendChild(recordRowItem);
+                            tempArr.push([columnNames[index], csvOutputField]);
+                        });
+                        massagedData.push(tempArr);
+                        importPreviewContainer.append(recordContainer);
+                    });
+                    // TODO: Re-enable
+                    if (json_parse.status == "Preview") {
+                        ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.InPreview);
+                    }
                 });
-                // TODO: Re-enable
-                if (json_parse.status == "Preview") {
-                    ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.InPreview);
-                }
-            });
+            }
+            if (importButton.attr("value") == "Run Import") {
+                console.log("Run Import goes Here");
+            }
         });
         new ClickHandler('CSVColumnAccordion', jQuery('.csv-upload-information-accordion-title'), function (event) {
             jQuery(event.toElement)

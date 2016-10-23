@@ -24,6 +24,16 @@ class DraggableHandler extends BaseHandler {
         });
     }
 
+    static disableDraggables() {
+        let draggableHandlers: Array<DraggableHandler> = DraggableHandler.getInstances<DraggableHandler>(DraggableHandler) as Array<DraggableHandler>;
+
+        draggableHandlers.forEach(function(value){
+
+            value.target.sortable("disable");
+            value.target.addClass("disabled");
+        });
+    }
+
     get target():JQuery {
         return this._target;
     }

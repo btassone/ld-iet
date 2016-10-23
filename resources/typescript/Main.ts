@@ -39,16 +39,18 @@ class Main {
 
             let copy: JQuery;
 
-            if(jQuery(event.currentTarget).parents(".column-pattern").length > 0) {
-                copy = switchColumns(event, ".disabled-column-pattern");
-            } else {
-                copy = switchColumns(event, ".column-pattern");
+            if(!jQuery(".column-pattern").hasClass("disabled")) {
+                if(jQuery(event.currentTarget).parents(".column-pattern").length > 0) {
+                    copy = switchColumns(event, ".disabled-column-pattern");
+                } else {
+                    copy = switchColumns(event, ".column-pattern");
+                }
+
+                copy.children(".csv-pat-close").on('click', CSVColumnItemCloseFn);
+
+                event.toElement = copy;
+                CSVColumnPatternStopFn(copy);
             }
-
-            copy.children(".csv-pat-close").on('click', CSVColumnItemCloseFn);
-
-            event.toElement = copy;
-            CSVColumnPatternStopFn(copy);
         };
         let CSVColumnPatternStartFn: any = function(event) {
             jQuery(event.toElement).css("background", "green");
@@ -178,7 +180,7 @@ class Main {
 
         // Run Import Click Handler
         new ClickHandler(
-            'CSVImportHandler',
+            'CSVPreviewHandler',
             jQuery('#ld_settings_course_csv_import'),
             (event:any) => {
                 let csv_hidden_field:JQuery = jQuery('#ld_setting_course_csv');
@@ -186,60 +188,69 @@ class Main {
                     'action': 'ld_csv_preview',
                     'csv_json_obj': JSON.parse(csv_hidden_field.val())
                 };
+                let importButton: JQuery = jQuery("#ld_settings_course_csv_import");
 
                 ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Processing);
 
-                jQuery.post(ld_iet_ajax_obj.ajax_url, data, (response:any) => {
-                    let json_parse = JSON.parse(response);
-                    console.log("Run Import Response: ", json_parse);
-                    console.log("Unserialized Data:", json_parse.serialized_data);
+                if(importButton.attr("value") == "Run Import Preview") {
+                    // Disable the handlers
+                    DraggableHandler.disableDraggables();
 
-                    let mainContainer: JQuery = jQuery(".ld-main-container");
-                    mainContainer.removeClass("no-panel");
+                    jQuery.post(ld_iet_ajax_obj.ajax_url, data, (response:any) => {
+                        let json_parse = JSON.parse(response);
+                        console.log("Run Import Response: ", json_parse);
+                        console.log("Unserialized Data:", json_parse.serialized_data);
 
-                    let importButton: JQuery = jQuery("#ld_settings_course_csv_import");
-                    importButton.attr("value", "Run Import");
+                        let mainContainer: JQuery = jQuery(".ld-main-container");
+                        mainContainer.removeClass("no-panel");
 
-                    let importPreviewContainer: JQuery = jQuery(".ld-preview-output-container");
-                    let columnNames: Array<string> = [];
-                    let massagedData: any = [];
+                        let importPreviewContainer: JQuery = jQuery(".ld-preview-output-container");
+                        let columnNames: Array<string> = [];
+                        let massagedData: any = [];
 
-                    jQuery(".column-pattern .ui-state-default").each(function(index, value){
-                        columnNames.push(jQuery(value).attr('data-name').split("_").join(" "));
-                    });
+                        importButton.attr("value", "Run Import");
 
-                    // TODO: This is where I left off
-                    json_parse.csv_data.forEach(function(csvOutput) {
-                        let tempArr: any = [];
-                        let recordContainer: HTMLDivElement = document.createElement("div");
-                        recordContainer.classList.add("ld-preview-output-item-container");
-
-                        csvOutput.forEach(function(csvOutputField, index) {
-                            let columnItemLabel: HTMLLabelElement = document.createElement("label");
-                            let columnItemValue: HTMLSpanElement = document.createElement("span");
-                            let recordRowItem: HTMLDivElement = document.createElement("div");
-
-                            columnItemLabel.innerText = columnNames[index] + ": ";
-                            columnItemValue.innerText = csvOutputField;
-
-                            recordRowItem.classList.add("ld-preview-output-record-row-item");
-                            recordRowItem.appendChild(columnItemLabel);
-                            recordRowItem.appendChild(columnItemValue);
-
-                            recordContainer.appendChild(recordRowItem);
-
-                            tempArr.push([columnNames[index], csvOutputField]);
+                        jQuery(".column-pattern .ui-state-default").each(function(index, value){
+                            columnNames.push(jQuery(value).attr('data-name').split("_").join(" "));
                         });
 
-                        massagedData.push(tempArr);
-                        importPreviewContainer.append(recordContainer);
-                    });
+                        // TODO: This is where I left off
+                        json_parse.csv_data.forEach(function(csvOutput) {
+                            let tempArr: any = [];
+                            let recordContainer: HTMLDivElement = document.createElement("div");
+                            recordContainer.classList.add("ld-preview-output-item-container");
 
-                    // TODO: Re-enable
-                    if(json_parse.status == "Preview") {
-                        ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.InPreview);
-                    }
-                });
+                            csvOutput.forEach(function(csvOutputField, index) {
+                                let columnItemLabel: HTMLLabelElement = document.createElement("label");
+                                let columnItemValue: HTMLSpanElement = document.createElement("span");
+                                let recordRowItem: HTMLDivElement = document.createElement("div");
+
+                                columnItemLabel.innerText = columnNames[index] + ": ";
+                                columnItemValue.innerText = csvOutputField;
+
+                                recordRowItem.classList.add("ld-preview-output-record-row-item");
+                                recordRowItem.appendChild(columnItemLabel);
+                                recordRowItem.appendChild(columnItemValue);
+
+                                recordContainer.appendChild(recordRowItem);
+
+                                tempArr.push([columnNames[index], csvOutputField]);
+                            });
+
+                            massagedData.push(tempArr);
+                            importPreviewContainer.append(recordContainer);
+                        });
+
+                        // TODO: Re-enable
+                        if(json_parse.status == "Preview") {
+                            ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.InPreview);
+                        }
+                    });
+                }
+
+                if(importButton.attr("value") == "Run Import") {
+                    console.log("Run Import goes Here");
+                }
             }
         );
         
