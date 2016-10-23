@@ -26,11 +26,6 @@ class Main {
 	private static $adminAjaxHandlers = [];
 
 	/**
-	 * @var bool
-	 */
-	public static $debug = false;
-
-	/**
 	 * The main action of the plugin. Fires up all the main processes for the plugin
 	 */
 	public static function Run() {
@@ -39,16 +34,6 @@ class Main {
 
 		// Initialize Ajax Handlers
 		Main::InitializeAjaxHandlers();
-
-		Main::outputDebugJson();
-	}
-
-	public static function outputDebugJson() {
-		$debugInfo = array("debug" => Main::$debug);
-
-		echo "<script>";
-		echo "var ldOutput = " . json_encode($debugInfo, JSON_FORCE_OBJECT);
-		echo "</script>";
 	}
 
 	/**

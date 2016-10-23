@@ -15,16 +15,6 @@ class Main {
 
         // Register the click handlers for the plugin
         Main.RegisterClickHandlers();
-
-        try {
-            if(ldOutput.debug == true) {
-                console.log("Works");
-            }
-        } catch(e:any) {
-        }
-        // if(typeof(ldOutput.debug) != "undefined" && ldOutput.debug == true) {
-        //     console.log("Works");
-        // }
     }
 
     // Note: Can't be tested in jasmine (jQuery)

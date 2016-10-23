@@ -13,17 +13,6 @@ var Main = (function () {
         Main.Initialization();
         // Register the click handlers for the plugin
         Main.RegisterClickHandlers();
-        try {
-            if (ldOutput.debug == true) {
-                console.log("Works");
-            }
-        }
-        catch (e) {
-            console.log("Caught Error");
-        }
-        // if(typeof(ldOutput.debug) != "undefined" && ldOutput.debug == true) {
-        //     console.log("Works");
-        // }
     };
     // Note: Can't be tested in jasmine (jQuery)
     Main.Initialization = function () {
