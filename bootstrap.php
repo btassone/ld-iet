@@ -7,12 +7,12 @@
 /**
  * The path to the WordPress tests checkout.
  */
-define( 'WP_TESTS_DIR', '/var/www/html/wordpress-core/trunk/tests/phpunit/' );
+define( 'WP_TESTS_DIR', '/vagrant/www/wordpress-develop/tests/phpunit/' );
 
 /**
  * The path to the main file of the plugin to test.
  */
-define( 'TEST_PLUGIN_FILE', '/var/www/html/plugin-development/wp-content/plugins/ld-iet/ld-iet.php' );
+define( 'TEST_PLUGIN_FILE', dirname(__FILE__) . '/ld-iet.php' );
 
 /**
  * The WordPress tests functions.
