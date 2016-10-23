@@ -2,7 +2,7 @@
 
 namespace CorduroyBeach;
 
-use CorduroyBeach\Ajax\ImportAdminAjaxHandler;
+use CorduroyBeach\Ajax\CSVAjaxHandler;
 use CorduroyBeach\Database\ImportDatabaseActions;
 use CorduroyBeach\Factories\SettingsFactory;
 
@@ -40,11 +40,12 @@ class Main {
 	 * Setup the AdminAjaxHandlers to handle certain actions for the plugin
 	 */
 	public static function InitializeAjaxHandlers() {
-		$iajh = new ImportAdminAjaxHandler('ImportAjaxHandler', 'wp_ajax_ld_csv_import', 'csv_json_obj', get_option('ld_options'));
-		$iajh->setDbActions(new ImportDatabaseActions());
-		$iajh->init();
+		$preview_import_func = require_once(LD_IET_SETTINGS_BASE . "AjaxHandlers/PreviewImport.php");
 
-		self::getAdminAjaxHandlers()[] = $iajh;
+		$piah = new CSVAjaxHandler('PreviewImport', 'wp_ajax_ld_csv_preview', 'csv_json_obj', get_option('ld_options'), $preview_import_func);
+		$piah->init();
+
+		self::getAdminAjaxHandlers()[] = $piah;
 	}
 
 	/**

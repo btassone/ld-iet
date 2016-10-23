@@ -140,7 +140,16 @@ class Main {
                     // We set multiple to false so only get one image from the uploader
                     attachment = file_frame.state().get('selection').first().toJSON();
 
+                    /*
+                     * ======= Important Logic Bit =======
+                     * Instance of when being clever doesn't help you when you come back to look at the project.
+                     *
+                     * This is the hidden field ld_settings_course_csv name jQuery("#" + calling_btn.attr('data-txt-field'))
+                     * This is where the uploaded csv attachment is being stringified into the hidden field for the impport
+                     * part later.
+                     */
                     jQuery("#" + calling_btn.attr('data-txt-field')).val(JSON.stringify(attachment));
+
                     uploaded_info_box.html(
                         "<strong>ID:</strong> " + attachment.id + "\n" +
                         "<strong>Title:</strong> " + attachment.title + "\n" +
@@ -174,7 +183,7 @@ class Main {
             (event:any) => {
                 let csv_hidden_field:JQuery = jQuery('#ld_setting_course_csv');
                 let data:{} = {
-                    'action': 'ld_csv_import',
+                    'action': 'ld_csv_preview',
                     'csv_json_obj': JSON.parse(csv_hidden_field.val())
                 };
 
@@ -183,6 +192,7 @@ class Main {
                 jQuery.post(ld_iet_ajax_obj.ajax_url, data, (response:any) => {
                     let json_parse = JSON.parse(response);
                     console.log("Run Import Response: ", json_parse);
+                    console.log("Unserialized Data:", json_parse.serialized_data);
 
                     let mainContainer: JQuery = jQuery(".ld-main-container");
                     mainContainer.removeClass("no-panel");
@@ -226,7 +236,7 @@ class Main {
                     });
 
                     // TODO: Re-enable
-                    if(json_parse.status == "Finished") {
+                    if(json_parse.status == "Preview") {
                         ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.InPreview);
                     }
                 });
