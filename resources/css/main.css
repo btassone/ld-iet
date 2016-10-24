@@ -184,6 +184,14 @@
 .ld-iet-settings-wrap {
   padding: 20px 20px 20px 0;
   box-sizing: border-box; }
+  .ld-iet-settings-wrap .nav-tab {
+    color: #aaa; }
+    .ld-iet-settings-wrap .nav-tab:hover {
+      background-color: #e5e5e5;
+      color: #aaa; }
+    .ld-iet-settings-wrap .nav-tab.nav-tab-active {
+      color: #000;
+      background: #f1f1f1; }
 
 .ld-iet-header-wrap {
   background: #046380;

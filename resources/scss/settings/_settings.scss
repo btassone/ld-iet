@@ -4,6 +4,24 @@
 .ld-iet-settings-wrap {
   padding: $general-padding-size $general-padding-size $general-padding-size 0;
   box-sizing: border-box;
+
+  .nav-tab {
+    color: #aaa;
+
+    &:hover {
+      background-color: #e5e5e5;
+      color: #aaa;
+    }
+
+    &.nav-tab-active {
+      color: #000;
+      background: #f1f1f1;
+    }
+  }
+
+  .nav-tab:not(.nav-tab-active) {
+
+  }
 }
 
 .ld-iet-header-wrap {

@@ -8,8 +8,8 @@
 	</div>
 	<div class="wrap">
 		<h2 class="nav-tab-wrapper">
-			<a href="?page=ld-settings-page&tab=course_import" class="nav-tab <?php echo $active_tab == 'course_import' ? 'nav-tab-active' : ''; ?>">Step 1 - Course Import</a>
-			<a href="?page=ld-settings-page&tab=quiz_import" class="nav-tab <?php echo $active_tab == 'quiz_import' ? 'nav-tab-active' : ''; ?>">Step 2 - Quiz Import</a>
+			<span class="nav-tab <?php echo $active_tab == 'course_import' ? 'nav-tab-active' : ''; ?>">Step 1 - Course Import</span>
+			<span class="nav-tab <?php echo $active_tab == 'quiz_import' ? 'nav-tab-active' : ''; ?>">Step 2 - Quiz Import</span>
 		</h2>
 		<div class="ld-main-container no-panel">
 			<div class="ld-main-settings-container">
