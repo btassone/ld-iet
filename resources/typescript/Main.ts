@@ -175,6 +175,10 @@ class Main {
                     if(json_parse.status == "Finished") {
                         ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Finished);
                     }
+
+                    GeneralUtility.post('admin.php?page=ld-settings-page&tab=quiz_import', {
+                        'created_id': JSON.stringify(json_parse.created_id)
+                    });
                 });
             }
         };

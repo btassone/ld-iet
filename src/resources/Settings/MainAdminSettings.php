@@ -130,7 +130,7 @@ return (object) array(
 				"id" => 'ld_quiz_import',
 				"title" => '',
 				"callback" => function(){
-					echo "Working";
+					var_dump($_POST['created_id']);
 				},
 				"page" => 'ld-quiz-page',
 				"section" => 'ld_quiz_section'

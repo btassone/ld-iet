@@ -15,7 +15,6 @@ var ChangeHandler = (function (_super) {
     ChangeHandler.registerHandlers = function () {
         var jQueryChangeHandlers = ChangeHandler.getInstances(ChangeHandler);
         jQueryChangeHandlers.forEach(function (value) {
-            console.log(value.target);
             value.target.on('keyup', value.target_cb);
         });
     };

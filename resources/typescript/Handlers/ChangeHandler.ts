@@ -15,7 +15,6 @@ class ChangeHandler extends BaseHandler {
         let jQueryChangeHandlers: Array<ChangeHandler> = ChangeHandler.getInstances<ChangeHandler>(ChangeHandler) as Array<ChangeHandler>;
 
         jQueryChangeHandlers.forEach(function(value){
-            console.log(value.target);
             value.target.on('keyup', value.target_cb);
         });
     }
