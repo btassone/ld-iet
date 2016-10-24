@@ -72,10 +72,10 @@ var Main = (function () {
             // Finally, open the modal
             file_frame.open();
         };
-        var CSVPreview = function (event) {
+        var CSVPreviewAndImport = function (event) {
             var csv_hidden_field = jQuery('#ld_setting_course_csv');
             var data = {
-                'action': 'ld_csv_preview',
+                'action': '',
                 'csv_json_obj': JSON.parse(csv_hidden_field.val())
             };
             var importButton = jQuery("#ld_settings_course_csv_import");
@@ -83,6 +83,7 @@ var Main = (function () {
             if (importButton.attr("value") == "Run Import Preview") {
                 // Disable the handlers
                 DraggableHandler.disableDraggables();
+                data.action = 'ld_csv_preview';
                 jQuery.post(ld_iet_ajax_obj.ajax_url, data, function (response) {
                     var json_parse = JSON.parse(response);
                     console.log("Run Import Response: ", json_parse);
@@ -129,7 +130,14 @@ var Main = (function () {
                 });
             }
             if (importButton.attr("value") == "Run Import") {
-                console.log("Run Import goes Here");
+                data.action = 'ld_csv_import';
+                jQuery.post(ld_iet_ajax_obj.ajax_url, data, function (response) {
+                    var json_parse = JSON.parse(response);
+                    console.log("Run Import Response: ", json_parse);
+                    if (json_parse.status == "Finished") {
+                        ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Finished);
+                    }
+                });
             }
         };
         var CSVColumnAccordion = function (event) {
@@ -264,7 +272,7 @@ var Main = (function () {
             }
         };
         new ClickHandler('CSVUpload', jQuery('#ld_setting_course_csv_upload_btn'), CSVUpload);
-        new ClickHandler('CSVPreview', jQuery('#ld_settings_course_csv_import'), CSVPreview);
+        new ClickHandler('CSVPreviewAndImport', jQuery('#ld_settings_course_csv_import'), CSVPreviewAndImport);
         new ClickHandler('CSVColumnAccordion', jQuery('.csv-upload-information-accordion-title'), CSVColumnAccordion);
         new ClickHandler('CSVColumnItemClose', jQuery('.csv-pat-close'), CSVColumnItemCloseFn);
         new ClickHandler('PreviewPrevious', jQuery("#ld-course-preview-prev"), function () { PreviewState(EPreviewStates.Previous); });

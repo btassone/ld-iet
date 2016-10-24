@@ -90,10 +90,10 @@ class Main {
             // Finally, open the modal
             file_frame.open();
         };
-        let CSVPreview: any = function(event) {
+        let CSVPreviewAndImport: any = function(event) {
             let csv_hidden_field:JQuery = jQuery('#ld_setting_course_csv');
-            let data:{} = {
-                'action': 'ld_csv_preview',
+            let data:{ action: string, csv_json_obj: JSON} = {
+                'action': '',
                 'csv_json_obj': JSON.parse(csv_hidden_field.val())
             };
             let importButton: JQuery = jQuery("#ld_settings_course_csv_import");
@@ -103,6 +103,8 @@ class Main {
             if(importButton.attr("value") == "Run Import Preview") {
                 // Disable the handlers
                 DraggableHandler.disableDraggables();
+
+                data.action = 'ld_csv_preview';
 
                 jQuery.post(ld_iet_ajax_obj.ajax_url, data, (response:any) => {
                     let json_parse = JSON.parse(response);
@@ -122,7 +124,6 @@ class Main {
                     });
 
                     // TODO: This is where I left off
-
                     json_parse.csv_data.forEach(function(csvOutput, item_index) {
                         let tempArr: any = [];
                         let recordContainer: HTMLDivElement = document.createElement("div");
@@ -165,7 +166,16 @@ class Main {
             }
 
             if(importButton.attr("value") == "Run Import") {
-                console.log("Run Import goes Here");
+                data.action = 'ld_csv_import';
+
+                jQuery.post(ld_iet_ajax_obj.ajax_url, data, (response:any) => {
+                    let json_parse = JSON.parse(response);
+                    console.log("Run Import Response: ", json_parse);
+
+                    if(json_parse.status == "Finished") {
+                        ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Finished);
+                    }
+                });
             }
         };
 
@@ -334,7 +344,7 @@ class Main {
         };
 
         new ClickHandler('CSVUpload', jQuery('#ld_setting_course_csv_upload_btn'), CSVUpload);
-        new ClickHandler('CSVPreview', jQuery('#ld_settings_course_csv_import'), CSVPreview);
+        new ClickHandler('CSVPreviewAndImport', jQuery('#ld_settings_course_csv_import'), CSVPreviewAndImport);
         new ClickHandler('CSVColumnAccordion', jQuery('.csv-upload-information-accordion-title'), CSVColumnAccordion);
         new ClickHandler('CSVColumnItemClose', jQuery('.csv-pat-close'), CSVColumnItemCloseFn);
 

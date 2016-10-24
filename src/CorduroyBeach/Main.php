@@ -3,6 +3,7 @@
 namespace CorduroyBeach;
 
 use CorduroyBeach\Ajax\CSVAjaxHandler;
+use CorduroyBeach\Ajax\CSVCourseImportAjaxHandler;
 use CorduroyBeach\Database\ImportDatabaseActions;
 use CorduroyBeach\Factories\SettingsFactory;
 
@@ -41,11 +42,17 @@ class Main {
 	 */
 	public static function InitializeAjaxHandlers() {
 		$preview_import_func = require_once(LD_IET_SETTINGS_BASE . "AjaxHandlers/PreviewImport.php");
+		$import_csv_func = require_once(LD_IET_SETTINGS_BASE . "AjaxHandlers/ImportCSV.php");
 
 		$piah = new CSVAjaxHandler('PreviewImport', 'wp_ajax_ld_csv_preview', 'csv_json_obj', get_option('ld_options'), $preview_import_func);
 		$piah->init();
 
+		$icsvh = new CSVCourseImportAjaxHandler('ImportCSV', 'wp_ajax_ld_csv_import', 'csv_json_obj', get_option('ld_options'), $import_csv_func);
+		$icsvh->setDbActions(new ImportDatabaseActions());
+		$icsvh->init();
+
 		self::getAdminAjaxHandlers()[] = $piah;
+		self::getAdminAjaxHandlers()[] = $icsvh;
 	}
 
 	/**

@@ -2,8 +2,6 @@
 
 namespace CorduroyBeach\Ajax;
 
-use CorduroyBeach\Utilities\LDUtility;
-
 class CSVAjaxHandler extends BaseAjaxHandler {
 	/**
 	 * @var string
