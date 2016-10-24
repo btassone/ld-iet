@@ -130,7 +130,7 @@ return (object) array(
 				"id" => 'ld_quiz_import',
 				"title" => '',
 				"callback" => function(){
-					echo "Test";
+
 				},
 				"page" => 'ld-quiz-page',
 				"section" => 'ld_quiz_section'
