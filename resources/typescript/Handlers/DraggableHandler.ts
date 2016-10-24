@@ -11,15 +11,26 @@ class DraggableHandler extends BaseHandler {
         this.options = options;
     }
 
-    static initializeDraggables() {
+    static registerHandlers() {
         let draggableHandlers: Array<DraggableHandler> = DraggableHandler.getInstances<DraggableHandler>(DraggableHandler) as Array<DraggableHandler>;
 
         draggableHandlers.forEach(function(value){
+
             value.target.sortable(value.options.sortableOptions);
 
             if (!value.options.selection) {
                 value.target.disableSelection();
             }
+        });
+    }
+
+    static disableDraggables() {
+        let draggableHandlers: Array<DraggableHandler> = DraggableHandler.getInstances<DraggableHandler>(DraggableHandler) as Array<DraggableHandler>;
+
+        draggableHandlers.forEach(function(value){
+
+            value.target.sortable("disable");
+            value.target.addClass("disabled");
         });
     }
 

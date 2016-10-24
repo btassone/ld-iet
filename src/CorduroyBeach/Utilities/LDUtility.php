@@ -89,4 +89,15 @@ class LDUtility {
 
 		return $uc;
 	}
+
+	public static function OutputSettingsOption($page, $section, $option) {
+		global $wp_settings_fields;
+
+		$opInfo = $wp_settings_fields[$page][$section][$option];
+
+		if ( ! isset( $opInfo ) )
+			return;
+
+		call_user_func($opInfo["callback"], $opInfo["args"]);
+	}
 }

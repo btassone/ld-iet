@@ -1,0 +1,121 @@
+.ld-main-container {
+  @include display(flex);
+  @include align-items(flex-start);
+
+  &.no-panel {
+    .ld-main-settings-container { width: 100%; }
+    .ld-main-import-preview { display: none; }
+  }
+}
+
+.ld-main-settings-container {
+  width: 68.5%;
+}
+
+.ld-main-import-preview {
+  width: 28.5%;
+  margin-left: 3%;
+  padding: 20px;
+  margin-top: 30px;
+  box-sizing: border-box;
+  background: #046380;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.ld-preview-output-record-row-item {
+  color: #046380;
+  padding: 10px;
+
+  @include display(flex);
+  @include align-items(center);
+  @include justify-content(flex-start);
+
+  &:nth-child(even) {
+    background: #ddd;
+  }
+
+  label {
+    text-transform: capitalize;
+    font-weight: 700;
+    width: 160px;
+    border-right: 1px solid #046380;
+    padding-right: 10px;
+  }
+
+  span { padding-left: 10px; }
+}
+
+.ld-main-import-preview-header {
+
+  @include display(flex);
+  @include justify-content(space-between);
+  @include align-items(center);
+
+  .title, .course-num {
+    margin-top: 0;
+    color: #fff;
+    text-transform: uppercase;
+  }
+}
+
+.ld-preview-output-controls-container {
+  padding: 10px 0;
+  box-sizing: border-box;
+
+  @include display(flex);
+  @include justify-content(space-between);
+  @include align-items(center);
+
+  button {
+    background: none;
+    color: #fff;
+    border: none;
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    line-height: 36px;
+  }
+
+  input {
+    border: none;
+    border-bottom: 1px solid #fff;
+    padding-bottom: 4px;
+    width: 80px;
+    text-align: center;
+    background: none;
+    color: #fff;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+  }
+}
+
+.ld-preview-output-container {
+  overflow: hidden;
+  background: #f1f1f1;
+  box-sizing: border-box;
+  position: relative;
+  height: 100%;
+}
+
+.ld-preview-output-item-container {
+  &[data-visible="visible"] {
+    display: block;
+  }
+
+  &[data-visible="hidden"] {
+    display: none;
+  }
+}
+
+@media(max-width: 800px) {
+  .ld-main-container {
+    @include flex-direction(column);
+  }
+  .ld-main-settings-container, .ld-main-import-preview {
+    width: 100%;
+    margin-left: 0;
+  }
+}

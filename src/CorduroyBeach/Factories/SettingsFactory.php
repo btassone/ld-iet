@@ -58,16 +58,16 @@ class SettingsFactory {
 					$section["callback"],
 					$section["page"]
 				);
-			}
 
-			foreach($settingsSet->settings_fields as $field) {
-				add_settings_field(
-					$field["id"],
-					$field["title"],
-					$field["callback"],
-					$field["page"],
-					$field["section"]
-				);
+				foreach($settingsSet->settings_fields[$section["id"]] as $field) {
+					add_settings_field(
+						$field["id"],
+						$field["title"],
+						$field["callback"],
+						$field["page"],
+						$field["section"]
+					);
+				}
 			}
 		}
 	}

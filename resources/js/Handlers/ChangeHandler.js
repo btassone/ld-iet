@@ -3,24 +3,23 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var ClickHandler = (function (_super) {
-    __extends(ClickHandler, _super);
-    function ClickHandler(id, target, target_cb) {
-        // Call parent class
+var ChangeHandler = (function (_super) {
+    __extends(ChangeHandler, _super);
+    function ChangeHandler(id, target, target_cb) {
         _super.call(this, id);
-        // Set properties
         this.target = target;
         this.target_cb = target_cb;
     }
     // This is so we can register all the handlers at once. Also this separation allows for testing
     // Note: Can't be tested in jasmine (jQuery)
-    ClickHandler.registerHandlers = function () {
-        var jQueryClickHandlers = ClickHandler.getInstances(ClickHandler);
-        jQueryClickHandlers.forEach(function (value) {
-            value.target.on('click', value.target_cb);
+    ChangeHandler.registerHandlers = function () {
+        var jQueryChangeHandlers = ChangeHandler.getInstances(ChangeHandler);
+        jQueryChangeHandlers.forEach(function (value) {
+            console.log(value.target);
+            value.target.on('keyup', value.target_cb);
         });
     };
-    Object.defineProperty(ClickHandler.prototype, "target", {
+    Object.defineProperty(ChangeHandler.prototype, "target", {
         get: function () {
             return this._target;
         },
@@ -30,7 +29,7 @@ var ClickHandler = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ClickHandler.prototype, "target_cb", {
+    Object.defineProperty(ChangeHandler.prototype, "target_cb", {
         get: function () {
             return this._target_cb;
         },
@@ -40,5 +39,5 @@ var ClickHandler = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    return ClickHandler;
+    return ChangeHandler;
 }(BaseHandler));

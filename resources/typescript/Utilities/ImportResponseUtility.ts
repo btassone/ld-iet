@@ -13,6 +13,12 @@ class ImportResponseUtility {
             case EImportResponseStatuses.Processing:
                 this._responseStatusText = "File is processing...";
                 break;
+            case EImportResponseStatuses.InPreview:
+                this._responseStatusText = "Import is in preview.";
+                break;
+            case EImportResponseStatuses.Importing:
+                this._responseStatusText = "CSV has been finalized and is importing.";
+                break;
             case EImportResponseStatuses.Finished:
                 this._responseStatusText = "File import has completed.";
                 break;

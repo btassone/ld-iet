@@ -64,4 +64,4 @@ var BaseHandler = (function () {
     });
     BaseHandler._instances = [];
     return BaseHandler;
-})();
+}());

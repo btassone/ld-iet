@@ -12,13 +12,20 @@ var DraggableHandler = (function (_super) {
         this.target = target;
         this.options = options;
     }
-    DraggableHandler.initializeDraggables = function () {
+    DraggableHandler.registerHandlers = function () {
         var draggableHandlers = DraggableHandler.getInstances(DraggableHandler);
         draggableHandlers.forEach(function (value) {
             value.target.sortable(value.options.sortableOptions);
             if (!value.options.selection) {
                 value.target.disableSelection();
             }
+        });
+    };
+    DraggableHandler.disableDraggables = function () {
+        var draggableHandlers = DraggableHandler.getInstances(DraggableHandler);
+        draggableHandlers.forEach(function (value) {
+            value.target.sortable("disable");
+            value.target.addClass("disabled");
         });
     };
     Object.defineProperty(DraggableHandler.prototype, "target", {
@@ -42,4 +49,4 @@ var DraggableHandler = (function (_super) {
         configurable: true
     });
     return DraggableHandler;
-})(BaseHandler);
+}(BaseHandler));

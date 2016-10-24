@@ -2,7 +2,8 @@
 
 namespace CorduroyBeach;
 
-use CorduroyBeach\Ajax\ImportAdminAjaxHandler;
+use CorduroyBeach\Ajax\CSVAjaxHandler;
+use CorduroyBeach\Ajax\CSVCourseImportAjaxHandler;
 use CorduroyBeach\Database\ImportDatabaseActions;
 use CorduroyBeach\Factories\SettingsFactory;
 
@@ -40,11 +41,18 @@ class Main {
 	 * Setup the AdminAjaxHandlers to handle certain actions for the plugin
 	 */
 	public static function InitializeAjaxHandlers() {
-		$iajh = new ImportAdminAjaxHandler('ImportAjaxHandler', 'wp_ajax_ld_csv_import', 'csv_json_obj', get_option('ld_options'));
-		$iajh->setDbActions(new ImportDatabaseActions());
-		$iajh->init();
+		$preview_import_func = require_once(LD_IET_SETTINGS_BASE . "AjaxHandlers/PreviewImport.php");
+		$import_csv_func = require_once(LD_IET_SETTINGS_BASE . "AjaxHandlers/ImportCSV.php");
 
-		self::getAdminAjaxHandlers()[] = $iajh;
+		$piah = new CSVAjaxHandler('PreviewImport', 'wp_ajax_ld_csv_preview', 'csv_json_obj', get_option('ld_options'), $preview_import_func);
+		$piah->init();
+
+		$icsvh = new CSVCourseImportAjaxHandler('ImportCSV', 'wp_ajax_ld_csv_import', 'csv_json_obj', get_option('ld_options'), $import_csv_func);
+		$icsvh->setDbActions(new ImportDatabaseActions());
+		$icsvh->init();
+
+		self::getAdminAjaxHandlers()[] = $piah;
+		self::getAdminAjaxHandlers()[] = $icsvh;
 	}
 
 	/**
@@ -74,23 +82,32 @@ class Main {
 	public static function LoadAdminJavascript() {
 		wp_register_script( 'ld-iet-eimport-response-statuses',
 			LD_IET_RESOURCE_URL_BASE . 'js/Enums/EImportResponseStatuses.js', array(), '', true);
+		wp_register_script( 'ld-iet-epreview-states',
+			LD_IET_RESOURCE_URL_BASE . 'js/Enums/EPreviewStates.js', array(), '', true);
 		wp_register_script( 'ld-iet-import-response-handler',
 			LD_IET_RESOURCE_URL_BASE . 'js/Utilities/ImportResponseUtility.js', array(), '', true);
 		wp_register_script( 'ld-iet-base-handler',
 			LD_IET_RESOURCE_URL_BASE . 'js/Handlers/BaseHandler.js', array(), '', true);
 		wp_register_script( 'ld-iet-click-handler',
 			LD_IET_RESOURCE_URL_BASE . 'js/Handlers/ClickHandler.js', array(), '', true);
+		wp_register_script( 'ld-iet-change-handler',
+			LD_IET_RESOURCE_URL_BASE . 'js/Handlers/ChangeHandler.js', array(), '', true);
 		wp_register_script( 'ld-iet-draggable-handler',
 			LD_IET_RESOURCE_URL_BASE . 'js/Handlers/DraggableHandler.js', array(), '', true);
 		wp_register_script( 'ld-iet-main',
 			LD_IET_RESOURCE_URL_BASE . 'js/Main.js', array(), '', true);
 
-		wp_enqueue_script( 'jquery' );
+		wp_enqueue_media();
+
+		wp_enqueue_script( 'jquery', 'https://code.jquery.com/jquery-1.12.4.min.js', false, false, true );
 		wp_enqueue_script( 'jquery-form' );
+		wp_enqueue_script( 'jquery-ext-ui', '//code.jquery.com/ui/1.12.0/jquery-ui.min.js', 'jquery', false, true );
 
 		wp_enqueue_script( 'ld-iet-eimport-response-statuses' );
+		wp_enqueue_script( 'ld-iet-epreview-states' );
 		wp_enqueue_script( 'ld-iet-import-response-handler' );
 		wp_enqueue_script( 'ld-iet-base-handler' );
+		wp_enqueue_script( 'ld-iet-change-handler' );
 		wp_enqueue_script( 'ld-iet-click-handler' );
 		wp_enqueue_script( 'ld-iet-draggable-handler' );
 		wp_enqueue_script( 'ld-iet-main' );
@@ -139,6 +156,4 @@ class Main {
 	public static function setAdminAjaxHandlers( $adminAjaxHandlers ) {
 		self::$adminAjaxHandlers = $adminAjaxHandlers;
 	}
-
-
 }

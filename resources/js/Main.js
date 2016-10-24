@@ -3,6 +3,7 @@ var file_frame;
 var wp;
 var attachment;
 var ld_iet_ajax_obj;
+var ldOutput;
 var Main = (function () {
     function Main() {
     }
@@ -19,6 +20,133 @@ var Main = (function () {
     };
     // Note: Can't be tested in jasmine (jQuery)
     Main.RegisterClickHandlers = function () {
+        var CSVUpload = function (event) {
+            var calling_btn = jQuery('#ld_setting_course_csv_upload_btn');
+            event.preventDefault();
+            // If the media frame already exists, reopen it.
+            if (file_frame) {
+                file_frame.open();
+                return;
+            }
+            // Create the media frame.
+            file_frame = wp.media.frames.file_frame = wp.media({
+                frame: 'select',
+                button: {
+                    text: "Add Course CSV File"
+                },
+                multiple: false,
+                library: {
+                    type: ['text/csv']
+                }
+            });
+            // When an image is selected, run a callback.
+            file_frame.on('select', function () {
+                var uploaded_info_box = jQuery(".uploaded-csv-information");
+                var run_import_btn = jQuery("#ld_settings_course_csv_import");
+                // We set multiple to false so only get one image from the uploader
+                attachment = file_frame.state().get('selection').first().toJSON();
+                /*
+                 * ======= Important Logic Bit =======
+                 * Instance of when being clever doesn't help you when you come back to look at the project.
+                 *
+                 * This is the hidden field ld_settings_course_csv name jQuery("#" + calling_btn.attr('data-txt-field'))
+                 * This is where the uploaded csv attachment is being stringified into the hidden field for the impport
+                 * part later.
+                 */
+                jQuery("#" + calling_btn.attr('data-txt-field')).val(JSON.stringify(attachment));
+                uploaded_info_box.html("<strong>ID:</strong> " + attachment.id + "\n" +
+                    "<strong>Title:</strong> " + attachment.title + "\n" +
+                    "<strong>Filename:</strong> " + attachment.filename + "\n" +
+                    "<strong>URL:</strong> " + attachment.url + "\n" +
+                    "<strong>Link:</strong> <a href='" + attachment.link + "' target='_blank'>" + attachment.link + "</a>" + "\n" +
+                    "<strong>Type:</strong> " + attachment.type + "\n" +
+                    "<strong>Subtype:</strong> " + attachment.subtype + "\n" +
+                    "<strong>File Size:</strong> " + attachment.filesizeHumanReadable);
+                if (!uploaded_info_box.hasClass("block")) {
+                    uploaded_info_box.addClass("block");
+                }
+                // Remove the disabled attribute
+                run_import_btn.removeAttr('disabled');
+                ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Pending);
+            });
+            // Finally, open the modal
+            file_frame.open();
+        };
+        var CSVPreviewAndImport = function (event) {
+            var csv_hidden_field = jQuery('#ld_setting_course_csv');
+            var data = {
+                'action': '',
+                'csv_json_obj': JSON.parse(csv_hidden_field.val())
+            };
+            var importButton = jQuery("#ld_settings_course_csv_import");
+            ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Processing);
+            if (importButton.attr("value") == "Run Import Preview") {
+                // Disable the handlers
+                DraggableHandler.disableDraggables();
+                data.action = 'ld_csv_preview';
+                jQuery.post(ld_iet_ajax_obj.ajax_url, data, function (response) {
+                    var json_parse = JSON.parse(response);
+                    console.log("Run Import Response: ", json_parse);
+                    var mainContainer = jQuery(".ld-main-container");
+                    mainContainer.removeClass("no-panel");
+                    var importPreviewContainer = jQuery(".ld-preview-output-container");
+                    var columnNames = [];
+                    var massagedData = [];
+                    importButton.attr("value", "Run Import");
+                    jQuery(".column-pattern .ui-state-default").each(function (index, value) {
+                        columnNames.push(jQuery(value).attr('data-name').split("_").join(" "));
+                    });
+                    // TODO: This is where I left off
+                    json_parse.csv_data.forEach(function (csvOutput, item_index) {
+                        var tempArr = [];
+                        var recordContainer = document.createElement("div");
+                        recordContainer.classList.add("ld-preview-output-item-container");
+                        csvOutput.forEach(function (csvOutputField, index) {
+                            var columnItemLabel = document.createElement("label");
+                            var columnItemValue = document.createElement("span");
+                            var recordRowItem = document.createElement("div");
+                            columnItemLabel.innerText = columnNames[index] + ": ";
+                            columnItemValue.innerText = csvOutputField == "" ? 'none' : csvOutputField;
+                            recordRowItem.classList.add("ld-preview-output-record-row-item");
+                            recordRowItem.appendChild(columnItemLabel);
+                            recordRowItem.appendChild(columnItemValue);
+                            recordContainer.appendChild(recordRowItem);
+                            tempArr.push([columnNames[index], csvOutputField]);
+                        });
+                        recordContainer.setAttribute("data-item-num", item_index + 1);
+                        if (item_index == 0) {
+                            recordContainer.setAttribute("data-visible", "visible");
+                        }
+                        else {
+                            recordContainer.setAttribute("data-visible", "hidden");
+                        }
+                        massagedData.push(tempArr);
+                        importPreviewContainer.append(recordContainer);
+                    });
+                    // TODO: Re-enable
+                    if (json_parse.status == "Preview") {
+                        ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.InPreview);
+                    }
+                });
+            }
+            if (importButton.attr("value") == "Run Import") {
+                data.action = 'ld_csv_import';
+                jQuery.post(ld_iet_ajax_obj.ajax_url, data, function (response) {
+                    var json_parse = JSON.parse(response);
+                    console.log("Run Import Response: ", json_parse);
+                    if (json_parse.status == "Finished") {
+                        ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Finished);
+                    }
+                });
+            }
+        };
+        var CSVColumnAccordion = function (event) {
+            jQuery(event.toElement)
+                .toggleClass("active")
+                .parent(".csv-upload-information-accordion-wrap")
+                .children(".csv-upload-information-accordion-content")
+                .slideToggle(300);
+        };
         var CSVColumnItemCloseFn = function (event) {
             function switchColumns(e, col) {
                 var column = jQuery(e.currentTarget).parent();
@@ -28,15 +156,17 @@ var Main = (function () {
                 return copy;
             }
             var copy;
-            if (jQuery(event.currentTarget).parents(".column-pattern").length > 0) {
-                copy = switchColumns(event, ".disabled-column-pattern");
+            if (!jQuery(".column-pattern").hasClass("disabled")) {
+                if (jQuery(event.currentTarget).parents(".column-pattern").length > 0) {
+                    copy = switchColumns(event, ".disabled-column-pattern");
+                }
+                else {
+                    copy = switchColumns(event, ".column-pattern");
+                }
+                copy.children(".csv-pat-close").on('click', CSVColumnItemCloseFn);
+                event.toElement = copy;
+                CSVColumnPatternStopFn(copy);
             }
-            else {
-                copy = switchColumns(event, ".column-pattern");
-            }
-            copy.children(".csv-pat-close").on('click', CSVColumnItemCloseFn);
-            event.toElement = copy;
-            CSVColumnPatternStopFn(copy);
         };
         var CSVColumnPatternStartFn = function (event) {
             jQuery(event.toElement).css("background", "green");
@@ -80,75 +210,74 @@ var Main = (function () {
                 jQuery(event.toElement).css("background", "red");
             });
         };
-        // CSV Upload Click Handler
-        new ClickHandler('CSVUploadHandler', jQuery('#ld_setting_course_csv_upload_btn'), function (event) {
-            var calling_btn = jQuery('#ld_setting_course_csv_upload_btn');
-            event.preventDefault();
-            // If the media frame already exists, reopen it.
-            if (file_frame) {
-                file_frame.open();
-                return;
+        var PreviewState = function (state) {
+            var rows = jQuery(".ld-preview-output-item-container");
+            var input = jQuery("#ld-preview-item-input");
+            var courseNum = jQuery("#course-num");
+            var inputVal = parseInt(input.val());
+            var visibleEl = null;
+            var chosenEl = null;
+            if (inputVal) {
+                switch (state) {
+                    case EPreviewStates.Previous:
+                        if (inputVal - 1 > 0) {
+                            rows.each(function (index, elem) {
+                                var rowVal = parseInt(elem.getAttribute("data-item-num"));
+                                var rowVisibility = elem.getAttribute("data-visible");
+                                if (rowVal == (inputVal - 1)) {
+                                    chosenEl = jQuery(elem);
+                                }
+                                if (rowVisibility == "visible") {
+                                    visibleEl = jQuery(elem);
+                                }
+                            });
+                            visibleEl.attr("data-visible", "hidden");
+                            chosenEl.attr("data-visible", "visible");
+                            input.val(inputVal - 1);
+                            courseNum.text(inputVal - 1);
+                        }
+                        break;
+                    case EPreviewStates.Change:
+                        if (inputVal > 0 && inputVal <= rows.length) {
+                            rows.each(function (index, elem) {
+                                if (jQuery(elem).attr("data-visible") == "visible") {
+                                    visibleEl = jQuery(elem);
+                                }
+                            });
+                            chosenEl = jQuery(rows[inputVal - 1]);
+                            visibleEl.attr("data-visible", "hidden");
+                            chosenEl.attr("data-visible", "visible");
+                            courseNum.text(inputVal);
+                        }
+                        break;
+                    case EPreviewStates.Next:
+                        if (inputVal + 1 <= rows.length) {
+                            rows.each(function (index, elem) {
+                                var rowVal = parseInt(elem.getAttribute("data-item-num"));
+                                var rowVisibility = elem.getAttribute("data-visible");
+                                if (rowVal == (inputVal + 1)) {
+                                    chosenEl = jQuery(elem);
+                                }
+                                if (rowVisibility == "visible") {
+                                    visibleEl = jQuery(elem);
+                                }
+                            });
+                            visibleEl.attr("data-visible", "hidden");
+                            chosenEl.attr("data-visible", "visible");
+                            input.val(inputVal + 1);
+                            courseNum.text(inputVal + 1);
+                        }
+                        break;
+                }
             }
-            // Create the media frame.
-            file_frame = wp.media.frames.file_frame = wp.media({
-                frame: 'select',
-                button: {
-                    text: "Add Course CSV File"
-                },
-                multiple: false,
-                library: {
-                    type: ['text/csv']
-                }
-            });
-            // When an image is selected, run a callback.
-            file_frame.on('select', function () {
-                var uploaded_info_box = jQuery(".uploaded-csv-information");
-                var run_import_btn = jQuery("#ld_settings_course_csv_import");
-                // We set multiple to false so only get one image from the uploader
-                attachment = file_frame.state().get('selection').first().toJSON();
-                jQuery("#" + calling_btn.attr('data-txt-field')).val(JSON.stringify(attachment));
-                uploaded_info_box.html("<strong>ID:</strong> " + attachment.id + "\n" +
-                    "<strong>Title:</strong> " + attachment.title + "\n" +
-                    "<strong>Filename:</strong> " + attachment.filename + "\n" +
-                    "<strong>URL:</strong> " + attachment.url + "\n" +
-                    "<strong>Link:</strong> <a href='" + attachment.link + "' target='_blank'>" + attachment.link + "</a>" + "\n" +
-                    "<strong>Type:</strong> " + attachment.type + "\n" +
-                    "<strong>Subtype:</strong> " + attachment.subtype + "\n" +
-                    "<strong>File Size:</strong> " + attachment.filesizeHumanReadable);
-                if (!uploaded_info_box.hasClass("block")) {
-                    uploaded_info_box.addClass("block");
-                }
-                // Remove the disabled attribute
-                run_import_btn.removeAttr('disabled');
-                ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Pending);
-            });
-            // Finally, open the modal
-            file_frame.open();
-        });
-        // Run Import Click Handler
-        new ClickHandler('CSVImportHandler', jQuery('#ld_settings_course_csv_import'), function (event) {
-            var csv_hidden_field = jQuery('#ld_setting_course_csv');
-            var data = {
-                'action': 'ld_csv_import',
-                'csv_json_obj': JSON.parse(csv_hidden_field.val())
-            };
-            ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Processing);
-            jQuery.post(ld_iet_ajax_obj.ajax_url, data, function (response) {
-                var json_parse = JSON.parse(response);
-                console.log("Run Import Response: ", json_parse);
-                if (json_parse.status == "Finished") {
-                    ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Finished);
-                }
-            });
-        });
-        new ClickHandler('CSVColumnAccordion', jQuery('.csv-upload-information-accordion-title'), function (event) {
-            jQuery(event.toElement)
-                .toggleClass("active")
-                .parent(".csv-upload-information-accordion-wrap")
-                .children(".csv-upload-information-accordion-content")
-                .slideToggle(300);
-        });
+        };
+        new ClickHandler('CSVUpload', jQuery('#ld_setting_course_csv_upload_btn'), CSVUpload);
+        new ClickHandler('CSVPreviewAndImport', jQuery('#ld_settings_course_csv_import'), CSVPreviewAndImport);
+        new ClickHandler('CSVColumnAccordion', jQuery('.csv-upload-information-accordion-title'), CSVColumnAccordion);
         new ClickHandler('CSVColumnItemClose', jQuery('.csv-pat-close'), CSVColumnItemCloseFn);
+        new ClickHandler('PreviewPrevious', jQuery("#ld-course-preview-prev"), function () { PreviewState(EPreviewStates.Previous); });
+        new ClickHandler('PreviewNext', jQuery("#ld-course-preview-next"), function () { PreviewState(EPreviewStates.Next); });
+        new ChangeHandler('PreviewChange', jQuery("#ld-preview-item-input"), function () { PreviewState(EPreviewStates.Change); });
         new DraggableHandler('csv-column-pattern', jQuery('.column-pattern'), {
             selection: false,
             sortableOptions: {
@@ -159,8 +288,9 @@ var Main = (function () {
         });
         // Registers all the click handlers to click events using jQuery
         ClickHandler.registerHandlers();
-        DraggableHandler.initializeDraggables();
+        ChangeHandler.registerHandlers();
+        DraggableHandler.registerHandlers();
     };
     return Main;
-})();
+}());
 Main.Run();

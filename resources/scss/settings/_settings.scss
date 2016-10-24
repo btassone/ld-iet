@@ -1,7 +1,8 @@
 @import "_variables";
+@import "_import-panel";
 
 .ld-iet-settings-wrap {
-  padding: $general-padding-size;
+  padding: $general-padding-size $general-padding-size $general-padding-size 0;
   box-sizing: border-box;
 }
 
@@ -47,6 +48,14 @@
 
   &[data-status="Processing"] {
     background: orange;
+  }
+
+  &[data-status="InPreview"] {
+    background: darkgreen;
+  }
+
+  &[data-status="Importing"] {
+    background: darkorange;
   }
 
   &[data-status="Finished"] {
@@ -165,6 +174,12 @@
         @include transform(translate(-50%, -50%) rotate(45deg) !important);
       }
     }
+  }
+}
+
+.column-pattern.disabled {
+  .ui-sortable-handle {
+    background: grey;
   }
 }
 

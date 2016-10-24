@@ -71,6 +71,10 @@ class MainAdminController {
 		return array();
 	}
 
+	public static function importPreviewView() {
+		return array();
+	}
+
 	/**
 	 * Handles the pre processing of data for the settings section
 	 *

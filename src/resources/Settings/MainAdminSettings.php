@@ -22,7 +22,7 @@ return (object) array(
 	"settings_sections" => array(
 		array(
 			'id' => 'ld_settings_section',
-			'title' => 'Main settings page field section',
+			'title' => '',
 			'callback' => function() {
 				$returned_data = MainAdminController::settingsSectionView();
 
@@ -34,58 +34,81 @@ return (object) array(
 				require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewSettingsSection.php");
 			},
 			'page' => 'ld-settings-page'
+		),
+		array(
+			'id' => 'ld_preview_section',
+			'title' => '',
+			'callback' => function() {
+
+			},
+			'page' => 'ld-preview-page'
 		)
 	),
 	"settings_fields" => array(
-		array(
-			'id' => 'ld_setting_course_csv',
-			'title' => 'Upload course CSV file',
-			'callback' => function() {
-				$returned_data = MainAdminController::uploaderFieldsView();
-				
-				require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewUploaderFields.php");
-			},
-			'page' => 'ld-settings-page',
-			'section' => 'ld_settings_section'
+		"ld_settings_section" => array(
+			array(
+				'id' => 'ld_setting_course_csv',
+				'title' => 'Upload course CSV file',
+				'callback' => function() {
+					$returned_data = MainAdminController::uploaderFieldsView();
+
+					require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewUploaderFields.php");
+				},
+				'page' => 'ld-settings-page',
+				'section' => 'ld_settings_section'
+			),
+			array(
+				'id' => 'ld_settings_course_csv_pattern',
+				'title' => 'Set CSV Import Column Pattern',
+				'callback' => function() {
+					$returned_data = MainAdminController::columnPatternView();
+
+					$csv_pattern = $returned_data['csv_pattern'];
+					$ordered_data = $returned_data['ordered_data'];
+
+					require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewColumnPattern.php");
+				},
+				'page' => 'ld-settings-page',
+				'section' => 'ld_settings_section'
+			),
+			array(
+				'id' => 'ld_settings_course_csv_pattern_disabled',
+				'title' => '',
+				'callback' => function() {
+					$returned_data = MainAdminController::disabledPatternView();
+
+					$disabled_pattern = $returned_data['disabled_data'];
+					$ordered_data = $returned_data['ordered_data'];
+
+					require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewDisabledPattern.php");
+				},
+				'page' => 'ld-settings-page',
+				'section' => 'ld_settings_section'
+			),
+			array(
+				'id' => 'ld_settings_course_csv_run',
+				'title' => 'Run the CSV Import',
+				'callback' => function() {
+					$returned_data = MainAdminController::runImportView();
+
+					require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewRunImport.php");
+				},
+				'page' => 'ld-settings-page',
+				'section' => 'ld_settings_section'
+			)
 		),
-		array (
-			'id' => 'ld_settings_course_csv_pattern',
-			'title' => 'Set CSV Import Column Pattern',
-			'callback' => function() {
-				$returned_data = MainAdminController::columnPatternView();
+		"ld_preview_section" => array(
+			array(
+				"id" => 'ld_setting_preview_csv',
+				'title' => 'CSV Upload Preview',
+				'callback' => function() {
+					$returned_data = MainAdminController::importPreviewView();
 
-				$csv_pattern = $returned_data['csv_pattern'];
-				$ordered_data = $returned_data['ordered_data'];
-
-				require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewColumnPattern.php");
-			},
-			'page' => 'ld-settings-page',
-			'section' => 'ld_settings_section'
-		),
-		array(
-			'id' => 'ld_settings_course_csv_pattern_disabled',
-			'title' => '',
-			'callback' => function() {
-				$returned_data = MainAdminController::disabledPatternView();
-
-				$disabled_pattern = $returned_data['disabled_data'];
-				$ordered_data = $returned_data['ordered_data'];
-
-				require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewDisabledPattern.php");
-			},
-			'page' => 'ld-settings-page',
-			'section' => 'ld_settings_section'
-		),
-		array(
-			'id' => 'ld_settings_course_csv_run',
-			'title' => 'Run the CSV Import',
-			'callback' => function() {
-				$returned_data = MainAdminController::runImportView();
-				
-				require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewRunImport.php");
-			},
-			'page' => 'ld-settings-page',
-			'section' => 'ld_settings_section'
+					require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewImportPreview.php");
+				},
+				'page' => 'ld-preview-page',
+				'section' => 'ld_preview_section'
+			)
 		)
 	)
 );
