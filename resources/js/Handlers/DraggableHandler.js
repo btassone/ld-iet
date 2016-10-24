@@ -12,7 +12,7 @@ var DraggableHandler = (function (_super) {
         this.target = target;
         this.options = options;
     }
-    DraggableHandler.initializeDraggables = function () {
+    DraggableHandler.registerHandlers = function () {
         var draggableHandlers = DraggableHandler.getInstances(DraggableHandler);
         draggableHandlers.forEach(function (value) {
             value.target.sortable(value.options.sortableOptions);

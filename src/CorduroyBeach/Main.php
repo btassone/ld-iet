@@ -81,6 +81,8 @@ class Main {
 			LD_IET_RESOURCE_URL_BASE . 'js/Handlers/BaseHandler.js', array(), '', true);
 		wp_register_script( 'ld-iet-click-handler',
 			LD_IET_RESOURCE_URL_BASE . 'js/Handlers/ClickHandler.js', array(), '', true);
+		wp_register_script( 'ld-iet-change-handler',
+			LD_IET_RESOURCE_URL_BASE . 'js/Handlers/ChangeHandler.js', array(), '', true);
 		wp_register_script( 'ld-iet-draggable-handler',
 			LD_IET_RESOURCE_URL_BASE . 'js/Handlers/DraggableHandler.js', array(), '', true);
 		wp_register_script( 'ld-iet-main',
@@ -95,6 +97,7 @@ class Main {
 		wp_enqueue_script( 'ld-iet-eimport-response-statuses' );
 		wp_enqueue_script( 'ld-iet-import-response-handler' );
 		wp_enqueue_script( 'ld-iet-base-handler' );
+		wp_enqueue_script( 'ld-iet-change-handler' );
 		wp_enqueue_script( 'ld-iet-click-handler' );
 		wp_enqueue_script( 'ld-iet-draggable-handler' );
 		wp_enqueue_script( 'ld-iet-main' );

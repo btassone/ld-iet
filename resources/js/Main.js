@@ -20,6 +20,125 @@ var Main = (function () {
     };
     // Note: Can't be tested in jasmine (jQuery)
     Main.RegisterClickHandlers = function () {
+        var CSVUpload = function (event) {
+            var calling_btn = jQuery('#ld_setting_course_csv_upload_btn');
+            event.preventDefault();
+            // If the media frame already exists, reopen it.
+            if (file_frame) {
+                file_frame.open();
+                return;
+            }
+            // Create the media frame.
+            file_frame = wp.media.frames.file_frame = wp.media({
+                frame: 'select',
+                button: {
+                    text: "Add Course CSV File"
+                },
+                multiple: false,
+                library: {
+                    type: ['text/csv']
+                }
+            });
+            // When an image is selected, run a callback.
+            file_frame.on('select', function () {
+                var uploaded_info_box = jQuery(".uploaded-csv-information");
+                var run_import_btn = jQuery("#ld_settings_course_csv_import");
+                // We set multiple to false so only get one image from the uploader
+                attachment = file_frame.state().get('selection').first().toJSON();
+                /*
+                 * ======= Important Logic Bit =======
+                 * Instance of when being clever doesn't help you when you come back to look at the project.
+                 *
+                 * This is the hidden field ld_settings_course_csv name jQuery("#" + calling_btn.attr('data-txt-field'))
+                 * This is where the uploaded csv attachment is being stringified into the hidden field for the impport
+                 * part later.
+                 */
+                jQuery("#" + calling_btn.attr('data-txt-field')).val(JSON.stringify(attachment));
+                uploaded_info_box.html("<strong>ID:</strong> " + attachment.id + "\n" +
+                    "<strong>Title:</strong> " + attachment.title + "\n" +
+                    "<strong>Filename:</strong> " + attachment.filename + "\n" +
+                    "<strong>URL:</strong> " + attachment.url + "\n" +
+                    "<strong>Link:</strong> <a href='" + attachment.link + "' target='_blank'>" + attachment.link + "</a>" + "\n" +
+                    "<strong>Type:</strong> " + attachment.type + "\n" +
+                    "<strong>Subtype:</strong> " + attachment.subtype + "\n" +
+                    "<strong>File Size:</strong> " + attachment.filesizeHumanReadable);
+                if (!uploaded_info_box.hasClass("block")) {
+                    uploaded_info_box.addClass("block");
+                }
+                // Remove the disabled attribute
+                run_import_btn.removeAttr('disabled');
+                ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Pending);
+            });
+            // Finally, open the modal
+            file_frame.open();
+        };
+        var CSVPreview = function (event) {
+            var csv_hidden_field = jQuery('#ld_setting_course_csv');
+            var data = {
+                'action': 'ld_csv_preview',
+                'csv_json_obj': JSON.parse(csv_hidden_field.val())
+            };
+            var importButton = jQuery("#ld_settings_course_csv_import");
+            ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Processing);
+            if (importButton.attr("value") == "Run Import Preview") {
+                // Disable the handlers
+                DraggableHandler.disableDraggables();
+                jQuery.post(ld_iet_ajax_obj.ajax_url, data, function (response) {
+                    var json_parse = JSON.parse(response);
+                    console.log("Run Import Response: ", json_parse);
+                    var mainContainer = jQuery(".ld-main-container");
+                    mainContainer.removeClass("no-panel");
+                    var importPreviewContainer = jQuery(".ld-preview-output-container");
+                    var columnNames = [];
+                    var massagedData = [];
+                    importButton.attr("value", "Run Import");
+                    jQuery(".column-pattern .ui-state-default").each(function (index, value) {
+                        columnNames.push(jQuery(value).attr('data-name').split("_").join(" "));
+                    });
+                    // TODO: This is where I left off
+                    json_parse.csv_data.forEach(function (csvOutput, item_index) {
+                        var tempArr = [];
+                        var recordContainer = document.createElement("div");
+                        recordContainer.classList.add("ld-preview-output-item-container");
+                        csvOutput.forEach(function (csvOutputField, index) {
+                            var columnItemLabel = document.createElement("label");
+                            var columnItemValue = document.createElement("span");
+                            var recordRowItem = document.createElement("div");
+                            columnItemLabel.innerText = columnNames[index] + ": ";
+                            columnItemValue.innerText = csvOutputField;
+                            recordRowItem.classList.add("ld-preview-output-record-row-item");
+                            recordRowItem.appendChild(columnItemLabel);
+                            recordRowItem.appendChild(columnItemValue);
+                            recordContainer.appendChild(recordRowItem);
+                            tempArr.push([columnNames[index], csvOutputField]);
+                        });
+                        recordContainer.setAttribute("data-item-num", item_index + 1);
+                        if (item_index == 0) {
+                            recordContainer.setAttribute("data-visible", "visible");
+                        }
+                        else {
+                            recordContainer.setAttribute("data-visible", "hidden");
+                        }
+                        massagedData.push(tempArr);
+                        importPreviewContainer.append(recordContainer);
+                    });
+                    // TODO: Re-enable
+                    if (json_parse.status == "Preview") {
+                        ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.InPreview);
+                    }
+                });
+            }
+            if (importButton.attr("value") == "Run Import") {
+                console.log("Run Import goes Here");
+            }
+        };
+        var CSVColumnAccordion = function (event) {
+            jQuery(event.toElement)
+                .toggleClass("active")
+                .parent(".csv-upload-information-accordion-wrap")
+                .children(".csv-upload-information-accordion-content")
+                .slideToggle(300);
+        };
         var CSVColumnItemCloseFn = function (event) {
             function switchColumns(e, col) {
                 var column = jQuery(e.currentTarget).parent();
@@ -83,122 +202,74 @@ var Main = (function () {
                 jQuery(event.toElement).css("background", "red");
             });
         };
-        // CSV Upload Click Handler
-        new ClickHandler('CSVUploadHandler', jQuery('#ld_setting_course_csv_upload_btn'), function (event) {
-            var calling_btn = jQuery('#ld_setting_course_csv_upload_btn');
-            event.preventDefault();
-            // If the media frame already exists, reopen it.
-            if (file_frame) {
-                file_frame.open();
-                return;
-            }
-            // Create the media frame.
-            file_frame = wp.media.frames.file_frame = wp.media({
-                frame: 'select',
-                button: {
-                    text: "Add Course CSV File"
-                },
-                multiple: false,
-                library: {
-                    type: ['text/csv']
-                }
-            });
-            // When an image is selected, run a callback.
-            file_frame.on('select', function () {
-                var uploaded_info_box = jQuery(".uploaded-csv-information");
-                var run_import_btn = jQuery("#ld_settings_course_csv_import");
-                // We set multiple to false so only get one image from the uploader
-                attachment = file_frame.state().get('selection').first().toJSON();
-                /*
-                 * ======= Important Logic Bit =======
-                 * Instance of when being clever doesn't help you when you come back to look at the project.
-                 *
-                 * This is the hidden field ld_settings_course_csv name jQuery("#" + calling_btn.attr('data-txt-field'))
-                 * This is where the uploaded csv attachment is being stringified into the hidden field for the impport
-                 * part later.
-                 */
-                jQuery("#" + calling_btn.attr('data-txt-field')).val(JSON.stringify(attachment));
-                uploaded_info_box.html("<strong>ID:</strong> " + attachment.id + "\n" +
-                    "<strong>Title:</strong> " + attachment.title + "\n" +
-                    "<strong>Filename:</strong> " + attachment.filename + "\n" +
-                    "<strong>URL:</strong> " + attachment.url + "\n" +
-                    "<strong>Link:</strong> <a href='" + attachment.link + "' target='_blank'>" + attachment.link + "</a>" + "\n" +
-                    "<strong>Type:</strong> " + attachment.type + "\n" +
-                    "<strong>Subtype:</strong> " + attachment.subtype + "\n" +
-                    "<strong>File Size:</strong> " + attachment.filesizeHumanReadable);
-                if (!uploaded_info_box.hasClass("block")) {
-                    uploaded_info_box.addClass("block");
-                }
-                // Remove the disabled attribute
-                run_import_btn.removeAttr('disabled');
-                ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Pending);
-            });
-            // Finally, open the modal
-            file_frame.open();
-        });
-        // Run Import Click Handler
-        new ClickHandler('CSVPreviewHandler', jQuery('#ld_settings_course_csv_import'), function (event) {
-            var csv_hidden_field = jQuery('#ld_setting_course_csv');
-            var data = {
-                'action': 'ld_csv_preview',
-                'csv_json_obj': JSON.parse(csv_hidden_field.val())
-            };
-            var importButton = jQuery("#ld_settings_course_csv_import");
-            ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.Processing);
-            if (importButton.attr("value") == "Run Import Preview") {
-                // Disable the handlers
-                DraggableHandler.disableDraggables();
-                jQuery.post(ld_iet_ajax_obj.ajax_url, data, function (response) {
-                    var json_parse = JSON.parse(response);
-                    console.log("Run Import Response: ", json_parse);
-                    console.log("Unserialized Data:", json_parse.serialized_data);
-                    var mainContainer = jQuery(".ld-main-container");
-                    mainContainer.removeClass("no-panel");
-                    var importPreviewContainer = jQuery(".ld-preview-output-container");
-                    var columnNames = [];
-                    var massagedData = [];
-                    importButton.attr("value", "Run Import");
-                    jQuery(".column-pattern .ui-state-default").each(function (index, value) {
-                        columnNames.push(jQuery(value).attr('data-name').split("_").join(" "));
-                    });
-                    // TODO: This is where I left off
-                    json_parse.csv_data.forEach(function (csvOutput) {
-                        var tempArr = [];
-                        var recordContainer = document.createElement("div");
-                        recordContainer.classList.add("ld-preview-output-item-container");
-                        csvOutput.forEach(function (csvOutputField, index) {
-                            var columnItemLabel = document.createElement("label");
-                            var columnItemValue = document.createElement("span");
-                            var recordRowItem = document.createElement("div");
-                            columnItemLabel.innerText = columnNames[index] + ": ";
-                            columnItemValue.innerText = csvOutputField;
-                            recordRowItem.classList.add("ld-preview-output-record-row-item");
-                            recordRowItem.appendChild(columnItemLabel);
-                            recordRowItem.appendChild(columnItemValue);
-                            recordContainer.appendChild(recordRowItem);
-                            tempArr.push([columnNames[index], csvOutputField]);
-                        });
-                        massagedData.push(tempArr);
-                        importPreviewContainer.append(recordContainer);
-                    });
-                    // TODO: Re-enable
-                    if (json_parse.status == "Preview") {
-                        ImportResponseUtility.changeResponseStatus(EImportResponseStatuses.InPreview);
+        var PreviewPrevious = function (event) {
+            var rows = jQuery(".ld-preview-output-item-container");
+            var input = jQuery("#ld-preview-item-input");
+            var inputVal = parseInt(input.val());
+            if (inputVal && inputVal - 1 > 0) {
+                var visibleEl_1 = null;
+                var chosenEl_1 = null;
+                rows.each(function (index, elem) {
+                    var rowVal = parseInt(elem.getAttribute("data-item-num"));
+                    var rowVisibility = elem.getAttribute("data-visible");
+                    if (rowVal == (inputVal - 1)) {
+                        chosenEl_1 = jQuery(elem);
+                    }
+                    if (rowVisibility == "visible") {
+                        visibleEl_1 = jQuery(elem);
                     }
                 });
+                visibleEl_1.attr("data-visible", "hidden");
+                chosenEl_1.attr("data-visible", "visible");
+                input.val(inputVal - 1);
             }
-            if (importButton.attr("value") == "Run Import") {
-                console.log("Run Import goes Here");
+        };
+        var PreviewNext = function (event) {
+            var rows = jQuery(".ld-preview-output-item-container");
+            var input = jQuery("#ld-preview-item-input");
+            var inputVal = parseInt(input.val());
+            if (inputVal && inputVal + 1 <= rows.length) {
+                var visibleEl_2 = null;
+                var chosenEl_2 = null;
+                rows.each(function (index, elem) {
+                    var rowVal = parseInt(elem.getAttribute("data-item-num"));
+                    var rowVisibility = elem.getAttribute("data-visible");
+                    if (rowVal == (inputVal + 1)) {
+                        chosenEl_2 = jQuery(elem);
+                    }
+                    if (rowVisibility == "visible") {
+                        visibleEl_2 = jQuery(elem);
+                    }
+                });
+                visibleEl_2.attr("data-visible", "hidden");
+                chosenEl_2.attr("data-visible", "visible");
+                input.val(inputVal + 1);
             }
-        });
-        new ClickHandler('CSVColumnAccordion', jQuery('.csv-upload-information-accordion-title'), function (event) {
-            jQuery(event.toElement)
-                .toggleClass("active")
-                .parent(".csv-upload-information-accordion-wrap")
-                .children(".csv-upload-information-accordion-content")
-                .slideToggle(300);
-        });
+        };
+        var PreviewChange = function (event) {
+            var rows = jQuery(".ld-preview-output-item-container");
+            var input = jQuery("#ld-preview-item-input");
+            var inputVal = parseInt(input.val());
+            if (inputVal && (inputVal > 0 && inputVal <= rows.length)) {
+                var visibleEl_3 = null;
+                var chosenEl = null;
+                rows.each(function (index, elem) {
+                    if (jQuery(elem).attr("data-visible") == "visible") {
+                        visibleEl_3 = jQuery(elem);
+                    }
+                });
+                chosenEl = jQuery(rows[inputVal - 1]);
+                visibleEl_3.attr("data-visible", "hidden");
+                chosenEl.attr("data-visible", "visible");
+            }
+        };
+        new ClickHandler('CSVUpload', jQuery('#ld_setting_course_csv_upload_btn'), CSVUpload);
+        new ClickHandler('CSVPreview', jQuery('#ld_settings_course_csv_import'), CSVPreview);
+        new ClickHandler('CSVColumnAccordion', jQuery('.csv-upload-information-accordion-title'), CSVColumnAccordion);
         new ClickHandler('CSVColumnItemClose', jQuery('.csv-pat-close'), CSVColumnItemCloseFn);
+        new ClickHandler('PreviewPrevious', jQuery("#ld-course-preview-prev"), PreviewPrevious);
+        new ClickHandler('PreviewNext', jQuery("#ld-course-preview-next"), PreviewNext);
+        new ChangeHandler('PreviewChange', jQuery("#ld-preview-item-input"), PreviewChange);
         new DraggableHandler('csv-column-pattern', jQuery('.column-pattern'), {
             selection: false,
             sortableOptions: {
@@ -209,7 +280,8 @@ var Main = (function () {
         });
         // Registers all the click handlers to click events using jQuery
         ClickHandler.registerHandlers();
-        DraggableHandler.initializeDraggables();
+        ChangeHandler.registerHandlers();
+        DraggableHandler.registerHandlers();
     };
     return Main;
 }());

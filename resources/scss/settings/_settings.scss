@@ -2,7 +2,7 @@
 @import "_import-panel";
 
 .ld-iet-settings-wrap {
-  padding: $general-padding-size;
+  padding: $general-padding-size $general-padding-size $general-padding-size 0;
   box-sizing: border-box;
 }
 

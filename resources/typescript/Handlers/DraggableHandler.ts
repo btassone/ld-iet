@@ -11,7 +11,7 @@ class DraggableHandler extends BaseHandler {
         this.options = options;
     }
 
-    static initializeDraggables() {
+    static registerHandlers() {
         let draggableHandlers: Array<DraggableHandler> = DraggableHandler.getInstances<DraggableHandler>(DraggableHandler) as Array<DraggableHandler>;
 
         draggableHandlers.forEach(function(value){

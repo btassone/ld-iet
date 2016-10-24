@@ -31,6 +31,38 @@
   }
 }
 
+.ld-preview-output-controls-container {
+  padding: 10px 0;
+  box-sizing: border-box;
+
+  @include display(flex);
+  @include justify-content(space-between);
+  @include align-items(center);
+
+  button {
+    background: none;
+    color: #fff;
+    border: none;
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    line-height: 36px;
+  }
+
+  input {
+    border: none;
+    border-bottom: 1px solid #fff;
+    padding-bottom: 4px;
+    width: 80px;
+    text-align: center;
+    background: none;
+    color: #fff;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+  }
+}
+
 .ld-preview-output-container {
   overflow: hidden;
   background: #f1f1f1;
@@ -47,6 +79,14 @@
   left: 50%;
 
   @include transform(translate(-50%, -50%));
+
+  &[data-visible="visible"] {
+    display: block;
+  }
+
+  &[data-visible="hidden"] {
+    display: none;
+  }
 }
 
 @media(max-width: 800px) {
