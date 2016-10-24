@@ -8,17 +8,24 @@ use CorduroyBeach\Utilities\LDUtility;
 // Returns the settings object for use in Admin Page creation.
 return (object) array(
 	"wrap" => array(
-		'page_title' => 'Learn Dash Import / Export Tool',
-		'menu_title' => 'LearnDash IET',
-		'capability' => 'manage_options',
-		'menu_slug' => 'ld-settings-page',
-		'callback' => function(){
-			require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewWrap.php");
-		},
-		'icon' => LD_IET_RESOURCE_URL_BASE . 'img/plugin-icon-20x20.png',
-		'position' => null
+		array(
+			'page_title' => 'Learn Dash Import / Export Tool',
+			'menu_title' => 'LearnDash IET',
+			'capability' => 'manage_options',
+			'menu_slug' => 'ld-settings-page',
+			'callback' => function(){
+				$active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'course_import';
+
+				require_once(LD_IET_SETTINGS_BASE . "Views/Main/MainViewWrap.php");
+			},
+			'icon' => LD_IET_RESOURCE_URL_BASE . 'img/plugin-icon-20x20.png',
+			'position' => null
+       ),
 	),
-	"register_setting" => ["ld_options", "ld_options"],
+	"register_setting" => array(
+		["ld_options", "ld_options"],
+		["ld_options", "ld_quiz_ops"]
+	),
 	"settings_sections" => array(
 		array(
 			'id' => 'ld_settings_section',
@@ -42,6 +49,14 @@ return (object) array(
 
 			},
 			'page' => 'ld-preview-page'
+		),
+		array(
+			'id' => 'ld_quiz_section',
+			'title' => '',
+			'callback' => function() {
+
+			},
+			'page' => 'ld-quiz-page'
 		)
 	),
 	"settings_fields" => array(
@@ -108,6 +123,17 @@ return (object) array(
 				},
 				'page' => 'ld-preview-page',
 				'section' => 'ld_preview_section'
+			)
+		),
+		"ld_quiz_section" => array(
+			array(
+				"id" => 'ld_quiz_import',
+				"title" => '',
+				"callback" => function(){
+
+				},
+				"page" => 'ld-quiz-page',
+				"section" => 'ld_quiz_section'
 			)
 		)
 	)

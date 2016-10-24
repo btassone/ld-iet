@@ -32,15 +32,17 @@ class SettingsFactory {
 	 */
 	public function setupAdminPages() {
 		foreach($this->getSettings() as $settingsSet) {
-			add_menu_page(
-				$settingsSet->wrap["page_title"],
-				$settingsSet->wrap["menu_title"],
-				$settingsSet->wrap['capability'],
-				$settingsSet->wrap['menu_slug'],
-				$settingsSet->wrap['callback'],
-				$settingsSet->wrap['icon'],
-				$settingsSet->wrap['position']
-			);
+			foreach($settingsSet->wrap as $wrap) {
+				add_menu_page(
+					$wrap["page_title"],
+					$wrap["menu_title"],
+					$wrap['capability'],
+					$wrap['menu_slug'],
+					$wrap['callback'],
+					$wrap['icon'],
+					$wrap['position']
+				);
+			}
 		}
 	}
 
@@ -49,7 +51,9 @@ class SettingsFactory {
 	 */
 	public function setupOptions() {
 		foreach($this->getSettings() as $settingsSet) {
-			register_setting($settingsSet->register_setting[0], $settingsSet->register_setting[1]);
+			foreach($settingsSet->register_setting as $rs) {
+				register_setting( $rs[0], $rs[1] );
+			}
 
 			foreach($settingsSet->settings_sections as $section) {
 				add_settings_section(
