@@ -105,7 +105,7 @@ var Main = (function () {
                             var columnItemValue = document.createElement("span");
                             var recordRowItem = document.createElement("div");
                             columnItemLabel.innerText = columnNames[index] + ": ";
-                            columnItemValue.innerText = csvOutputField;
+                            columnItemValue.innerText = csvOutputField == "" ? 'none' : csvOutputField;
                             recordRowItem.classList.add("ld-preview-output-record-row-item");
                             recordRowItem.appendChild(columnItemLabel);
                             recordRowItem.appendChild(columnItemValue);
@@ -202,74 +202,74 @@ var Main = (function () {
                 jQuery(event.toElement).css("background", "red");
             });
         };
-        var PreviewPrevious = function (event) {
+        var PreviewState = function (state) {
             var rows = jQuery(".ld-preview-output-item-container");
             var input = jQuery("#ld-preview-item-input");
+            var courseNum = jQuery("#course-num");
             var inputVal = parseInt(input.val());
-            if (inputVal && inputVal - 1 > 0) {
-                var visibleEl_1 = null;
-                var chosenEl_1 = null;
-                rows.each(function (index, elem) {
-                    var rowVal = parseInt(elem.getAttribute("data-item-num"));
-                    var rowVisibility = elem.getAttribute("data-visible");
-                    if (rowVal == (inputVal - 1)) {
-                        chosenEl_1 = jQuery(elem);
-                    }
-                    if (rowVisibility == "visible") {
-                        visibleEl_1 = jQuery(elem);
-                    }
-                });
-                visibleEl_1.attr("data-visible", "hidden");
-                chosenEl_1.attr("data-visible", "visible");
-                input.val(inputVal - 1);
-            }
-        };
-        var PreviewNext = function (event) {
-            var rows = jQuery(".ld-preview-output-item-container");
-            var input = jQuery("#ld-preview-item-input");
-            var inputVal = parseInt(input.val());
-            if (inputVal && inputVal + 1 <= rows.length) {
-                var visibleEl_2 = null;
-                var chosenEl_2 = null;
-                rows.each(function (index, elem) {
-                    var rowVal = parseInt(elem.getAttribute("data-item-num"));
-                    var rowVisibility = elem.getAttribute("data-visible");
-                    if (rowVal == (inputVal + 1)) {
-                        chosenEl_2 = jQuery(elem);
-                    }
-                    if (rowVisibility == "visible") {
-                        visibleEl_2 = jQuery(elem);
-                    }
-                });
-                visibleEl_2.attr("data-visible", "hidden");
-                chosenEl_2.attr("data-visible", "visible");
-                input.val(inputVal + 1);
-            }
-        };
-        var PreviewChange = function (event) {
-            var rows = jQuery(".ld-preview-output-item-container");
-            var input = jQuery("#ld-preview-item-input");
-            var inputVal = parseInt(input.val());
-            if (inputVal && (inputVal > 0 && inputVal <= rows.length)) {
-                var visibleEl_3 = null;
-                var chosenEl = null;
-                rows.each(function (index, elem) {
-                    if (jQuery(elem).attr("data-visible") == "visible") {
-                        visibleEl_3 = jQuery(elem);
-                    }
-                });
-                chosenEl = jQuery(rows[inputVal - 1]);
-                visibleEl_3.attr("data-visible", "hidden");
-                chosenEl.attr("data-visible", "visible");
+            var visibleEl = null;
+            var chosenEl = null;
+            if (inputVal) {
+                switch (state) {
+                    case EPreviewStates.Previous:
+                        if (inputVal - 1 > 0) {
+                            rows.each(function (index, elem) {
+                                var rowVal = parseInt(elem.getAttribute("data-item-num"));
+                                var rowVisibility = elem.getAttribute("data-visible");
+                                if (rowVal == (inputVal - 1)) {
+                                    chosenEl = jQuery(elem);
+                                }
+                                if (rowVisibility == "visible") {
+                                    visibleEl = jQuery(elem);
+                                }
+                            });
+                            visibleEl.attr("data-visible", "hidden");
+                            chosenEl.attr("data-visible", "visible");
+                            input.val(inputVal - 1);
+                            courseNum.text(inputVal - 1);
+                        }
+                        break;
+                    case EPreviewStates.Change:
+                        if (inputVal > 0 && inputVal <= rows.length) {
+                            rows.each(function (index, elem) {
+                                if (jQuery(elem).attr("data-visible") == "visible") {
+                                    visibleEl = jQuery(elem);
+                                }
+                            });
+                            chosenEl = jQuery(rows[inputVal - 1]);
+                            visibleEl.attr("data-visible", "hidden");
+                            chosenEl.attr("data-visible", "visible");
+                            courseNum.text(inputVal);
+                        }
+                        break;
+                    case EPreviewStates.Next:
+                        if (inputVal + 1 <= rows.length) {
+                            rows.each(function (index, elem) {
+                                var rowVal = parseInt(elem.getAttribute("data-item-num"));
+                                var rowVisibility = elem.getAttribute("data-visible");
+                                if (rowVal == (inputVal + 1)) {
+                                    chosenEl = jQuery(elem);
+                                }
+                                if (rowVisibility == "visible") {
+                                    visibleEl = jQuery(elem);
+                                }
+                            });
+                            visibleEl.attr("data-visible", "hidden");
+                            chosenEl.attr("data-visible", "visible");
+                            input.val(inputVal + 1);
+                            courseNum.text(inputVal + 1);
+                        }
+                        break;
+                }
             }
         };
         new ClickHandler('CSVUpload', jQuery('#ld_setting_course_csv_upload_btn'), CSVUpload);
         new ClickHandler('CSVPreview', jQuery('#ld_settings_course_csv_import'), CSVPreview);
         new ClickHandler('CSVColumnAccordion', jQuery('.csv-upload-information-accordion-title'), CSVColumnAccordion);
         new ClickHandler('CSVColumnItemClose', jQuery('.csv-pat-close'), CSVColumnItemCloseFn);
-        new ClickHandler('PreviewPrevious', jQuery("#ld-course-preview-prev"), PreviewPrevious);
-        new ClickHandler('PreviewNext', jQuery("#ld-course-preview-next"), PreviewNext);
-        new ChangeHandler('PreviewChange', jQuery("#ld-preview-item-input"), PreviewChange);
+        new ClickHandler('PreviewPrevious', jQuery("#ld-course-preview-prev"), function () { PreviewState(EPreviewStates.Previous); });
+        new ClickHandler('PreviewNext', jQuery("#ld-course-preview-next"), function () { PreviewState(EPreviewStates.Next); });
+        new ChangeHandler('PreviewChange', jQuery("#ld-preview-item-input"), function () { PreviewState(EPreviewStates.Change); });
         new DraggableHandler('csv-column-pattern', jQuery('.column-pattern'), {
             selection: false,
             sortableOptions: {

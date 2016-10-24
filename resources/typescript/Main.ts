@@ -134,7 +134,7 @@ class Main {
                             let recordRowItem: HTMLDivElement = document.createElement("div");
 
                             columnItemLabel.innerText = columnNames[index] + ": ";
-                            columnItemValue.innerText = csvOutputField;
+                            columnItemValue.innerText = csvOutputField == "" ? 'none' : csvOutputField;
 
                             recordRowItem.classList.add("ld-preview-output-record-row-item");
                             recordRowItem.appendChild(columnItemLabel);
@@ -168,6 +168,7 @@ class Main {
                 console.log("Run Import goes Here");
             }
         };
+
         let CSVColumnAccordion: any = function(event) {
             jQuery(event.toElement)
                 .toggleClass("active")
@@ -258,79 +259,77 @@ class Main {
             });
         };
 
-        let PreviewPrevious: any = function(event) {
+        let PreviewState: any = function(state: EPreviewStates) {
             let rows:JQuery = jQuery(".ld-preview-output-item-container");
             let input:JQuery = jQuery("#ld-preview-item-input");
+            let courseNum:JQuery = jQuery("#course-num");
             let inputVal: number = parseInt(input.val());
+            let visibleEl:JQuery = null;
+            let chosenEl:JQuery = null;
 
-            if(inputVal && inputVal - 1 > 0) {
-                let visibleEl:JQuery = null;
-                let chosenEl:JQuery = null;
+            if(inputVal) {
+                switch (state) {
+                    case EPreviewStates.Previous:
+                        if(inputVal - 1 > 0) {
+                            rows.each((index: number, elem: Element) => {
+                                let rowVal: number = parseInt(elem.getAttribute("data-item-num"));
+                                let rowVisibility: string = elem.getAttribute("data-visible");
 
-                rows.each((index: number, elem: Element) => {
-                    let rowVal: number = parseInt(elem.getAttribute("data-item-num"));
-                    let rowVisibility: string = elem.getAttribute("data-visible");
+                                if( rowVal == (inputVal - 1) ) {
+                                    chosenEl = jQuery(elem);
+                                }
 
-                    if( rowVal == (inputVal - 1) ) {
-                        chosenEl = jQuery(elem);
-                    }
+                                if(rowVisibility == "visible") {
+                                    visibleEl = jQuery(elem);
+                                }
+                            });
 
-                    if(rowVisibility == "visible") {
-                        visibleEl = jQuery(elem);
-                    }
-                });
+                            visibleEl.attr("data-visible", "hidden");
+                            chosenEl.attr("data-visible", "visible");
 
-                visibleEl.attr("data-visible", "hidden");
-                chosenEl.attr("data-visible", "visible");
-                input.val(inputVal - 1);
-            }
-        };
-        let PreviewNext: any = function(event) {
-            let rows:JQuery = jQuery(".ld-preview-output-item-container");
-            let input:JQuery = jQuery("#ld-preview-item-input");
-            let inputVal: number = parseInt(input.val());
+                            input.val(inputVal - 1);
+                            courseNum.text(inputVal - 1);
+                        }
+                        break;
+                    case EPreviewStates.Change:
+                        if(inputVal > 0 && inputVal <= rows.length) {
+                            rows.each((index: number, elem: Element) => {
+                                if(jQuery(elem).attr("data-visible") == "visible"){
+                                    visibleEl = jQuery(elem);
+                                }
+                            });
 
-            if(inputVal && inputVal + 1 <= rows.length) {
-                let visibleEl:JQuery = null;
-                let chosenEl:JQuery = null;
+                            chosenEl = jQuery(rows[inputVal-1]);
 
-                rows.each((index: number, elem: Element) => {
-                    let rowVal: number = parseInt(elem.getAttribute("data-item-num"));
-                    let rowVisibility: string = elem.getAttribute("data-visible");
+                            visibleEl.attr("data-visible", "hidden");
+                            chosenEl.attr("data-visible", "visible");
 
-                    if( rowVal == (inputVal + 1) ) {
-                        chosenEl = jQuery(elem);
-                    }
+                            courseNum.text(inputVal);
+                        }
+                        break;
+                    case EPreviewStates.Next:
+                        if(inputVal + 1 <= rows.length) {
+                            rows.each((index: number, elem: Element) => {
+                                let rowVal: number = parseInt(elem.getAttribute("data-item-num"));
+                                let rowVisibility: string = elem.getAttribute("data-visible");
 
-                    if(rowVisibility == "visible") {
-                        visibleEl = jQuery(elem);
-                    }
-                });
+                                if( rowVal == (inputVal + 1) ) {
+                                    chosenEl = jQuery(elem);
+                                }
 
-                visibleEl.attr("data-visible", "hidden");
-                chosenEl.attr("data-visible", "visible");
-                input.val(inputVal + 1);
-            }
-        };
-        let PreviewChange: any = function(event) {
-            let rows:JQuery = jQuery(".ld-preview-output-item-container");
-            let input:JQuery = jQuery("#ld-preview-item-input");
-            let inputVal: number = parseInt(input.val());
+                                if(rowVisibility == "visible") {
+                                    visibleEl = jQuery(elem);
+                                }
+                            });
 
-            if(inputVal && (inputVal > 0 && inputVal <= rows.length)) {
-                let visibleEl:JQuery = null;
-                let chosenEl:JQuery = null;
+                            visibleEl.attr("data-visible", "hidden");
+                            chosenEl.attr("data-visible", "visible");
 
-                rows.each((index: number, elem: Element) => {
-                    if(jQuery(elem).attr("data-visible") == "visible"){
-                        visibleEl = jQuery(elem);
-                    }
-                });
-
-                chosenEl = jQuery(rows[inputVal-1]);
-
-                visibleEl.attr("data-visible", "hidden");
-                chosenEl.attr("data-visible", "visible");
+                            input.val(inputVal + 1);
+                            courseNum.text(inputVal + 1);
+                        }
+                        break;
+                }
             }
         };
 
@@ -338,10 +337,10 @@ class Main {
         new ClickHandler('CSVPreview', jQuery('#ld_settings_course_csv_import'), CSVPreview);
         new ClickHandler('CSVColumnAccordion', jQuery('.csv-upload-information-accordion-title'), CSVColumnAccordion);
         new ClickHandler('CSVColumnItemClose', jQuery('.csv-pat-close'), CSVColumnItemCloseFn);
-        new ClickHandler('PreviewPrevious', jQuery("#ld-course-preview-prev"), PreviewPrevious);
-        new ClickHandler('PreviewNext', jQuery("#ld-course-preview-next"), PreviewNext);
 
-        new ChangeHandler('PreviewChange', jQuery("#ld-preview-item-input"), PreviewChange);
+        new ClickHandler('PreviewPrevious', jQuery("#ld-course-preview-prev"), () => { PreviewState(EPreviewStates.Previous); });
+        new ClickHandler('PreviewNext', jQuery("#ld-course-preview-next"), () => { PreviewState(EPreviewStates.Next); });
+        new ChangeHandler('PreviewChange', jQuery("#ld-preview-item-input"), () => { PreviewState(EPreviewStates.Change); });
 
         new DraggableHandler('csv-column-pattern', jQuery('.column-pattern'), {
             selection: false,

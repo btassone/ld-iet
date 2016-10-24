@@ -19,12 +19,41 @@
   margin-top: 30px;
   box-sizing: border-box;
   background: #046380;
-  height: 600px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+}
 
-  .title {
+.ld-preview-output-record-row-item {
+  color: #046380;
+  padding: 10px;
+
+  @include display(flex);
+  @include align-items(center);
+  @include justify-content(flex-start);
+
+  &:nth-child(even) {
+    background: #ddd;
+  }
+
+  label {
+    text-transform: capitalize;
+    font-weight: 700;
+    width: 160px;
+    border-right: 1px solid #046380;
+    padding-right: 10px;
+  }
+
+  span { padding-left: 10px; }
+}
+
+.ld-main-import-preview-header {
+
+  @include display(flex);
+  @include justify-content(space-between);
+  @include align-items(center);
+
+  .title, .course-num {
     margin-top: 0;
     color: #fff;
     text-transform: uppercase;
@@ -72,14 +101,6 @@
 }
 
 .ld-preview-output-item-container {
-  position: absolute;
-  width: calc(100% - 20px);
-  height: calc(100% - 20px);
-  top: 50%;
-  left: 50%;
-
-  @include transform(translate(-50%, -50%));
-
   &[data-visible="visible"] {
     display: block;
   }

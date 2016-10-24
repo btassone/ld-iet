@@ -75,6 +75,8 @@ class Main {
 	public static function LoadAdminJavascript() {
 		wp_register_script( 'ld-iet-eimport-response-statuses',
 			LD_IET_RESOURCE_URL_BASE . 'js/Enums/EImportResponseStatuses.js', array(), '', true);
+		wp_register_script( 'ld-iet-epreview-states',
+			LD_IET_RESOURCE_URL_BASE . 'js/Enums/EPreviewStates.js', array(), '', true);
 		wp_register_script( 'ld-iet-import-response-handler',
 			LD_IET_RESOURCE_URL_BASE . 'js/Utilities/ImportResponseUtility.js', array(), '', true);
 		wp_register_script( 'ld-iet-base-handler',
@@ -95,6 +97,7 @@ class Main {
 		wp_enqueue_script( 'jquery-ext-ui', '//code.jquery.com/ui/1.12.0/jquery-ui.min.js', 'jquery', false, true );
 
 		wp_enqueue_script( 'ld-iet-eimport-response-statuses' );
+		wp_enqueue_script( 'ld-iet-epreview-states' );
 		wp_enqueue_script( 'ld-iet-import-response-handler' );
 		wp_enqueue_script( 'ld-iet-base-handler' );
 		wp_enqueue_script( 'ld-iet-change-handler' );
