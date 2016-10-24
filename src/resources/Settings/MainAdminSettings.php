@@ -54,7 +54,7 @@ return (object) array(
 			'id' => 'ld_quiz_section',
 			'title' => '',
 			'callback' => function() {
-
+				require_once(LD_IET_SETTINGS_BASE . "Views/Quiz/QuizSettingsSection.php");
 			},
 			'page' => 'ld-quiz-page'
 		)
@@ -128,9 +128,18 @@ return (object) array(
 		"ld_quiz_section" => array(
 			array(
 				"id" => 'ld_quiz_import',
-				"title" => '',
+				"title" => 'Import Quiz By Course',
 				"callback" => function(){
-					var_dump($_POST['created_id']);
+					//				$created_ids = json_decode($_POST['created_id']);
+					$created_ids = json_decode('[701,702,703,704,705,706,707,708]');
+					$post_args = array(
+						"post__in" => $created_ids,
+						"post_type" => 'sfwd-courses',
+						'posts_per_page'   => -1
+					);
+					$posts = get_posts($post_args);
+
+					require_once(LD_IET_SETTINGS_BASE . "Views/Quiz/QuizCourseItemWrap.php");
 				},
 				"page" => 'ld-quiz-page',
 				"section" => 'ld_quiz_section'

@@ -1,5 +1,6 @@
 @import "_variables";
 @import "_import-panel";
+@import "_quiz-import";
 
 .ld-iet-settings-wrap {
   padding: $general-padding-size $general-padding-size $general-padding-size 0;
@@ -85,11 +86,7 @@
   }
 }
 
-.csv-upload-information-accordion-wrap {
-  margin-top: 30px;
-}
-
-.csv-upload-information-accordion-title {
+.csv-upload-information-accordion-title, .ld-quiz-import-course-title {
   font-weight: 700;
   color: #ffffff;
   background: #046380;
@@ -139,7 +136,7 @@
   color: #f1f1f1;
 }
 
-.csv-upload-information-accordion-content {
+.csv-upload-information-accordion-content, .ld-quiz-import-course-content {
   display: none;
 }
 

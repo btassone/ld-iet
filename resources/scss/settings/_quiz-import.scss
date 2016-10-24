@@ -1,0 +1,56 @@
+.ld-quiz-import-course-item {
+  margin-bottom: 10px;
+
+  &:last-child { margin-bottom: 0; }
+}
+
+.ld-quiz-import-course-content-container {
+  padding-top: 20px;
+
+  @include display(flex);
+
+  .ld-quiz-imported-course-info-pane {
+    width: 40%;
+    background: #046380;
+  }
+
+  .ld-quiz-import-action-pane {
+    width: 60%;
+    padding-left: 20px;
+    box-sizing: border-box;
+
+    .title { margin-bottom: 10px; }
+  }
+}
+
+.ld-quiz-course-item-property-row {
+  padding: 10px;
+  box-sizing: border-box;
+  color: #046380;
+
+  @include display(flex);
+  @include justify-content(flex-start);
+
+  &:nth-child(even) {
+    background: #ddd;
+  }
+
+  label {
+    width: 180px;
+    font-weight: 700;
+  }
+}
+
+.ld-quiz-imported-course-info-pane-container {
+  background: #f1f1f1;
+}
+
+.ld-quiz-imported-course-info-pane-title, .ld-quiz-import-action-pane {
+  .title {
+    font-weight: 700;
+    color: #fff;
+    padding: 10px;
+    margin: 0;
+    background: #0085ba;
+  }
+}

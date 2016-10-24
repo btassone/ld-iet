@@ -181,6 +181,66 @@
     width: 100%;
     margin-left: 0; } }
 
+.ld-quiz-import-course-item {
+  margin-bottom: 10px; }
+  .ld-quiz-import-course-item:last-child {
+    margin-bottom: 0; }
+
+.ld-quiz-import-course-content-container {
+  padding-top: 20px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex; }
+  .ld-quiz-import-course-content-container .ld-quiz-imported-course-info-pane {
+    width: 40%;
+    background: #046380; }
+  .ld-quiz-import-course-content-container .ld-quiz-import-action-pane {
+    width: 60%;
+    padding-left: 20px;
+    box-sizing: border-box; }
+    .ld-quiz-import-course-content-container .ld-quiz-import-action-pane .title {
+      margin-bottom: 10px; }
+
+.ld-quiz-course-item-property-row {
+  padding: 10px;
+  box-sizing: border-box;
+  color: #046380;
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -moz-box-pack: start;
+  box-pack: start;
+  -webkit-justify-content: flex-start;
+  -moz-justify-content: flex-start;
+  -ms-justify-content: flex-start;
+  -o-justify-content: flex-start;
+  justify-content: flex-start;
+  -ms-flex-pack: start; }
+  .ld-quiz-course-item-property-row:nth-child(even) {
+    background: #ddd; }
+  .ld-quiz-course-item-property-row label {
+    width: 180px;
+    font-weight: 700; }
+
+.ld-quiz-imported-course-info-pane-container {
+  background: #f1f1f1; }
+
+.ld-quiz-imported-course-info-pane-title .title, .ld-quiz-import-action-pane .title {
+  font-weight: 700;
+  color: #fff;
+  padding: 10px;
+  margin: 0;
+  background: #0085ba; }
+
 .ld-iet-settings-wrap {
   padding: 20px 20px 20px 0;
   box-sizing: border-box; }
@@ -238,10 +298,7 @@
   .import-response-status[data-status="Error"] {
     background: red; }
 
-.csv-upload-information-accordion-wrap {
-  margin-top: 30px; }
-
-.csv-upload-information-accordion-title {
+.csv-upload-information-accordion-title, .ld-quiz-import-course-title {
   font-weight: 700;
   color: #ffffff;
   background: #046380;
@@ -252,9 +309,9 @@
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
   transition: all 0.3s ease; }
-  .csv-upload-information-accordion-title:hover {
+  .csv-upload-information-accordion-title:hover, .ld-quiz-import-course-title:hover {
     background: #0085ba; }
-  .csv-upload-information-accordion-title.active {
+  .csv-upload-information-accordion-title.active, .ld-quiz-import-course-title.active {
     background: #0085ba; }
 
 .arrow-wrap-position-right {
@@ -282,7 +339,7 @@
   margin-bottom: 6px;
   color: #f1f1f1; }
 
-.csv-upload-information-accordion-content {
+.csv-upload-information-accordion-content, .ld-quiz-import-course-content {
   display: none; }
 
 .csv-upload-information-container {
@@ -437,3 +494,6 @@
 
 label {
   vertical-align: baseline; }
+
+.ld-tab-wrap {
+  margin-top: 30px; }

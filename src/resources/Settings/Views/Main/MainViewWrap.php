@@ -6,7 +6,7 @@
 			All controls that need to be saved, are saved automatically.
 		</h5>
 	</div>
-	<div class="wrap">
+	<div class="ld-main-content-switch-container">
 		<h2 class="nav-tab-wrapper">
 			<span class="nav-tab <?php echo $active_tab == 'course_import' ? 'nav-tab-active' : ''; ?>">Step 1 - Course Import</span>
 			<span class="nav-tab <?php echo $active_tab == 'quiz_import' ? 'nav-tab-active' : ''; ?>">Step 2 - Quiz Import</span>

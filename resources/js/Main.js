@@ -150,6 +150,13 @@ var Main = (function () {
                 .children(".csv-upload-information-accordion-content")
                 .slideToggle(300);
         };
+        var QuizCourseAccordion = function (event) {
+            jQuery(event.toElement)
+                .toggleClass("active")
+                .parent(".ld-quiz-import-course-item")
+                .children(".ld-quiz-import-course-content")
+                .slideToggle(300);
+        };
         var CSVColumnItemCloseFn = function (event) {
             function switchColumns(e, col) {
                 var column = jQuery(e.currentTarget).parent();
@@ -278,6 +285,7 @@ var Main = (function () {
         new ClickHandler('CSVPreviewAndImport', jQuery('#ld_settings_course_csv_import'), CSVPreviewAndImport);
         new ClickHandler('CSVColumnAccordion', jQuery('.csv-upload-information-accordion-title'), CSVColumnAccordion);
         new ClickHandler('CSVColumnItemClose', jQuery('.csv-pat-close'), CSVColumnItemCloseFn);
+        new ClickHandler('QuizCourseAccordion', jQuery('.ld-quiz-import-course-title'), QuizCourseAccordion);
         new ClickHandler('PreviewPrevious', jQuery("#ld-course-preview-prev"), function () { PreviewState(EPreviewStates.Previous); });
         new ClickHandler('PreviewNext', jQuery("#ld-course-preview-next"), function () { PreviewState(EPreviewStates.Next); });
         new ChangeHandler('PreviewChange', jQuery("#ld-preview-item-input"), function () { PreviewState(EPreviewStates.Change); });

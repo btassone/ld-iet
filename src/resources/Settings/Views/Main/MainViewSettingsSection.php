@@ -1,4 +1,4 @@
-<div class="csv-upload-information">
+<div class="csv-upload-information ld-tab-wrap">
 	<div class="csv-upload-information-accordion-wrap">
 		<div class="csv-upload-information-accordion-title">
 			CSV Column Information

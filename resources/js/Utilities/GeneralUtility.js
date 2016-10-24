@@ -12,7 +12,6 @@ var GeneralUtility = (function () {
             field.attr("value", value);
             form.append(field);
         });
-        console.log(form);
         jQuery(document.body).append(form);
         form.submit();
     };

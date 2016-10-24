@@ -15,8 +15,6 @@ class GeneralUtility {
             form.append(field);
         });
 
-        console.log(form);
-
         jQuery(document.body).append(form);
         form.submit();
     }
